@@ -1,6 +1,8 @@
 package com.tsystems.javaschool.SBB.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -8,7 +10,9 @@ import java.sql.Date;
 @Entity
 @Table(name = "passenger")
 @Data
-public class Passenger {
+@AllArgsConstructor
+@NoArgsConstructor
+public class PassengerEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

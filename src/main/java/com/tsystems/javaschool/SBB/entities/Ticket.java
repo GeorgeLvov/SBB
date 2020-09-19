@@ -14,7 +14,7 @@ public class Ticket {
 
     @OneToOne
     @JoinColumn(name = "passenger_id")
-    private Passenger passenger;
+    private PassengerEntity passenger;
 
     @ManyToOne
     @JoinColumn(name = "trip_id")

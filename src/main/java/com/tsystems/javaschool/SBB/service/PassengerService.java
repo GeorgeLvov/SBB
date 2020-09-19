@@ -1,20 +1,20 @@
 package com.tsystems.javaschool.SBB.service;
 
-import com.tsystems.javaschool.SBB.entities.Passenger;
-import org.springframework.transaction.annotation.Transactional;
+import com.tsystems.javaschool.SBB.entities.PassengerEntity;
 
 import java.util.List;
 
+
 public interface PassengerService {
 
-    List<Passenger> getAllPassengers();
+    List<PassengerEntity> getAllPassengers();
 
-    Passenger getPassengerById(int id);
+    PassengerEntity getPassengerById(int id);
 
-    void add(Passenger passenger);
+    void add(PassengerEntity passenger);
 
-    void update(Passenger passenger);
+    void update(PassengerEntity passenger);
 
-    void delete(Passenger passenger);
+    void delete(PassengerEntity passenger);
 
 }

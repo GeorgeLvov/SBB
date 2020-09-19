@@ -1,7 +1,7 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
-import com.tsystems.javaschool.SBB.dao.PassengerDAO;
-import com.tsystems.javaschool.SBB.entities.Passenger;
+import com.tsystems.javaschool.SBB.entities.PassengerEntity;
+import com.tsystems.javaschool.SBB.repository.PassengerRepository;
 import com.tsystems.javaschool.SBB.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,35 +13,35 @@ import java.util.List;
 public class PassengerServiceImpl implements PassengerService {
 
     @Autowired
-    PassengerDAO passengerDAO;
+    PassengerRepository passengerRepository;
 
     @Override
     @Transactional
-    public List<Passenger> getAllPassengers() {
-        return passengerDAO.getAllPassengers();
+    public List<PassengerEntity> getAllPassengers() {
+        return passengerRepository.getAllPassengers();
     }
 
     @Override
     @Transactional
-    public Passenger getPassengerById(int id) {
-        return passengerDAO.getPassengerById(id);
+    public PassengerEntity getPassengerById(int id) {
+        return passengerRepository.getPassengerById(id);
     }
 
     @Override
     @Transactional
-    public void add(Passenger passenger) {
-        passengerDAO.add(passenger);
+    public void add(PassengerEntity passenger) {
+        passengerRepository.add(passenger);
     }
 
     @Override
     @Transactional
-    public void update(Passenger passenger) {
-        passengerDAO.update(passenger);
+    public void update(PassengerEntity passenger) {
+        passengerRepository.update(passenger);
     }
 
     @Override
     @Transactional
-    public void delete(Passenger passenger) {
-        passengerDAO.delete(passenger);
+    public void delete(PassengerEntity passenger) {
+        passengerRepository.delete(passenger);
     }
 }

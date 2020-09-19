@@ -1,8 +1,6 @@
 package com.tsystems.javaschool.SBB.controller;
 
-
-
-import com.tsystems.javaschool.SBB.entities.Passenger;
+import com.tsystems.javaschool.SBB.entities.PassengerEntity;
 import com.tsystems.javaschool.SBB.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,11 +17,12 @@ public class SBBController {
     PassengerService passengerService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView allFilms() {
+    public ModelAndView allPassengers() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("MainPage");
-        List<Passenger> passengers = passengerService.getAllPassengers();
+        List<PassengerEntity> passengers = passengerService.getAllPassengers();
         modelAndView.addObject("passengersList", passengers);
         return modelAndView;
     }
+
 }

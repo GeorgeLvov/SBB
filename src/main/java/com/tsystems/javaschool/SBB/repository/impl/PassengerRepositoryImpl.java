@@ -1,7 +1,7 @@
-package com.tsystems.javaschool.SBB.dao.impl;
+package com.tsystems.javaschool.SBB.repository.impl;
 
-import com.tsystems.javaschool.SBB.dao.PassengerDAO;
-import com.tsystems.javaschool.SBB.entities.Passenger;
+import com.tsystems.javaschool.SBB.entities.PassengerEntity;
+import com.tsystems.javaschool.SBB.repository.PassengerRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,38 +10,39 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public class PassengerDAOImpl implements PassengerDAO {
+public class PassengerRepositoryImpl implements PassengerRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Passenger> getAllPassengers() {
+    public List<PassengerEntity> getAllPassengers() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Passenger").list();
+        return session.createQuery("from PassengerEntity").list();
+    }
+
+
+    @Override
+    public PassengerEntity getPassengerById(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(PassengerEntity.class, id);
     }
 
     @Override
-    public Passenger getPassengerById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Passenger.class, id);
-    }
-
-    @Override
-    public void add(Passenger passenger) {
+    public void add(PassengerEntity passenger) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(passenger);
     }
 
     @Override
-    public void update(Passenger passenger) {
+    public void update(PassengerEntity passenger) {
         Session session = sessionFactory.getCurrentSession();
         session.update(passenger);
     }
 
     @Override
-    public void delete(Passenger passenger) {
+    public void delete(PassengerEntity passenger) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(passenger);
     }
