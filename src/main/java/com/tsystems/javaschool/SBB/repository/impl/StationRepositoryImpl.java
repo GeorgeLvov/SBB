@@ -1,6 +1,6 @@
 package com.tsystems.javaschool.SBB.repository.impl;
 
-import com.tsystems.javaschool.SBB.entities.StationEntity;
+import com.tsystems.javaschool.SBB.entities.Station;
 import com.tsystems.javaschool.SBB.repository.StationRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,32 +17,32 @@ public class StationRepositoryImpl implements StationRepository {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<StationEntity> getAllStations() {
+    public List<Station> getAllStations() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from StationEntity").list();
+        return session.createQuery("from Station").list();
     }
 
 
     @Override
-    public StationEntity getStationById(int id) {
+    public Station getStationById(int id) {
         Session session = sessionFactory.getCurrentSession();
-        return session.get(StationEntity.class, id);
+        return session.get(Station.class, id);
     }
 
     @Override
-    public void add(StationEntity station) {
+    public void add(Station station) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(station);
     }
 
     @Override
-    public void update(StationEntity station) {
+    public void update(Station station) {
         Session session = sessionFactory.getCurrentSession();
         session.update(station);
     }
 
     @Override
-    public void delete(StationEntity station) {
+    public void delete(Station station) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(station);
     }

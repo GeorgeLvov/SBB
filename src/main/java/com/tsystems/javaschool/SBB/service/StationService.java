@@ -1,18 +1,18 @@
 package com.tsystems.javaschool.SBB.service;
 
-import com.tsystems.javaschool.SBB.entities.StationEntity;
+import com.tsystems.javaschool.SBB.entities.Station;
 
 import java.util.List;
 
 public interface StationService {
 
-    List<StationEntity> getAllStations();
+    List<Station> getAllStations();
 
-    StationEntity getStationById(int id);
+    Station getStationById(int id);
 
-    void add(StationEntity stationEntity);
+    void add(Station Station);
 
-    void update(StationEntity stationEntity);
+    void update(Station Station);
 
-    void delete(StationEntity stationEntity);
+    void delete(Station Station);
 }

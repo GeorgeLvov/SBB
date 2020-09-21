@@ -60,14 +60,12 @@
     <tr>
         <th scope="col">#StationID</th>
         <th scope="col">Title</th>
-        <th scope="col"></th>
     </tr>
     </thead>
     <tbody>
     <c:forEach var="station" items="${stationsList}">
         <tr>
             <th scope="row">${station.id}</th>
-            <td>${station.stationTitle}</td>
             <td>${station.stationTitle}</td>
         </tr>
     </c:forEach>

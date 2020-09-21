@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -13,7 +14,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TrainEntity {
+public class Train {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -25,4 +26,11 @@ public class TrainEntity {
     @Column(name = "capacity")
     private int capacity;
 
+    @OneToMany(mappedBy = "train")
+    private List<Trip> trips;
+
+    public Train(String trainName, int capacity) {
+        this.trainName = trainName;
+        this.capacity = capacity;
+    }
 }

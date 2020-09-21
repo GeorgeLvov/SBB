@@ -1,12 +1,16 @@
 package com.tsystems.javaschool.SBB.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "schedule")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Schedule {
 
     @Id
@@ -16,16 +20,26 @@ public class Schedule {
     @Column(name = "stationindex")
     private int stationIndex;
 
-/*    @Column(name = "route_id")
+    @ManyToOne
+    @JoinColumn(name = "route_id")
     private Route route;
 
-    @Column(name = "station_from")
+    @ManyToOne
+    @JoinColumn(name = "station_from")
     private Station stationFrom;
 
-    @Column(name = "station_to")
-    private Station stationTo;*/
+    @ManyToOne
+    @JoinColumn(name = "station_to")
+    private Station stationTo;
 
     @Column(name = "duration")
     private Long duration;
 
+    public Schedule(int stationIndex, Route route, Station stationFrom, Station stationTo, Long duration) {
+        this.stationIndex = stationIndex;
+        this.route = route;
+        this.stationFrom = stationFrom;
+        this.stationTo = stationTo;
+        this.duration = duration;
+    }
 }

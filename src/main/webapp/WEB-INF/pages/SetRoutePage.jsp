@@ -2,18 +2,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>SBB CFF FFS</title>
+    <title>SBB: Set route</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="<c:url value="/res/forMainPages.css"/>" />
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-dark" style="color: white">
+<nav class="navbar navbar-expand-lg navbar-light bg-dark">
 
-    <a class="navbar-brand" href="<c:url value="/"/>" style="color: white">
+    <a class="navbar-brand" href="<c:url value="/admin"/>" style="color: white">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         SBB CFF FFS
     </a>
@@ -22,57 +21,37 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
         <ul class="navbar-nav mr-auto">
+
             <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white">Timetable</a>
+                <a class="nav-link" href="<c:url value="/crud"/>" style="color: white">Add train | station</a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="#" style="color: white">Set route for train</a>
+            </li>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">
+                    Show
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="<c:url value="/stations"/>">Show all stations</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="<c:url value="/trains"/>">Show all trains</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Show passengers</a>
+                </div>
+            </li>
         </ul>
+
         <a class="nav-link" href="<c:url value="/"/>" style="color: white">
             <i class="fa fa-user" aria-hidden="true"></i>
-            Log in
+            Log out
         </a>
-
     </div>
-
 </nav>
-
-<div class="container">
-    <div class="row" style="height: 50px">
-    </div>
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
-            <form action="" style="padding-top: 40px">
-                <div class="form-group row">
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="From">
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="To">
-                    </div>
-                </div>
-                <br>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Date">
-                    </div>
-                    <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Time">
-                    </div>
-                    <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Time">
-                    </div>
-                    <button type="button" class="btn btn-danger">Search</button>
-                </div>
-            </form>
-        </div>
-        <div class="col-1"></div>
-    </div>
-</div>
-
-<a href="<c:url value="/admin"/>">adminPage</a>
-
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

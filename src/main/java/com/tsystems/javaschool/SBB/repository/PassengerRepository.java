@@ -1,19 +1,19 @@
 package com.tsystems.javaschool.SBB.repository;
 
-import com.tsystems.javaschool.SBB.entities.PassengerEntity;
+import com.tsystems.javaschool.SBB.entities.Passenger;
 
 import java.util.List;
 
 
 public interface PassengerRepository {
 
-    List<PassengerEntity> getAllPassengers();
+    List<Passenger> getAllPassengers();
 
-    PassengerEntity getPassengerById(int id);
+    Passenger getPassengerById(int id);
 
-    void add(PassengerEntity passengerEntity);
+    void add(Passenger passenger);
 
-    void update(PassengerEntity passengerEntity);
+    void update(Passenger passenger);
 
-    void delete(PassengerEntity passengerEntity);
+    void delete(Passenger passenger);
 }

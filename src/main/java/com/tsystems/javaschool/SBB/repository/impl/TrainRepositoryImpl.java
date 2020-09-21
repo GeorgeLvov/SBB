@@ -1,6 +1,6 @@
 package com.tsystems.javaschool.SBB.repository.impl;
 
-import com.tsystems.javaschool.SBB.entities.TrainEntity;
+import com.tsystems.javaschool.SBB.entities.Train;
 import com.tsystems.javaschool.SBB.repository.TrainRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,32 +17,32 @@ public class TrainRepositoryImpl implements TrainRepository {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<TrainEntity> getAllTrains() {
+    public List<Train> getAllTrains() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from TrainEntity").list();
+        return session.createQuery("from Train").list();
     }
 
 
     @Override
-    public TrainEntity getTrainById(int id) {
+    public Train getTrainById(int id) {
         Session session = sessionFactory.getCurrentSession();
-        return session.get(TrainEntity.class, id);
+        return session.get(Train.class, id);
     }
 
     @Override
-    public void add(TrainEntity train) {
+    public void add(Train train) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(train);
     }
 
     @Override
-    public void update(TrainEntity train) {
+    public void update(Train train) {
         Session session = sessionFactory.getCurrentSession();
         session.update(train);
     }
 
     @Override
-    public void delete(TrainEntity train) {
+    public void delete(Train train) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(train);
     }

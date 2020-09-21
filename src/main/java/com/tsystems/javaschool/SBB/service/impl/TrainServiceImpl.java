@@ -1,6 +1,6 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
-import com.tsystems.javaschool.SBB.entities.TrainEntity;
+import com.tsystems.javaschool.SBB.entities.Train;
 import com.tsystems.javaschool.SBB.repository.TrainRepository;
 import com.tsystems.javaschool.SBB.service.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,31 +17,31 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional
-    public List<TrainEntity> getAllTrains() {
+    public List<Train> getAllTrains() {
         return trainRepository.getAllTrains();
     }
 
     @Override
     @Transactional
-    public TrainEntity getTrainById(int id) {
+    public Train getTrainById(int id) {
         return trainRepository.getTrainById(id);
     }
 
     @Override
     @Transactional
-    public void add(TrainEntity trainEntity) {
-        trainRepository.add(trainEntity);
+    public void add(Train train) {
+        trainRepository.add(train);
     }
 
     @Override
     @Transactional
-    public void update(TrainEntity trainEntity) {
-        trainRepository.update(trainEntity);
+    public void update(Train train) {
+        trainRepository.update(train);
     }
 
     @Override
     @Transactional
-    public void delete(TrainEntity trainEntity) {
-        trainRepository.delete(trainEntity);
+    public void delete(Train train) {
+        trainRepository.delete(train);
     }
 }

@@ -1,20 +1,20 @@
 package com.tsystems.javaschool.SBB.service;
 
-import com.tsystems.javaschool.SBB.entities.PassengerEntity;
+import com.tsystems.javaschool.SBB.entities.Passenger;
 
 import java.util.List;
 
 
 public interface PassengerService {
 
-    List<PassengerEntity> getAllPassengers();
+    List<Passenger> getAllPassengers();
 
-    PassengerEntity getPassengerById(int id);
+    Passenger getPassengerById(int id);
 
-    void add(PassengerEntity passenger);
+    void add(Passenger passenger);
 
-    void update(PassengerEntity passenger);
+    void update(Passenger passenger);
 
-    void delete(PassengerEntity passenger);
+    void delete(Passenger passenger);
 
 }

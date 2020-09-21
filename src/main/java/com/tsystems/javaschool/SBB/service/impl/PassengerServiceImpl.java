@@ -1,6 +1,6 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
-import com.tsystems.javaschool.SBB.entities.PassengerEntity;
+import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.repository.PassengerRepository;
 import com.tsystems.javaschool.SBB.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,31 +17,31 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public List<PassengerEntity> getAllPassengers() {
+    public List<Passenger> getAllPassengers() {
         return passengerRepository.getAllPassengers();
     }
 
     @Override
     @Transactional
-    public PassengerEntity getPassengerById(int id) {
+    public Passenger getPassengerById(int id) {
         return passengerRepository.getPassengerById(id);
     }
 
     @Override
     @Transactional
-    public void add(PassengerEntity passenger) {
+    public void add(Passenger passenger) {
         passengerRepository.add(passenger);
     }
 
     @Override
     @Transactional
-    public void update(PassengerEntity passenger) {
+    public void update(Passenger passenger) {
         passengerRepository.update(passenger);
     }
 
     @Override
     @Transactional
-    public void delete(PassengerEntity passenger) {
+    public void delete(Passenger passenger) {
         passengerRepository.delete(passenger);
     }
 }

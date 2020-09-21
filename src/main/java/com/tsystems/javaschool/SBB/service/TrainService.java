@@ -1,18 +1,18 @@
 package com.tsystems.javaschool.SBB.service;
 
-import com.tsystems.javaschool.SBB.entities.TrainEntity;
+import com.tsystems.javaschool.SBB.entities.Train;
 
 import java.util.List;
 
 public interface TrainService {
 
-    List<TrainEntity> getAllTrains();
+    List<Train> getAllTrains();
 
-    TrainEntity getTrainById(int id);
+    Train getTrainById(int id);
 
-    void add(TrainEntity trainEntity);
+    void add(Train train);
 
-    void update(TrainEntity trainEntity);
+    void update(Train train);
 
-    void delete(TrainEntity trainEntity);
+    void delete(Train train);
 }
