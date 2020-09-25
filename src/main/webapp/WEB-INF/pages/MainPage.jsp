@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %><html>
 <html>
 <head>
     <title>SBB CFF FFS</title>
@@ -27,12 +28,28 @@
                 <a class="nav-link" href="#" style="color: white">Timetable</a>
             </li>
 
+            <security:authorize access="hasRole('USER')">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" style="color: white">My tickets</a>
+                </li>
+            </security:authorize>
+            <security:csrfInput/>
         </ul>
-        <a class="nav-link" href="<c:url value="/"/>" style="color: white">
+
+        <security:authorize access="isAnonymous()">
+        <a class="nav-link" href="<c:url value="/user"/>" style="color: white">
             <i class="fa fa-user" aria-hidden="true"></i>
             Log in
         </a>
-
+        </security:authorize>
+        <security:csrfInput/>
+        <security:authorize access="hasRole('USER')">
+            <a href="<c:url value="/logout"/>" style="color: white">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                Log out
+            </a>
+        </security:authorize>
+        <security:csrfInput/>
     </div>
 
 </nav>
@@ -72,6 +89,11 @@
 </div>
 
 <a href="<c:url value="/admin"/>">adminPage</a>
+
+<h3> Hello ${pageContext.request.userPrincipal.name}, </h3>
+<h4>Welcome to SBB! </h4>
+
+<a href="<c:url value='/logout' />">Click here to logout</a>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

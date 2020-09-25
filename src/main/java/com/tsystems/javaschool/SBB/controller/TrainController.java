@@ -1,6 +1,6 @@
 package com.tsystems.javaschool.SBB.controller;
 
-import com.tsystems.javaschool.SBB.entities.TrainEntity;
+import com.tsystems.javaschool.SBB.entities.Train;
 import com.tsystems.javaschool.SBB.service.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,17 +20,17 @@ public class TrainController {
     @GetMapping(value = "/trains")
     public ModelAndView getAllTrains() {
         ModelAndView modelAndView = new ModelAndView();
-        List<TrainEntity> trains = trainService.getAllTrains();
+        List<Train> trains = trainService.getAllTrains();
         modelAndView.addObject("trainsList", trains);
         modelAndView.setViewName("AllTrainsPage");
         return modelAndView;
     }
 
     @PostMapping(value = "/addTrain")
-    public ModelAndView addFilm(@ModelAttribute("train") TrainEntity trainEntity) {
+    public ModelAndView addFilm(@ModelAttribute("train") Train train) {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("redirect:/crud");
-        trainService.add(trainEntity);
+        trainService.add(train);
         return modelAndView;
     }
 }

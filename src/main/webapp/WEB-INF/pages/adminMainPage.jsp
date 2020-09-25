@@ -48,6 +48,7 @@
             </li>
         </ul>
 
+
         <a class="nav-link" href="<c:url value="/"/>" style="color: white">
             <i class="fa fa-user" aria-hidden="true"></i>
             Log out
