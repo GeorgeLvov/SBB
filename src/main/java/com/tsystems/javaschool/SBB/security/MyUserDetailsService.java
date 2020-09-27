@@ -1,6 +1,6 @@
-package com.tsystems.javaschool.SBB.service;
+package com.tsystems.javaschool.SBB.security;
 
-import com.tsystems.javaschool.SBB.UserPrincipal;
+import com.tsystems.javaschool.SBB.security.UserDetailsImpl;
 import com.tsystems.javaschool.SBB.entities.User;
 import com.tsystems.javaschool.SBB.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +20,9 @@ public class MyUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username);
-        if(user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("User was not found!");
-        }
-        else return new UserPrincipal(user);
+        } else
+            return new UserDetailsImpl(user);
     }
 }
