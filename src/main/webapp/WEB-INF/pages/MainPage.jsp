@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %><html>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
 <html>
 <head>
     <title>SBB CFF FFS</title>
@@ -22,18 +22,27 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
+
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
         <ul class="navbar-nav mr-auto">
+
             <li class="nav-item">
                 <a class="nav-link" href="#" style="color: white">Timetable</a>
             </li>
+
+            <security:authorize access="hasRole('ADMIN')">
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin" style="color: white">Management</a>
+                </li>
+            </security:authorize>
 
             <security:authorize access="hasRole('USER')">
                 <li class="nav-item">
                     <a class="nav-link" href="#" style="color: white">My tickets</a>
                 </li>
             </security:authorize>
-            <security:csrfInput/>
+
         </ul>
 
         <security:authorize access="isAnonymous()">
@@ -42,14 +51,14 @@
             Log in
         </a>
         </security:authorize>
-        <security:csrfInput/>
-        <security:authorize access="hasRole('USER')">
-            <a href="<c:url value="/logout"/>" style="color: white">
-                <i class="fa fa-user" aria-hidden="true"></i>
+
+
+        <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
+            <a href="<c:url value="/logout"/>" style="color: white"><i class="fa fa-user" aria-hidden="true"></i>
                 Log out
             </a>
         </security:authorize>
-        <security:csrfInput/>
+
     </div>
 
 </nav>
@@ -88,12 +97,8 @@
     </div>
 </div>
 
-<a href="<c:url value="/admin"/>">adminPage</a>
+<h3 style="color: white"> Hello ${pageContext.request.userPrincipal.name}, </h3>
 
-<h3> Hello ${pageContext.request.userPrincipal.name}, </h3>
-<h4>Welcome to SBB! </h4>
-
-<a href="<c:url value='/logout' />">Click here to logout</a>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

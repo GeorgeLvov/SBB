@@ -13,7 +13,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
 
-    <a class="navbar-brand" href="<c:url value="/admin"/>" style="color: white">
+    <a class="navbar-brand" href="<c:url value="/"/>" style="color: white">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         SBB CFF FFS
     </a>
@@ -49,10 +49,7 @@
         </ul>
 
 
-        <a class="nav-link" href="<c:url value="/"/>" style="color: white">
-            <i class="fa fa-user" aria-hidden="true"></i>
-            Log out
-        </a>
+        <a class="nav-link" href="/logout" style="color: white"><i class="fa fa-user" aria-hidden="true"></i> Log out</a>
 
     </div>
 </nav>

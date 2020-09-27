@@ -77,9 +77,6 @@
             <version>5.4.20.Final</version>
         </dependency>
 
-
-
-
         <!-- for using BasicDataSource in HibernateConfig-->
         <dependency>
             <groupId>org.apache.tomcat</groupId>
