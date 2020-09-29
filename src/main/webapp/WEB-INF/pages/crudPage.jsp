@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
+
 <html>
 <head>
     <title>SBB: Add train | station</title>
@@ -25,7 +27,7 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/crud"/>" style="color: white">Add train | station</a>
+                <a class="nav-link" href="<c:url value="/admin/crud"/>" style="color: white">Add train | station</a>
             </li>
 
             <li class="nav-item">
@@ -44,9 +46,12 @@
                     <a class="dropdown-item" href="#">Show passengers</a>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<c:url value="/admin/addemployee"/>" style="color: white"> Add new employee </a>
+            </li>
         </ul>
 
-        <a class="nav-link" href="<c:url value="/"/>" style="color: white">
+        <a class="nav-link" href="<c:url value="/logout"/>" style="color: white">
             <i class="fa fa-user" aria-hidden="true"></i>
             Log out
         </a>
@@ -65,6 +70,7 @@
             <h2 style="padding-top: 25px">Add Station</h2>
             <c:url value="/addStation" var="var"/>
             <form action="${var}" method="POST">
+                <security:csrfInput />
                 <div class="form-group">
                     <label for="stationTitle">Station Title:</label>
                     <input type="text" name="stationTitle" class="form-control" id="stationTitle"
@@ -82,6 +88,7 @@
             <h2 style="padding-top: 25px">Add Train</h2>
             <c:url value="/addTrain" var="varT"/>
             <form action="${varT}" method="POST">
+                <security:csrfInput />
                 <div class="form-group">
                     <label for="trainNameLbl">Train name:</label>
                     <input type="text" name="trainName" class="form-control" id="trainNameLbl"
@@ -104,7 +111,6 @@
 
     </div>
 </div>
-
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

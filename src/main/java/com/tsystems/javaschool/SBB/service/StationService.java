@@ -1,18 +1,19 @@
 package com.tsystems.javaschool.SBB.service;
 
-import com.tsystems.javaschool.SBB.entities.Station;
+import com.tsystems.javaschool.SBB.dto.StationDTO;
+
 
 import java.util.List;
 
 public interface StationService {
 
-    List<Station> getAllStations();
+    List<StationDTO> getAllStationsDTO();
 
-    Station getStationById(int id);
+    StationDTO getStationDTOById(int id);
 
-    void add(Station Station);
+    void add(StationDTO stationDTO);
 
-    void update(Station Station);
+    void update(StationDTO stationDTO);
 
-    void delete(Station Station);
+    void delete(StationDTO stationDTO);
 }

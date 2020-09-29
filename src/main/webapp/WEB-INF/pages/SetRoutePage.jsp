@@ -25,7 +25,7 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/crud"/>" style="color: white">Add train | station</a>
+                <a class="nav-link" href="<c:url value="/admin/crud"/>" style="color: white">Add train | station</a>
             </li>
 
             <li class="nav-item">
@@ -43,6 +43,9 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Show passengers</a>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<c:url value="/admin/addemployee"/>" style="color: white"> Add new employee </a>
             </li>
         </ul>
 

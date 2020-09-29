@@ -29,7 +29,7 @@ public class TrainController {
     @PostMapping(value = "/addTrain")
     public ModelAndView addFilm(@ModelAttribute("train") Train train) {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:/crud");
+        modelAndView.setViewName("redirect:/admin/crud");
         trainService.add(train);
         return modelAndView;
     }

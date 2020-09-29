@@ -8,13 +8,10 @@ public interface UserRepository {
     
     List<User> getAllUsers();
 
-    User findUserById(int id);
+    User getUserById(int id);
 
     User findByUsername(String username);
 
     void add(User user);
 
-    void update(User user);
-
-    void delete(User user);
 }

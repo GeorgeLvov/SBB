@@ -1,6 +1,7 @@
 package com.tsystems.javaschool.SBB.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -24,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     UserDetailsService userDetailsService;
 
     @Bean
-    public AuthenticationProvider authProvider(){
+    public AuthenticationProvider authProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
@@ -39,35 +40,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/user", "/admin").authenticated()
+                .antMatchers("/success").authenticated()
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .permitAll()
+                .defaultSuccessUrl("/success", true)
                 .and()
                 .rememberMe()
                 .key("rem-me-key")
-                .rememberMeParameter("remember") // it is name of checkbox at login page
+                .rememberMeParameter("remember")
                 .rememberMeCookieName("rememberLoginCookie") // it is name of the cookie
                 .tokenValiditySeconds(100) // remember for number of seconds
+                .userDetailsService(userDetailsService)
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
     }
-}
-/*
+
     @Bean
-    public UserDetailsService userDetailsService() {
-        List<UserDetails> list = new ArrayList<>();
-        list.add(User.builder()
-                .username("user")
-                .password(passwordEncoder().encode("1234"))
-                .roles("USER").build());
-        list.add(User.builder()
-                .username("admin")
-                .password(passwordEncoder().encode("12345"))
-                .roles("ADMIN").build());
-        return new InMemoryUserDetailsManager(list);
-    }*/
+    public AuthenticationManager customAuthenticationManager() throws Exception {
+        return authenticationManager();
+    }
+
+}

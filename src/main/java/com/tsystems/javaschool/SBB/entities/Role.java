@@ -1,11 +1,24 @@
 package com.tsystems.javaschool.SBB.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+
+
+/**
+ * Simple JavaBean object that represents role of {@link User}.
+ *
+ * @author George Lvov
+ * @version 1.0
+ */
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "role")
 public class Role {
@@ -15,9 +28,6 @@ public class Role {
 
     @Column(name = "role_name")
     private String roleName;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<User> users;
 
     @Override
     public String toString() {

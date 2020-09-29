@@ -1,5 +1,7 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
+import com.tsystems.javaschool.SBB.mapper.StationMapper;
+import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.entities.Station;
 import com.tsystems.javaschool.SBB.repository.StationRepository;
 import com.tsystems.javaschool.SBB.service.StationService;
@@ -11,37 +13,43 @@ import java.util.List;
 
 @Service
 public class StationServiceImpl implements StationService {
+
     @Autowired
     StationRepository stationRepository;
+    @Autowired
+    StationMapper stationMapper;
 
-    @Override
     @Transactional
-    public List<Station> getAllStations() {
-        return stationRepository.getAllStations();
+    @Override
+    public List<StationDTO> getAllStationsDTO() {
+        List<Station> stations = stationRepository.getAllStations();
+        return stationMapper.toDTOList(stations);
     }
 
-
-    @Override
     @Transactional
-    public Station getStationById(int id) {
-        return stationRepository.getStationById(id);
+    @Override
+    public StationDTO getStationDTOById(int id) {
+        return stationMapper.toDTO(stationRepository.getStationById(id));
     }
 
-    @Override
     @Transactional
-    public void add(Station station) {
-      stationRepository.add(station);
+    @Override
+    public void add(StationDTO stationDTO) {
+        Station station = stationMapper.toEntity(stationDTO);
+        stationRepository.add(station);
     }
 
-    @Override
     @Transactional
-    public void update(Station station) {
+    @Override
+    public void update(StationDTO stationDTO) {
+        Station station = stationMapper.toEntity(stationDTO);
         stationRepository.update(station);
     }
 
-    @Override
     @Transactional
-    public void delete(Station station) {
+    @Override
+    public void delete(StationDTO stationDTO) {
+        Station station = stationMapper.toEntity(stationDTO);
         stationRepository.delete(station);
     }
 }

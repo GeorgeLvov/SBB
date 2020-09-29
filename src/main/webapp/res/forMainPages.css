@@ -3,3 +3,11 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
 }
+
+.nav.navbar-nav li a {
+    color: grey;
+}
+
+.nav.navbar-nav a:hover {
+    color: white;
+}

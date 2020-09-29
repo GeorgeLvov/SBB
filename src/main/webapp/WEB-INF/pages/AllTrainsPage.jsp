@@ -25,7 +25,7 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/crud"/>" style="color: white">  Add train | station </a>
+                <a class="nav-link" href="<c:url value="/admin/crud"/>" style="color: white">  Add train | station </a>
             </li>
 
             <li class="nav-item">
@@ -45,9 +45,12 @@
 
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<c:url value="/admin/addemployee"/>" style="color: white"> Add new employee </a>
+            </li>
         </ul>
 
-        <a class="nav-link" href="<c:url value="/"/>" style="color: white">
+        <a class="nav-link" href="<c:url value="/logout"/>" style="color: white">
             <i class="fa fa-user" aria-hidden="true"></i>
             Log out
         </a>

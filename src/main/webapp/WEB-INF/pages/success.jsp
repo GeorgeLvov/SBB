@@ -5,8 +5,9 @@
 <head>
     <title>SBB CFF FFS</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="<c:url value="/res/forMainPages.css"/>" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="<c:url value="/res/forMainPages.css"/>"/>
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 </head>
 
@@ -18,7 +19,8 @@
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         SBB CFF FFS
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -28,28 +30,28 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="#" >Timetable</a>
+                <a class="nav-link" href="#">Timetable</a>
             </li>
 
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin" >Management</a>
+                    <a class="nav-link" href="/admin">Management</a>
                 </li>
             </security:authorize>
 
             <security:authorize access="hasRole('USER')">
                 <li class="nav-item">
-                    <a class="nav-link" href="#" >My tickets</a>
+                    <a class="nav-link" href="#">My tickets</a>
                 </li>
             </security:authorize>
 
         </ul>
 
         <security:authorize access="isAnonymous()">
-        <a class="nav-link" href="<c:url value="/success"/>" style="color: white">
-            <i class="fa fa-user" aria-hidden="true"></i>
-            Log in
-        </a>
+            <a class="nav-link" href="<c:url value="/success"/>" style="color: white">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                Log in
+            </a>
         </security:authorize>
 
 
@@ -60,7 +62,9 @@
         </security:authorize>
 
     </div>
+
 </nav>
+
 
 <div class="container">
     <div class="row" style="height: 80px">
@@ -68,6 +72,16 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
+
+            <div class="alert alert-success alert-dismissible fade show col-sm-5 offset-sm-3">
+
+                <strong>Success!</strong>
+                <br>
+                You have signed in as <strong>${pageContext.request.userPrincipal.name}</strong>.
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+
+            </div>
+
             <form action="" style="padding-top: 40px">
                 <div class="form-group row">
                     <div class="col">
@@ -95,7 +109,6 @@
         <div class="col-1"></div>
     </div>
 </div>
-
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
