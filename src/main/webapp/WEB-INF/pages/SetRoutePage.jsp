@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>SBB: Set route</title>
+    <title>SBB: Set trip</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
@@ -29,7 +29,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white">Set route for train</a>
+                <a class="nav-link" href="#" style="color: white">Set trip for train</a>
             </li>
 
             <li class="nav-item dropdown">

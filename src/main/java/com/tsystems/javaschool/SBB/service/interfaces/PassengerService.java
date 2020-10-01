@@ -1,4 +1,4 @@
-package com.tsystems.javaschool.SBB.service;
+package com.tsystems.javaschool.SBB.service.interfaces;
 
 import com.tsystems.javaschool.SBB.entities.Passenger;
 

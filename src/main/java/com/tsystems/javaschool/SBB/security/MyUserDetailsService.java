@@ -1,9 +1,7 @@
 package com.tsystems.javaschool.SBB.security;
 
-import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.entities.User;
-import com.tsystems.javaschool.SBB.repository.UserRepository;
-import com.tsystems.javaschool.SBB.service.UserService;
+import com.tsystems.javaschool.SBB.repository.interfaces.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

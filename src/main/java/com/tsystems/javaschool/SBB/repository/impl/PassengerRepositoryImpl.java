@@ -1,7 +1,7 @@
 package com.tsystems.javaschool.SBB.repository.impl;
 
 import com.tsystems.javaschool.SBB.entities.Passenger;
-import com.tsystems.javaschool.SBB.repository.PassengerRepository;
+import com.tsystems.javaschool.SBB.repository.interfaces.PassengerRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

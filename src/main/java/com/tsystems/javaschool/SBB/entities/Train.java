@@ -10,7 +10,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "train")
+@Table(name = "trains")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,11 +26,4 @@ public class Train {
     @Column(name = "capacity")
     private int capacity;
 
-    @OneToMany(mappedBy = "train")
-    private List<Trip> trips;
-
-    public Train(String trainName, int capacity) {
-        this.trainName = trainName;
-        this.capacity = capacity;
-    }
 }

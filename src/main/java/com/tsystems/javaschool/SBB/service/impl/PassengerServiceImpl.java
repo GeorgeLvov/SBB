@@ -1,8 +1,8 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.entities.Passenger;
-import com.tsystems.javaschool.SBB.repository.PassengerRepository;
-import com.tsystems.javaschool.SBB.service.PassengerService;
+import com.tsystems.javaschool.SBB.repository.interfaces.PassengerRepository;
+import com.tsystems.javaschool.SBB.service.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

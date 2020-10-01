@@ -1,4 +1,4 @@
-package com.tsystems.javaschool.SBB.repository;
+package com.tsystems.javaschool.SBB.repository.interfaces;
 
 import com.tsystems.javaschool.SBB.entities.Role;
 

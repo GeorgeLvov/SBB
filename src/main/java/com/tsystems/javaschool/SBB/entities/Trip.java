@@ -1,17 +1,17 @@
 package com.tsystems.javaschool.SBB.entities;
 
-
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "trip")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Trip {
@@ -19,23 +19,11 @@ public class Trip {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "name")
+    private String name;
+
     @ManyToOne
     @JoinColumn(name = "train_id")
     private Train train;
 
-    @ManyToOne
-    @JoinColumn(name = "route_id")
-    private Route route;
-
-    @Column(name = "departure_time")
-    private Date departureTime;
-
-    @OneToMany
-    private List<Ticket> tickets;
-
-    public Trip(Train train, Route route, Date departureTime) {
-        this.train = train;
-        this.route = route;
-        this.departureTime = departureTime;
-    }
 }

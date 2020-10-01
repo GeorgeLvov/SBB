@@ -1,7 +1,7 @@
 package com.tsystems.javaschool.SBB.repository.impl;
 
 import com.tsystems.javaschool.SBB.entities.User;
-import com.tsystems.javaschool.SBB.repository.UserRepository;
+import com.tsystems.javaschool.SBB.repository.interfaces.UserRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
-import com.tsystems.javaschool.SBB.service.SecurityService;
+import com.tsystems.javaschool.SBB.service.interfaces.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,4 +1,4 @@
-package com.tsystems.javaschool.SBB.service;
+package com.tsystems.javaschool.SBB.service.interfaces;
 
 /**
  * Service for Security.

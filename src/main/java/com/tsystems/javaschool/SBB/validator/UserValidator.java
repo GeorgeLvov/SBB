@@ -2,7 +2,7 @@ package com.tsystems.javaschool.SBB.validator;
 
 import java.util.regex.Pattern;
 import com.tsystems.javaschool.SBB.entities.User;
-import com.tsystems.javaschool.SBB.service.UserService;
+import com.tsystems.javaschool.SBB.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

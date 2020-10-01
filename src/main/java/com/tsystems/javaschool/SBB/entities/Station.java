@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
-@Table(name = "station")
+@Table(name = "stations")
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,11 +28,5 @@ public class Station {
     @Pattern(regexp = "^[a-zA-Z0-9 \\-]+$", message = "Latin letters, digits, hyphens, spaces are allowed")
     @Column(name = "name")
     private String stationTitle;
-
-    @OneToMany(mappedBy = "stationFrom")
-    private List<Schedule> directionsFrom;
-
-    @OneToMany(mappedBy = "stationTo")
-    private List<Schedule> directionsTo;
 
 }

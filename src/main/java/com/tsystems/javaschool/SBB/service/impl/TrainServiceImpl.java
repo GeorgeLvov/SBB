@@ -1,8 +1,10 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
+import com.tsystems.javaschool.SBB.dto.TrainDTO;
 import com.tsystems.javaschool.SBB.entities.Train;
-import com.tsystems.javaschool.SBB.repository.TrainRepository;
-import com.tsystems.javaschool.SBB.service.TrainService;
+import com.tsystems.javaschool.SBB.mapper.TrainMapper;
+import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
+import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,34 +16,42 @@ public class TrainServiceImpl implements TrainService {
 
     @Autowired
     TrainRepository trainRepository;
+    @Autowired
+    TrainMapper trainMapper;
+
 
     @Override
     @Transactional
-    public List<Train> getAllTrains() {
-        return trainRepository.getAllTrains();
+    public List<TrainDTO> getAllTrainsDTO() {
+        List<Train> trains = trainRepository.getAllTrains();
+        return trainMapper.toDTOList(trains);
     }
 
     @Override
     @Transactional
-    public Train getTrainById(int id) {
-        return trainRepository.getTrainById(id);
+    public TrainDTO getTrainDTOById(int id) {
+        Train train = trainRepository.getTrainById(id);
+        return trainMapper.toDTO(train);
     }
 
     @Override
     @Transactional
-    public void add(Train train) {
+    public void add(TrainDTO trainDTO) {
+        Train train = trainMapper.toEntity(trainDTO);
         trainRepository.add(train);
     }
 
     @Override
     @Transactional
-    public void update(Train train) {
+    public void update(TrainDTO trainDTO) {
+        Train train = trainMapper.toEntity(trainDTO);
         trainRepository.update(train);
     }
 
     @Override
     @Transactional
-    public void delete(Train train) {
+    public void delete(TrainDTO trainDTO) {
+        Train train = trainMapper.toEntity(trainDTO);
         trainRepository.delete(train);
     }
 }

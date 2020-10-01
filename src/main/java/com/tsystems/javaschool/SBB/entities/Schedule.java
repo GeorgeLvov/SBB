@@ -1,14 +1,17 @@
 package com.tsystems.javaschool.SBB.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "schedule")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Schedule {
@@ -17,12 +20,16 @@ public class Schedule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "stationindex")
-    private int stationIndex;
+    @ManyToOne
+    @JoinColumn(name = "train_id")
+    private Train train;
 
     @ManyToOne
-    @JoinColumn(name = "route_id")
-    private Route route;
+    @JoinColumn(name = "trip_id")
+    private Trip trip;
+
+    @Column(name = "station_index")
+    private int stationIndex;
 
     @ManyToOne
     @JoinColumn(name = "station_from")
@@ -32,14 +39,10 @@ public class Schedule {
     @JoinColumn(name = "station_to")
     private Station stationTo;
 
-    @Column(name = "duration")
-    private Long duration;
+    @Column(name = "departure_time")
+    private Timestamp departureTime;
 
-    public Schedule(int stationIndex, Route route, Station stationFrom, Station stationTo, Long duration) {
-        this.stationIndex = stationIndex;
-        this.route = route;
-        this.stationFrom = stationFrom;
-        this.stationTo = stationTo;
-        this.duration = duration;
-    }
+    @Column(name = "arrival_time")
+    private Timestamp arrivalTime;
+
 }

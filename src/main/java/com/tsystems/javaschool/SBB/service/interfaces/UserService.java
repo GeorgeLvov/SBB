@@ -1,7 +1,7 @@
-package com.tsystems.javaschool.SBB.service;
+package com.tsystems.javaschool.SBB.service.interfaces;
 
 import com.tsystems.javaschool.SBB.dto.UserDTO;
-import com.tsystems.javaschool.SBB.entities.User;
+
 
 import java.util.List;
 

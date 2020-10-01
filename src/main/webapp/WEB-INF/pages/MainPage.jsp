@@ -43,6 +43,11 @@
                 </li>
             </security:authorize>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="/schedule" >SHEDULEPAGETEMPORARILY</a>
+                </li>
+
+
         </ul>
 
         <security:authorize access="isAnonymous()">

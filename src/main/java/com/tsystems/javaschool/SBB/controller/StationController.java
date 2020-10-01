@@ -1,7 +1,7 @@
 package com.tsystems.javaschool.SBB.controller;
 
 import com.tsystems.javaschool.SBB.dto.StationDTO;
-import com.tsystems.javaschool.SBB.service.StationService;
+import com.tsystems.javaschool.SBB.service.interfaces.StationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

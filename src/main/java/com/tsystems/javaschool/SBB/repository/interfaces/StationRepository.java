@@ -1,4 +1,4 @@
-package com.tsystems.javaschool.SBB.repository;
+package com.tsystems.javaschool.SBB.repository.interfaces;
 
 import com.tsystems.javaschool.SBB.entities.Station;
 
@@ -10,9 +10,9 @@ public interface StationRepository {
 
     Station getStationById(int id);
 
-    void add(Station Station);
+    void add(Station station);
 
-    void update(Station Station);
+    void update(Station station);
 
-    void delete(Station Station);
+    void delete(Station station);
 }

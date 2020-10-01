@@ -3,9 +3,9 @@ package com.tsystems.javaschool.SBB.controller;
 import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.entities.User;
 import com.tsystems.javaschool.SBB.mapper.UserMapper;
-import com.tsystems.javaschool.SBB.service.RoleService;
-import com.tsystems.javaschool.SBB.service.SecurityService;
-import com.tsystems.javaschool.SBB.service.UserService;
+import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
+import com.tsystems.javaschool.SBB.service.interfaces.SecurityService;
+import com.tsystems.javaschool.SBB.service.interfaces.UserService;
 import com.tsystems.javaschool.SBB.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -65,7 +65,7 @@ public class AdminController {
             modelAndView.setViewName("registrationPage");
             return modelAndView;
         }
-        userDTO.setRole(roleService.getRoleDTOById(2));
+        userDTO.setRoleDTO(roleService.getRoleDTOById(2));
         userService.add(userDTO);
         modelAndView.addObject("message", "New employee account created!");
         modelAndView.addObject("usrname", userForm.getUsername());
