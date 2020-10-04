@@ -1,10 +1,12 @@
-package com.tsystems.javaschool.SBB.repository.interfaces;
+package com.tsystems.javaschool.SBB.service.interfaces;
+
 
 import com.tsystems.javaschool.SBB.entities.Trip;
 
 import java.util.List;
 
-public interface RouteRepository {
+
+public interface TripService {
 
     public List<Trip> getAllRoutes();
 

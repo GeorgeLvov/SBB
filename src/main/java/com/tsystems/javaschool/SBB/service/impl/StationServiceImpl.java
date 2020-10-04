@@ -34,6 +34,12 @@ public class StationServiceImpl implements StationService {
 
     @Transactional
     @Override
+    public StationDTO findByStationDTOTitle(String title) {
+        return stationMapper.toDTO(stationRepository.findByStationTitle(title));
+    }
+
+    @Transactional
+    @Override
     public void add(StationDTO stationDTO) {
         Station station = stationMapper.toEntity(stationDTO);
         stationRepository.add(station);

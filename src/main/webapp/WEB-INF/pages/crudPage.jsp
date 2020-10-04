@@ -73,7 +73,7 @@
                 <security:csrfInput />
                 <div class="form-group">
                     <label for="stationTitle">Station Title:</label>
-                    <input type="text" name="stationTitle" class="form-control" id="stationTitle"
+                    <input type="text" name="title" class="form-control" id="stationTitle"
                            aria-describedby="emailHelp"
                            placeholder="Enter station title">
                 </div>

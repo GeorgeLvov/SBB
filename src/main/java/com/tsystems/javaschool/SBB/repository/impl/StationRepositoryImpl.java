@@ -1,6 +1,7 @@
 package com.tsystems.javaschool.SBB.repository.impl;
 
 import com.tsystems.javaschool.SBB.entities.Station;
+import com.tsystems.javaschool.SBB.entities.User;
 import com.tsystems.javaschool.SBB.repository.interfaces.StationRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -19,7 +20,7 @@ public class StationRepositoryImpl implements StationRepository {
     @Override
     public List<Station> getAllStations() {
         Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Station").list();
+        return session.createQuery("from Station s order by s.title").list();
     }
 
 
@@ -27,6 +28,14 @@ public class StationRepositoryImpl implements StationRepository {
     public Station getStationById(int id) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Station.class, id);
+    }
+
+    @Override
+    public Station findByStationTitle(String title) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.byNaturalId(Station.class)
+                .using("title", title)
+                .load();
     }
 
     @Override

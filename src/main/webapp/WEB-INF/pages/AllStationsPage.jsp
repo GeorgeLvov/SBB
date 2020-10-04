@@ -73,7 +73,7 @@
         <c:forEach var="stdto" items="${stationsList}">
             <tr>
                 <th scope="row">${stdto.id}</th>
-                <td>${stdto.stationTitle}</td>
+                <td>${stdto.title}</td>
             </tr>
         </c:forEach>
         </tbody>

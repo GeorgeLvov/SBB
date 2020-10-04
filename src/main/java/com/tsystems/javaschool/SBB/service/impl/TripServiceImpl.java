@@ -1,8 +1,8 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.entities.Trip;
-import com.tsystems.javaschool.SBB.repository.interfaces.RouteRepository;
-import com.tsystems.javaschool.SBB.service.interfaces.RouteService;
+import com.tsystems.javaschool.SBB.repository.interfaces.TripRepository;
+import com.tsystems.javaschool.SBB.service.interfaces.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,10 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class RouteServiceImpl implements RouteService {
+public class TripServiceImpl implements TripService {
 
     @Autowired
-    RouteRepository routeRepository;
+    TripRepository routeRepository;
 
     @Override
     @Transactional

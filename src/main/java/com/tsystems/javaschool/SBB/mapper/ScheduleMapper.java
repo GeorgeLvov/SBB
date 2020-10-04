@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {TrainMapper.class, TripMapper.class, StationMapper.class})
 @Component
 public interface ScheduleMapper {
     @Mappings({

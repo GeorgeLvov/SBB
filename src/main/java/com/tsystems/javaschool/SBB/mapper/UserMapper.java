@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {RoleMapper.class})
 @Component
 public interface UserMapper {
     @Mappings({

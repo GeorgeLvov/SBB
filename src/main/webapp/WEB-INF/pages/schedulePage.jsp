@@ -45,10 +45,6 @@
                     <a class="nav-link" href="#">My tickets</a>
                 </li>
             </security:authorize>
-
-            <li class="nav-item">
-                <a class="nav-link" href="/schedule">SHEDULEPAGETEMPORARILY</a>
-            </li>
         </ul>
 
         <security:authorize access="isAnonymous()">
@@ -77,6 +73,7 @@
     <table class="table" style="text-align: center">
         <tr>
             <th scope="col">Train</th>
+            <th scope="col">trip_id</th>
             <th scope="col">From</th>
             <th scope="col">To</th>
             <th scope="col">Departure</th>
@@ -90,8 +87,9 @@
         <c:forEach var="scheduleDTO" items="${scheduleDTOList}" varStatus="vs">
             <tr>
                 <th scope="row">${scheduleDTO.trainDTO.trainName}</th>
-                <td>${scheduleDTO.stationFromDTO.stationTitle}</td>
-                <td>${scheduleDTO.stationToDTO.stationTitle}</td>
+                <td>${scheduleDTO.tripDTO.id}</td>
+                <td>${scheduleDTO.stationFromDTO.title}</td>
+                <td>${scheduleDTO.stationToDTO.title}</td>
                 <fmt:setLocale value="en_US" scope="session"/>
                 <td>
                     <strong><fmt:formatDate value="${scheduleDTO.departureTime}" pattern="HH:mm"/></strong>
@@ -123,11 +121,28 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                        <%--body--%>
-                                    <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoDTOList}">
-                                        ${tripInfo.stationFrom.stationTitle} ${tripInfo.departureTime}
-                                        --> ${tripInfo.stationTo.stationTitle} ${tripInfo.arrivalTime}
-                                    </c1:forEach>
+                                        <%--Modalbody--%>
+                                        <table class="table">
+                                            <thead class="thead-success">
+                                            <tr>
+                                                <th scope="col">from</th>
+                                                <th scope="col">to</th>
+                                                <th scope="col">departure</th>
+                                                <th scope="col">arrival</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoDTOList}">
+                                                <tr>
+                                                    <td>${tripInfo.stationFrom.title}</td>
+                                                    <td>${tripInfo.stationTo.title}</td>
+                                                    <td>${tripInfo.departureTime}</td>
+                                                    <td>${tripInfo.arrivalTime}</td>
+                                                </tr>
+                                            </c1:forEach>
+                                            </tbody>
+                                        </table>
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close

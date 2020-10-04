@@ -6,8 +6,9 @@
     <title>SBB CFF FFS</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="<c:url value="/res/forMainPages.css"/>" />
+    <link rel="stylesheet" href="<c:url value="/res/css/forMainPages.css"/>" />
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
+
 </head>
 
 <body>
@@ -43,18 +44,13 @@
                 </li>
             </security:authorize>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/schedule" >SHEDULEPAGETEMPORARILY</a>
-                </li>
-
-
         </ul>
 
         <security:authorize access="isAnonymous()">
-        <a class="nav-link" href="<c:url value="/success"/>" style="color: white">
-            <i class="fa fa-user" aria-hidden="true"></i>
-            Log in
-        </a>
+            <a class="nav-link" href="<c:url value="/success"/>" style="color: white">
+                <i class="fa fa-user" aria-hidden="true"></i>
+                Log in
+            </a>
         </security:authorize>
 
 
@@ -73,28 +69,53 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-            <form action="" style="padding-top: 40px">
-                <div class="form-group row">
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="From">
+            <c:url value="/schedule" var="varT"/>
+            <form action="${varT}" method="POST" style="padding-top: 40px">
+                <security:csrfInput/>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <select class="form-control" name="stationFrom" id="exampleSelect">
+                                <option value="" disabled selected>From</option>
+                                <c:forEach var="station" items="${stationsList}">
+                                    <option value="${station.title}">${station.title}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                     </div>
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="To">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <select class="form-control b" name="stationTo" id="examplSelect">
+                                <option value="" disabled selected>To</option>
+                                <c:forEach var="station" items="${stationsList}">
+                                    <option value="${station.title}">${station.title}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <br>
-                <div class="form-group row">
-                    <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Date">
+
+                <div class="row">
+                    <div class="col-3">
+                        <div class="form-group">
+                            <input class="form-control" name="dateFrom" type="datetime-local" value="${currentDateTime}"
+                                   id="exdatetimelo" style="mso-pattern-color: #00dd1c">
+                        </div>
                     </div>
-                    <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Time">
+
+                    <div class="col-3">
+                        <div class="form-group">
+                            <input class="form-control" name="dateTo" type="datetime-local" value="${currentDateTime}"
+                                   id="exdatetimel">
+                        </div>
                     </div>
-                    <div class="col-2">
-                        <input type="text" class="form-control" placeholder="Time">
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-danger" style="width: 100px;  ">Search
+                        </button>
                     </div>
-                    <button type="button" class="btn btn-danger">Search</button>
                 </div>
+
             </form>
         </div>
         <div class="col-1"></div>
@@ -114,3 +135,26 @@
 
 </body>
 </html>
+
+<%--          <div class="form-group">
+                    <label for="exampleFormControlSelect1">Example select</label>
+                    <select class="form-control" name="stationfrom" id="exampleFormControlSelect1">
+                        <option selected>From</option>
+                        <c:forEach var="station" items="${stationsList}">
+                            <option>${station.title}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlSelect1">Example select</label>
+                    <select class="form-control" id="exampleFormControlSelect13">
+                        <option selected>To</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>--%>
+
+

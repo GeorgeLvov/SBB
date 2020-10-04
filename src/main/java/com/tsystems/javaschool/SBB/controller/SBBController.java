@@ -1,10 +1,12 @@
 package com.tsystems.javaschool.SBB.controller;
 
+import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.entities.User;
 import com.tsystems.javaschool.SBB.mapper.UserMapper;
 import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
 import com.tsystems.javaschool.SBB.service.interfaces.SecurityService;
+import com.tsystems.javaschool.SBB.service.interfaces.StationService;
 import com.tsystems.javaschool.SBB.service.interfaces.UserService;
 import com.tsystems.javaschool.SBB.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,26 +15,37 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 
 @Controller
 public class SBBController {
 
     @Autowired
-    UserService userService;
+    StationService stationService;
     @Autowired
     SecurityService securityService;
     @Autowired
-    private UserValidator userValidator;
+    UserValidator userValidator;
     @Autowired
     UserMapper userMapper;
+    @Autowired
+    UserService userService;
     @Autowired
     RoleService roleService;
 
 
     @GetMapping(value = "/")
-    public String mainPage() {
-        return "MainPage";
+    public ModelAndView mainPage() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<StationDTO> list = stationService.getAllStationsDTO();
+        modelAndView.addObject("stationsList", list);
+        modelAndView.addObject("currentDateTime", LocalDateTime.now().withSecond(0).withNano(0));
+        modelAndView.setViewName("MainPage");
+        return modelAndView;
     }
+
 
     @GetMapping("/login")
     public ModelAndView login() {
@@ -45,6 +58,9 @@ public class SBBController {
     @GetMapping(value = "/success")
     public ModelAndView userPage() {
         ModelAndView modelAndView = new ModelAndView();
+        List<StationDTO> list = stationService.getAllStationsDTO();
+        modelAndView.addObject("stationsList", list);
+        modelAndView.addObject("currentDateTime", LocalDateTime.now().withSecond(0).withNano(0));
         modelAndView.setViewName("success");
         return modelAndView;
     }
@@ -57,7 +73,6 @@ public class SBBController {
         modelAndView.addObject("userForm", new UserDTO());
         return modelAndView;
     }
-
 
     @PostMapping(value = "/registration")
     public ModelAndView registry(@ModelAttribute("userForm") UserDTO userDTO, BindingResult bindingResult) {
@@ -76,5 +91,7 @@ public class SBBController {
         modelAndView.setViewName("success");
         return modelAndView;
     }
+
+
 
 }

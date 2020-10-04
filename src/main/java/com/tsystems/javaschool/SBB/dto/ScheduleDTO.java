@@ -1,15 +1,9 @@
 package com.tsystems.javaschool.SBB.dto;
 
-
-import com.tsystems.javaschool.SBB.entities.Station;
-import com.tsystems.javaschool.SBB.entities.Train;
-import com.tsystems.javaschool.SBB.entities.Trip;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
-
 
 @Data
 @Builder
