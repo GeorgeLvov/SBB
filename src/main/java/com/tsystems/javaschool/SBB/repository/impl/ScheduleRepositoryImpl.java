@@ -51,9 +51,6 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         Query query = session
                 .createQuery("from Schedule s where s.stationTo = :stationTo")
                 .setParameter("stationTo", stationTo);
-        List<Schedule> list = query.list();
-        System.out.println("REPOSITORY!!!!!!!!!!!!!!!!!!!!!!!!!!!---------------------------");
-        list.forEach(System.out::println);
         return query.list();
     }
 

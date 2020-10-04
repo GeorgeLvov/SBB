@@ -2,8 +2,6 @@ package com.tsystems.javaschool.SBB.controller;
 
 import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.dto.UserDTO;
-import com.tsystems.javaschool.SBB.entities.User;
-import com.tsystems.javaschool.SBB.mapper.UserMapper;
 import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
 import com.tsystems.javaschool.SBB.service.interfaces.SecurityService;
 import com.tsystems.javaschool.SBB.service.interfaces.StationService;
@@ -23,25 +21,24 @@ import java.util.List;
 public class SBBController {
 
     @Autowired
-    StationService stationService;
+    private StationService stationService;
     @Autowired
-    SecurityService securityService;
+    private SecurityService securityService;
     @Autowired
-    UserValidator userValidator;
+    private UserValidator userValidator;
     @Autowired
-    UserMapper userMapper;
+    private UserService userService;
     @Autowired
-    UserService userService;
-    @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
+    private final LocalDateTime currentTime = LocalDateTime.now().withSecond(0).withNano(0);
 
     @GetMapping(value = "/")
     public ModelAndView mainPage() {
         ModelAndView modelAndView = new ModelAndView();
         List<StationDTO> list = stationService.getAllStationsDTO();
         modelAndView.addObject("stationsList", list);
-        modelAndView.addObject("currentDateTime", LocalDateTime.now().withSecond(0).withNano(0));
+        modelAndView.addObject("currentDateTime", currentTime);
         modelAndView.setViewName("MainPage");
         return modelAndView;
     }
@@ -60,7 +57,7 @@ public class SBBController {
         ModelAndView modelAndView = new ModelAndView();
         List<StationDTO> list = stationService.getAllStationsDTO();
         modelAndView.addObject("stationsList", list);
-        modelAndView.addObject("currentDateTime", LocalDateTime.now().withSecond(0).withNano(0));
+        modelAndView.addObject("currentDateTime", currentTime);
         modelAndView.setViewName("success");
         return modelAndView;
     }
@@ -77,8 +74,7 @@ public class SBBController {
     @PostMapping(value = "/registration")
     public ModelAndView registry(@ModelAttribute("userForm") UserDTO userDTO, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-        User userForm = userMapper.toEntity(userDTO);
-        userValidator.validate(userForm, bindingResult);
+        userValidator.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             modelAndView.setViewName("registrationPage");
             return modelAndView;
@@ -86,12 +82,10 @@ public class SBBController {
         userDTO.setRoleDTO(roleService.getRoleDTOById(1));
         userService.add(userDTO);
 
-        securityService.autoLogin(userForm.getUsername(), userForm.getConfirmPassword());
+        securityService.autoLogin(userDTO.getUsername(), userDTO.getConfirmPassword());
 
-        modelAndView.setViewName("success");
+        modelAndView.setViewName("redirect:/success");
         return modelAndView;
     }
-
-
 
 }
