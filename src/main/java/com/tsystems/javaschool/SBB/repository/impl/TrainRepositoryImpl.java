@@ -30,6 +30,14 @@ public class TrainRepositoryImpl implements TrainRepository {
     }
 
     @Override
+    public Train findTrainByTrainName(String trainName) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.byNaturalId(Train.class)
+                .using("trainName", trainName)
+                .load();
+    }
+
+    @Override
     public void add(Train train) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(train);

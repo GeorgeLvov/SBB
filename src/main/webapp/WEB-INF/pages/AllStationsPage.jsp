@@ -40,9 +40,9 @@
                     Show
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<c:url value="/stations"/>">Show all stations</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/stations"/>">Show all stations</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/trains"/>">Show all trains</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Show passengers</a>
 

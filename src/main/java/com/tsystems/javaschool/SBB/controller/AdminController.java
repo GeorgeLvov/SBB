@@ -1,6 +1,7 @@
 package com.tsystems.javaschool.SBB.controller;
 
 import com.tsystems.javaschool.SBB.dto.StationDTO;
+import com.tsystems.javaschool.SBB.dto.TrainDTO;
 import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.entities.User;
 import com.tsystems.javaschool.SBB.mapper.UserMapper;
@@ -27,8 +28,6 @@ public class AdminController {
     @Autowired
     private UserValidator userValidator;
     @Autowired
-    UserMapper userMapper;
-    @Autowired
     RoleService roleService;
 
 
@@ -37,14 +36,6 @@ public class AdminController {
     public ModelAndView adminMainPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("adminMainPage");
-        return modelAndView;
-    }
-
-    @GetMapping(value = "/admin/crud")
-    public ModelAndView addTrainOrStation() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("stationDTO", new StationDTO());
-        modelAndView.setViewName("crudPage");
         return modelAndView;
     }
 

@@ -37,9 +37,9 @@
                     Show
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<c:url value="/stations"/>">Show all stations</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/stations"/>">Show all stations</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/trains"/>">Show all trains</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Show passengers</a>
                 </div>
@@ -55,6 +55,27 @@
         </a>
     </div>
 </nav>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

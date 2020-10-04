@@ -16,4 +16,7 @@ public class TrainDTO {
     private String trainName;
     private int capacity;
 
+    public String toString(){
+        return "TrainDTO object name: " + trainName ;
+    }
 }

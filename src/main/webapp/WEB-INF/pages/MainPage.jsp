@@ -100,7 +100,7 @@
                     <div class="col-3">
                         <div class="form-group">
                             <input class="form-control" name="dateFrom" type="datetime-local" value="${currentDateTime}"
-                                   id="exdatetimelo" style="mso-pattern-color: #00dd1c">
+                                   id="exdatetimelo">
                         </div>
                     </div>
 

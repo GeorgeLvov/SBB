@@ -36,6 +36,13 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional
+    public TrainDTO findTrainByTrainName(String trainName) {
+        Train train = trainRepository.findTrainByTrainName(trainName);
+        return trainMapper.toDTO(train);
+    }
+
+    @Override
+    @Transactional
     public void add(TrainDTO trainDTO) {
         Train train = trainMapper.toEntity(trainDTO);
         trainRepository.add(train);

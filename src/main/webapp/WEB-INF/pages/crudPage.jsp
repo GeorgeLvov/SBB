@@ -41,9 +41,9 @@
                     Show
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<c:url value="/stations"/>">Show all stations</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/stations"/>">Show all stations</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/trains"/>">Show all trains</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Show passengers</a>
                 </div>
@@ -70,7 +70,7 @@
 
         <div class="col-md-4 bg-light" style="border-radius: 2%">
             <h2 style="padding-top: 25px">Add Station</h2>
-            <form:form method="POST" modelAttribute="stationDTO" class="form-signin">
+            <form:form method="POST" action="/admin/addStation" modelAttribute="stationDTO" class="form-signin">
                 <spring:bind path="title">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <label for="stationTitleId">Station Title:</label>
@@ -85,27 +85,30 @@
 
         <div class="col-md-1">
         </div>
-
         <div class="col-md-4 bg-light " style="border-radius: 2%">
             <h2 style="padding-top: 25px">Add Train</h2>
-            <c:url value="/addTrain" var="varT"/>
-            <form action="${varT}" method="POST">
-                <security:csrfInput />
-                <div class="form-group">
-                    <label for="trainNameLbl">Train name:</label>
-                    <input type="text" name="trainName" class="form-control" id="trainNameLbl"
-                           aria-describedby="emailHelp"
-                           placeholder="Enter name">
-                    <small id="trainNameHelp" class="form-text text-muted">Train name must not exceed 5
-                        characters</small>
-                </div>
-                <div class="form-group">
-                    <label for="capacityLbl">Train capacity:</label>
-                    <input type="text" name="capacity" class="form-control" id="capacityLbl"
-                           placeholder="Enter capacity">
-                </div>
-                <button type="submit" class="btn btn-success">Add</button>
-            </form>
+
+            <form:form method="POST" action="/admin/addTrain" modelAttribute="trainDTO" class="form-signin">
+                <spring:bind path="trainName">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label for="trainId">Train name:</label>
+                        <form:input type="text" path="trainName" class="form-control" placeholder="Enter name"
+                                     autofocus="true" id="trainId"></form:input>
+                        <form:errors path="trainName" cssStyle="color: red; font-size: 14px"></form:errors>
+                    </div>
+                </spring:bind>
+
+                <spring:bind path="capacity">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label for="capacityLbl">Train capacity:</label>
+                        <form:input type="text" path="capacity" class="form-control"
+                                    placeholder="Enter capacity" id="capacityLbl"></form:input>
+                        <form:errors path="capacity" cssStyle="color: red; font-size: 14px"></form:errors>
+                    </div>
+                </spring:bind>
+
+                <button class="btn btn-success" type="submit" style="margin-top: 35px">Add</button>
+            </form:form>
         </div>
 
         <div class="col-md-1">
@@ -126,6 +129,33 @@
 
 </body>
 </html>
+
+
+
+
+
+
+
+
+<%--  <h2 style="padding-top: 25px">Add Train</h2>
+            <c:url value="/addTrain" var="varT"/>
+            <form action="${varT}" method="POST">
+                <security:csrfInput />
+                <div class="form-group">
+                    <label for="trainNameLbl">Train name:</label>
+                    <input type="text" name="trainName" class="form-control" id="trainNameLbl"
+                           aria-describedby="emailHelp"
+                           placeholder="Enter name">
+                    <small id="trainNameHelp" class="form-text text-muted">Train name must not exceed 5
+                        characters</small>
+                </div>
+                <div class="form-group">
+                    <label for="capacityLbl">Train capacity:</label>
+                    <input type="text" name="capacity" class="form-control" id="capacityLbl"
+                           placeholder="Enter capacity">
+                </div>
+                <button type="submit" class="btn btn-success">Add</button>
+            </form>--%>
 
 <%--<c:url value="/addStation" var="var"/>
             <form action="${var}" method="POST">
