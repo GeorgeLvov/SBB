@@ -44,6 +44,11 @@
                 </li>
             </security:authorize>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="<c:url value="/setroute"/>" >Set route</a>
+                </li>
+
+
         </ul>
 
         <security:authorize access="isAnonymous()">
@@ -99,8 +104,10 @@
                 <div class="row">
                     <div class="col-3">
                         <div class="form-group">
+                            <span lang="en">
                             <input class="form-control" name="dateFrom" type="datetime-local" value="${currentDateTime}"
                                    id="exdatetimelo">
+                            </span>
                         </div>
                     </div>
 

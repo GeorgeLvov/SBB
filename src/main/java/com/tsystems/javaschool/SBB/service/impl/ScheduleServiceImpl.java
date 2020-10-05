@@ -23,6 +23,12 @@ public class ScheduleServiceImpl {
     @Autowired
     ScheduleMapper scheduleMapper;
 
+
+    public void add(ScheduleDTO scheduleDTO) {
+        Schedule schedule = scheduleMapper.toEntity(scheduleDTO);
+        scheduleRepository.add(schedule);
+    }
+
     @Transactional
     public List<ScheduleDTO> getSchedulesByStationsAndDate(Station stationFrom, Station stationTo, Timestamp tmp1, Timestamp tmp2) {
 

@@ -21,17 +21,20 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     @Override
     public List<Schedule> getAllSchedules() {
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        return session.createQuery("from Schedule").list();
     }
 
     @Override
     public Schedule getScheduleById(int id) {
-        return null;
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Schedule.class, id);
     }
 
     @Override
     public void add(Schedule schedule) {
-
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(schedule);
     }
 
     @Override

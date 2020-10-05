@@ -8,6 +8,7 @@ import com.tsystems.javaschool.SBB.service.interfaces.StationService;
 import com.tsystems.javaschool.SBB.service.impl.ScheduleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -26,6 +27,12 @@ public class ScheduleController {
     @Autowired
     StationMapper stationMapper;
 
+    @GetMapping(value = "/schedule")
+    public ModelAndView schedule(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("schedulePage");
+        return modelAndView;
+    }
 
     @PostMapping(value = "/schedule")
     public ModelAndView searchTrips(@RequestParam("stationFrom") String stationFromTitle,

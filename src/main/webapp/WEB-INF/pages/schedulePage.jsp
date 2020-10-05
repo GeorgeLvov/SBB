@@ -68,7 +68,7 @@
     <div class="row" style="height: 80px">
     </div>
 </div>
-
+${msg}
 <div class="container mt-4 p-md-4 col-12 rounded-container">
     <table class="table" style="text-align: center">
         <tr>
@@ -153,7 +153,8 @@
                     </div>
                 </td>
                 <td>
-                    <a class="btn btn-danger" href="#" role="button">Buy ticket</a>
+                    <a class="btn btn-danger" href="/ticket/${scheduleDTO.trainDTO.id}/${scheduleDTO.tripDTO.id}/${scheduleDTO.departureTime}/${scheduleDTO.arrivalTime}"
+                       role="button" target="_blank">Buy ticket</a>
                 </td>
             </tr>
         </c:forEach>

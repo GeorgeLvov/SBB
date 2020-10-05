@@ -69,7 +69,7 @@
         </div>
 
         <div class="col-md-4 bg-light" style="border-radius: 2%">
-            <h2 style="padding-top: 25px">Add Station</h2>
+            <h2 style="padding-top: 25px;  padding-bottom: 10px">Create new station</h2>
             <form:form method="POST" action="/admin/addStation" modelAttribute="stationDTO" class="form-signin">
                 <spring:bind path="title">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
@@ -79,14 +79,14 @@
                         <form:errors path="title" cssStyle="color: red; font-size: 14px"></form:errors>
                     </div>
                 </spring:bind>
-                <button type="submit" class="btn btn-success">Add</button>
+                <button type="submit" class="btn btn-success" style="width: 100px; margin-top:15px">Create</button>
             </form:form>
         </div>
 
         <div class="col-md-1">
         </div>
         <div class="col-md-4 bg-light " style="border-radius: 2%">
-            <h2 style="padding-top: 25px">Add Train</h2>
+            <h2 style="padding-top: 25px; padding-bottom: 10px">Create new train</h2>
 
             <form:form method="POST" action="/admin/addTrain" modelAttribute="trainDTO" class="form-signin">
                 <spring:bind path="trainName">
@@ -107,7 +107,7 @@
                     </div>
                 </spring:bind>
 
-                <button class="btn btn-success" type="submit" style="margin-top: 35px">Add</button>
+                <button class="btn btn-success" type="submit" style="width: 100px; margin-top:15px">Create</button>
             </form:form>
         </div>
 

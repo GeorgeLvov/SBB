@@ -1,5 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"  %>
+
 <html>
 <head>
     <title>SBB: Set trip</title>
@@ -57,25 +61,64 @@
 </nav>
 
 
+<form:form method="POST" modelAttribute="schInfoDTO" class="form-signin">
+
+    <spring:bind path="trainId">
+    <form:select class="form-control" path="trainId">
+        <form:option value="0" label="Choose train" />
+        <form:options items="${trainsList}" itemValue="id" itemLabel="trainName" />
+    </form:select>
+    </spring:bind>
+
+    <spring:bind path="stationDTOs">
+    <form:select class="form-control" path="stationFromId">
+        <form:option value="0" label="From" />
+        <form:options items="${stationsList}" itemValue="id" itemLabel="title" />
+    </form:select>
+    </spring:bind>
+
+    <spring:bind path="stationDTOs">
+    <form:select class="form-control" path="stationDTOs[0].id">
+        <form:option value="0" label="To" />
+        <form:options items="${stationsList}" itemValue="id" itemLabel="title" />
+    </form:select>
+    </spring:bind>
+
+    <spring:bind path="stationDTOs">
+        <form:select class="form-control" path="stationDTOs[1].id">
+            <form:option value="0" label="To2" />
+            <form:options items="${stationsList}" itemValue="id" itemLabel="title" />
+        </form:select>
+    </spring:bind>
 
 
+    <spring:bind path="departureTime">
+        <div class="form-group ${status.error ? 'has-error' : ''}">
+            <form:input type="datetime-local" path="departureTime" class="form-control" value="${currentTime}"
+                        autofocus="true"></form:input>
+            <form:errors path="departureTime" cssStyle="color: red; font-size: 14px"></form:errors>
+        </div>
+    </spring:bind>
+
+    <spring:bind path="arrTimes">
+        <div class="form-group ${status.error ? 'has-error' : ''}">
+            <form:input type="datetime-local" path="arrTimes[0].arrivalTime" class="form-control" value="1994-11-22T17:00:00"
+                        autofocus="true"></form:input>
+            <form:errors path="departureTime" cssStyle="color: red; font-size: 14px"></form:errors>
+        </div>
+    </spring:bind>
+
+    <spring:bind path="arrTimes">
+        <div class="form-group ${status.error ? 'has-error' : ''}">
+            <form:input type="datetime-local" path="arrTimes[0].arrivalTime" class="form-control" value="1994-11-22T17:00:00"
+                        autofocus="true"></form:input>
+            <form:errors path="departureTime" cssStyle="color: red; font-size: 14px"></form:errors>
+        </div>
+    </spring:bind>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <button class="btn btn-success" type="submit" style="margin-top: 35px">Sign Up</button>
+</form:form>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -89,3 +132,40 @@
 
 </body>
 </html>
+
+<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<table width="100%">
+    <tr>
+        <td>Ширина</td>
+        <td>Высота</td>
+        <td>Артикуль</td>
+        <td>Кол-во полотен</td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" name="width[0]" class="add_product_input" style="width:200px;" />
+        </td>
+        <td>
+            <input type="text" name="height[0]" class="add_product_input" style="width:200px;" />
+        </td>
+        <td>
+            <input type="text" name="articul[0]" class="add_product_input" style="width:200px;" />
+        </td>
+        <td>
+            <input type="text" name="count[0]" class="add_product_input" style="width:200px;" />
+        </td>
+    </tr>
+</table>
+<button class="add_attr">Добавить</button>
+
+<script>
+    $('.add_attr').click(function() {
+        var rowCount = $('tr').length - 1;
+        var row = $('tr').last().clone();
+        row.find('input').each(function() {
+            var name = $(this).attr('name');
+            $(this).attr('name', name.replace(/\[\d+\]/, '[' + rowCount + ']'))
+        });
+        $('table').append(row);
+    });
+</script>--%>
