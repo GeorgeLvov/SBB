@@ -1,8 +1,6 @@
 package com.tsystems.javaschool.SBB.controller;
 
 
-import com.tsystems.javaschool.SBB.dto.ScheduleDTO;
-import com.tsystems.javaschool.SBB.dto.ScheduleInfoDTO;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.dto.TrainDTO;
 import com.tsystems.javaschool.SBB.service.interfaces.StationService;
@@ -38,12 +36,12 @@ public class SetRouteController {
 
         modelAndView.addObject("currentTime", currentTime);
 
-        modelAndView.addObject("schInfoDTO",new ScheduleInfoDTO());
+       // modelAndView.addObject("schInfoDTO",new ScheduleInfoDTO());
 
         return modelAndView;
     }
 
-    @PostMapping(value = "/setroute")
+  /*  @PostMapping(value = "/setroute")
     public ModelAndView schedule(@ModelAttribute("schInfoDTO") ScheduleInfoDTO scheduleInfoDTO,
                                  BindingResult bindingResult){
         ModelAndView modelAndView = new ModelAndView();
@@ -51,6 +49,6 @@ public class SetRouteController {
 
         modelAndView.setViewName("redirect:/setroute");
         return modelAndView;
-    }
+    }*/
 
 }

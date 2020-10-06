@@ -4,6 +4,7 @@ import com.tsystems.javaschool.SBB.entities.Ticket;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.List;
 
 public interface TicketRepository {
 
@@ -23,4 +24,8 @@ public interface TicketRepository {
      * @return number of taken seats in {@link BigInteger} format
      */
     BigInteger getTakenSeatsCount(int trainId, int tripId, Timestamp departureTime, Timestamp arrivalTime);
+
+
+
+    List<Object[]> getAllTicketsByUserId(int userId);
 }

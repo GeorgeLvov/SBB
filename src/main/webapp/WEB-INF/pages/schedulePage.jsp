@@ -1,4 +1,3 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="c1" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -68,7 +67,7 @@
     <div class="row" style="height: 80px">
     </div>
 </div>
-${msg}
+
 <div class="container mt-4 p-md-4 col-12 rounded-container">
     <table class="table" style="text-align: center">
         <tr>
@@ -154,7 +153,7 @@ ${msg}
                 </td>
                 <td>
                     <a class="btn btn-danger"
-                       href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripDTO.id}
+                       href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripDTO.id}&stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
                     &departureTime=${scheduleDTO.departureTime}&arrivalTime=${scheduleDTO.arrivalTime}"
                        role="button" target="_blank">Buy ticket</a>
                 </td>

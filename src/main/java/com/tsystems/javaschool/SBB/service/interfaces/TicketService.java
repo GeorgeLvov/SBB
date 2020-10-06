@@ -1,6 +1,9 @@
 package com.tsystems.javaschool.SBB.service.interfaces;
 
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
+import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
+
+import java.util.List;
 
 public interface TicketService {
 
@@ -18,4 +21,6 @@ public interface TicketService {
      * @return false if there are at least 10 minutes left before the train departure
      */
     boolean isTimeValid(String departureTimeStr);
+
+    List<TicketInfoDTO> getAllTicketInfosByUsername(String username);
 }

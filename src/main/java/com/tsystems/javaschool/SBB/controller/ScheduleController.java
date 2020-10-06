@@ -21,11 +21,11 @@ import java.util.List;
 public class ScheduleController {
 
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
     @Autowired
-    StationService stationService;
+    private StationService stationService;
     @Autowired
-    StationMapper stationMapper;
+    private StationMapper stationMapper;
 
     @GetMapping(value = "/schedule")
     public ModelAndView schedule(){

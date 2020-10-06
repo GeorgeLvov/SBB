@@ -31,7 +31,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
 
-
     @Override
     @Transactional
     public List<ScheduleDTO> getSchedulesByStationsAndDate(Station stationFrom, Station stationTo, Timestamp tmp1, Timestamp tmp2) {

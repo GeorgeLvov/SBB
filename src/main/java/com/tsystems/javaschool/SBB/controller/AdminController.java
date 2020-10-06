@@ -1,15 +1,10 @@
 package com.tsystems.javaschool.SBB.controller;
 
-import com.tsystems.javaschool.SBB.dto.StationDTO;
-import com.tsystems.javaschool.SBB.dto.TrainDTO;
+
 import com.tsystems.javaschool.SBB.dto.UserDTO;
-import com.tsystems.javaschool.SBB.entities.User;
-import com.tsystems.javaschool.SBB.mapper.UserMapper;
 import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
 import com.tsystems.javaschool.SBB.service.interfaces.SecurityService;
-import com.tsystems.javaschool.SBB.service.interfaces.StationService;
 import com.tsystems.javaschool.SBB.service.interfaces.UserService;
-import com.tsystems.javaschool.SBB.validator.StationValidator;
 import com.tsystems.javaschool.SBB.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -18,17 +13,17 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+
+
 @Controller
 public class AdminController {
 
     @Autowired
-    UserService userService;
-    @Autowired
-    SecurityService securityService;
+    private UserService userService;
     @Autowired
     private UserValidator userValidator;
     @Autowired
-    RoleService roleService;
+    private RoleService roleService;
 
 
     @GetMapping(value = "/admin")
@@ -38,6 +33,7 @@ public class AdminController {
         modelAndView.setViewName("adminMainPage");
         return modelAndView;
     }
+
 
 
     @GetMapping("/admin/addemployee")

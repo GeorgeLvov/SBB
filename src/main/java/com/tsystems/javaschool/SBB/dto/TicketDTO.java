@@ -29,6 +29,10 @@ public class TicketDTO {
 
     private TripDTO tripDTO;
 
+    private StationDTO stationFromDTO;
+
+    private StationDTO stationToDTO;
+
     private Timestamp departureTime;
 
     private Timestamp arrivalTime;

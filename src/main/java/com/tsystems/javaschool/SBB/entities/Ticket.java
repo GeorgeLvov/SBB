@@ -34,6 +34,14 @@ public class Ticket {
     @JoinColumn(name = "trip_id")
     private Trip trip;
 
+    @ManyToOne
+    @JoinColumn(name = "station_from_id")
+    Station stationFrom;
+
+    @ManyToOne
+    @JoinColumn(name = "station_to_id")
+    Station stationTo;
+
     @Column(name = "departure_time")
     private Timestamp departureTime;
 

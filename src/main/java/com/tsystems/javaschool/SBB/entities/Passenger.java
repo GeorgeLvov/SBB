@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 /**
  * JavaBean domain object that represents a Passenger.
@@ -35,4 +36,5 @@ public class Passenger {
 
     @Column(name = "birthdate")
     private Date birthDate;
+
 }

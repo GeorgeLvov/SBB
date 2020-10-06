@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
+
 @Controller
 public class CrudController {
 
@@ -65,6 +67,24 @@ public class CrudController {
         }
         trainService.add(trainDTO);
         modelAndView.setViewName("redirect:/admin/crud");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "admin/trains")
+    public ModelAndView getAllTrains() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<TrainDTO> trains = trainService.getAllTrainsDTO();
+        modelAndView.addObject("trainsList", trains);
+        modelAndView.setViewName("AllTrainsPage");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/admin/stations")
+    public ModelAndView getAllStations() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<StationDTO> stations = stationService.getAllStationsDTO();
+        modelAndView.addObject("stationsList", stations);
+        modelAndView.setViewName("AllStationsPage");
         return modelAndView;
     }
 }

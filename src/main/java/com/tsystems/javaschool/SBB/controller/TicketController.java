@@ -20,6 +20,8 @@ import java.util.Map;
 public class TicketController {
 
     @Autowired
+    StationService stationService;
+    @Autowired
     TrainService trainService;
     @Autowired
     TicketService ticketService;
@@ -42,11 +44,15 @@ public class TicketController {
 
         int trainId = Integer.parseInt(allRequestParams.get("trainId").trim());
         int tripId = Integer.parseInt(allRequestParams.get("tripId").trim());
+        int stationFromId = Integer.parseInt(allRequestParams.get("stF").trim());
+        int stationToId = Integer.parseInt(allRequestParams.get("stT").trim());
         String departureTime = allRequestParams.get("departureTime");
         String arrivalTime = allRequestParams.get("arrivalTime");
 
         System.out.println(trainId);
         System.out.println(tripId);
+        System.out.println(stationFromId);
+        System.out.println(stationToId);
         System.out.println(departureTime);
         System.out.println(arrivalTime);
 
@@ -55,6 +61,8 @@ public class TicketController {
 
             ticketDTO.setTrainDTO(trainService.getTrainDTOById(trainId));
             ticketDTO.setTripDTO(tripService.getTripById(tripId));
+            ticketDTO.setStationFromDTO(stationService.getStationDTOById(stationFromId));
+            ticketDTO.setStationToDTO(stationService.getStationDTOById(stationToId));
             ticketDTO.setDepartureTime(Timestamp.valueOf(departureTime));
             ticketDTO.setArrivalTime(Timestamp.valueOf(arrivalTime));
             ticketDTO.setValid(true);
