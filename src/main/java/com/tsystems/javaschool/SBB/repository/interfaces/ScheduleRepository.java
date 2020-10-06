@@ -12,7 +12,8 @@ public interface ScheduleRepository {
 
     /**
      * Provides all schedules with specified params
-     * Helper method for searching trips from station A to station B at a given time
+     * Helper method like {@link #getSchedulesByStationTo(Station To) getSchedulesByStationTo}
+     * for searching trips from station A to station B at a given time
      *
      * @param stationFrom starting station
      * @param dateFrom    the beginning of the time period
@@ -23,8 +24,7 @@ public interface ScheduleRepository {
 
     /**
      * Provides all schedules with specified params
-     * Helper method like {@link #getSchedulesByDepartureStationAndTime(Station stationFrom, Timestamp dateFrom, Timestamp dateTo) getSchedulesByDepartureStationAndTime}
-     * for searching trips from station A to station B at a given time
+     * Helper method for searching trips from station A to station B at a given time
      *
      * @param stationTo end station
      */

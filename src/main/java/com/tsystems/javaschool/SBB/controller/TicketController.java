@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Map;
 
@@ -88,12 +89,19 @@ public class TicketController {
             return modelAndView;
         }
 
-        PassengerDTO passengerDTO1 = passengerService.findPassengerByPersonalData(passengerDTO.getFirstName(), passengerDTO.getLastName(), passengerDTO.getBirthDate());
-        if (passengerDTO1 == null) {
+        String firstName = passengerDTO.getFirstName();
+        String lastName = passengerDTO.getLastName();
+        Date birthDate = passengerDTO.getBirthDate();
+
+        PassengerDTO existingPassenger = passengerService.findPassengerByPersonalData(firstName, lastName, birthDate);
+
+        if (existingPassenger == null) {
+
             passengerService.add(passengerDTO);
-            PassengerDTO passengerDTO2 = passengerService.findPassengerByPersonalData(passengerDTO.getFirstName(), passengerDTO.getLastName(), passengerDTO.getBirthDate());
-            ticketDTO.setPassengerDTO(passengerDTO2);
-        } else ticketDTO.setPassengerDTO(passengerDTO1);
+            PassengerDTO newPassenger = passengerService.findPassengerByPersonalData(firstName, lastName, birthDate);
+            ticketDTO.setPassengerDTO(newPassenger);
+
+        } else ticketDTO.setPassengerDTO(existingPassenger);
 
         ticketService.add(ticketDTO);
 
