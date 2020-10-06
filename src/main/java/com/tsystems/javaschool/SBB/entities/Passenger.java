@@ -8,6 +8,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Date;
 
+/**
+ * JavaBean domain object that represents a Passenger.
+ *
+ * @author George Lvov
+ * @version 1.0
+ */
+
 @Entity
 @Table(name = "passenger")
 @Data
@@ -28,10 +35,4 @@ public class Passenger {
 
     @Column(name = "birthdate")
     private Date birthDate;
-
-    public Passenger(String firstName, String lastName, Date birthDate) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthDate;
-    }
 }

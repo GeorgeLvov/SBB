@@ -14,6 +14,13 @@ import java.util.List;
 import java.util.Set;
 
 
+/**
+ * JavaBean domain object that represents a Train.
+ *
+ * @author George Lvov
+ * @version 1.0
+ */
+
 @Entity
 @Table(name = "trains")
 @Data

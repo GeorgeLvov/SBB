@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
- * Simple JavaBean domain object that represents a User.
+ * JavaBean domain object that represents a User.
  *
  * @author George Lvov
  * @version 1.0

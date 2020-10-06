@@ -153,7 +153,9 @@ ${msg}
                     </div>
                 </td>
                 <td>
-                    <a class="btn btn-danger" href="/ticket/${scheduleDTO.trainDTO.id}/${scheduleDTO.tripDTO.id}/${scheduleDTO.departureTime}/${scheduleDTO.arrivalTime}"
+                    <a class="btn btn-danger"
+                       href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripDTO.id}
+                    &departureTime=${scheduleDTO.departureTime}&arrivalTime=${scheduleDTO.arrivalTime}"
                        role="button" target="_blank">Buy ticket</a>
                 </td>
             </tr>

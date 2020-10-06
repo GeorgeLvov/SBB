@@ -1,9 +1,9 @@
 package com.tsystems.javaschool.SBB.repository.interfaces;
 
 import com.tsystems.javaschool.SBB.entities.Station;
-import com.tsystems.javaschool.SBB.entities.User;
 
 import java.util.List;
+
 
 public interface StationRepository {
     

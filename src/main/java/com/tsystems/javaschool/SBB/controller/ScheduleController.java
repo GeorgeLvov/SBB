@@ -4,8 +4,8 @@ import com.tsystems.javaschool.SBB.dto.ScheduleDTO;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.entities.Station;
 import com.tsystems.javaschool.SBB.mapper.StationMapper;
+import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.StationService;
-import com.tsystems.javaschool.SBB.service.impl.ScheduleServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +21,7 @@ import java.util.List;
 public class ScheduleController {
 
     @Autowired
-    ScheduleServiceImpl scheduleService;
+    ScheduleService scheduleService;
     @Autowired
     StationService stationService;
     @Autowired

@@ -39,6 +39,10 @@ public class TrainValidator implements Validator {
             errors.rejectValue("capacity", "Wrong.capacity");
         }
 
+        if(trainDTO.getCapacity() > 1000){
+            errors.rejectValue("capacity", "Wrong.capacity2");
+        }
+
         Pattern pattern = Pattern.compile("^[a-zA-Z0-9\\-]+$", Pattern.CASE_INSENSITIVE);
         if (!(pattern.matcher(trainDTO.getTrainName()).matches())) {
             errors.rejectValue("trainName", "Invalid.trainName");

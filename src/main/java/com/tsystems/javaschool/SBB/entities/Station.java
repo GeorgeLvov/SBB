@@ -11,6 +11,14 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+
+/**
+ * Simple JavaBean domain object that represents a Station.
+ *
+ * @author George Lvov
+ * @version 1.0
+ */
+
 @Entity
 @Table(name = "stations")
 @Data

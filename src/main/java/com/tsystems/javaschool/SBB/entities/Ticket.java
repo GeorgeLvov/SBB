@@ -8,6 +8,13 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * JavaBean domain object that represents a Ticket.
+ *
+ * @author George Lvov
+ * @version 1.0
+ */
+
 @Entity
 @Table(name = "ticket")
 @Data
@@ -42,5 +49,5 @@ public class Ticket {
     private User user;
 
     @Column(name = "valid")
-    private boolean isValid;
+    private boolean valid;
 }

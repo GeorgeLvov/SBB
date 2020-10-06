@@ -6,10 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 /**
- * Simple JavaBean object that represents role of {@link User}.
+ * JavaBean object that represents role of {@link User}.
  *
  * @author George Lvov
  * @version 1.0
@@ -28,6 +29,7 @@ public class Role {
 
     @Column(name = "role_name")
     private String roleName;
+
 
     @Override
     public String toString() {

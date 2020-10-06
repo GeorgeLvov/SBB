@@ -1,6 +1,7 @@
 package com.tsystems.javaschool.SBB.service.interfaces;
 
 
+import com.tsystems.javaschool.SBB.dto.TripDTO;
 import com.tsystems.javaschool.SBB.entities.Trip;
 
 import java.util.List;
@@ -8,9 +9,9 @@ import java.util.List;
 
 public interface TripService {
 
-    public List<Trip> getAllRoutes();
+    List<TripDTO> getAllTripsDTO();
 
-    Trip getRouteById(int id);
+    TripDTO getTripById(int id);
 
-    void add(Trip trip);
+    void add(TripDTO tripDTO);
 }

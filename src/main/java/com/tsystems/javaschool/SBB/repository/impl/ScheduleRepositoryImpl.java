@@ -12,39 +12,28 @@ import org.springframework.stereotype.Repository;
 import java.sql.Timestamp;
 import java.util.List;
 
+
+/**
+ * Implementation of {@link ScheduleRepository} interface.
+ *
+ * @author George Lvov
+ * @version 1.0
+ */
+
 @Repository
 public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
 
-
     @Override
-    public List<Schedule> getAllSchedules() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Schedule").list();
-    }
-
-    @Override
-    public Schedule getScheduleById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Schedule.class, id);
-    }
-
-    @Override
-    public void add(Schedule schedule) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(schedule);
-    }
-
-    @Override
-    public List<Schedule> getSchedulesByDepartureStationAndTime(Station stationFrom, Timestamp tmp1, Timestamp tmp2) {
+    public List<Schedule> getSchedulesByDepartureStationAndTime(Station stationFrom, Timestamp dateFrom, Timestamp dateTo) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session
                 .createQuery("from Schedule s where (s.departureTime between :tmp1 and :tmp2) and s.stationFrom = :stationFrom order by s.departureTime")
                 .setParameter("stationFrom", stationFrom)
-                .setParameter("tmp1", tmp1)
-                .setParameter("tmp2", tmp2);
+                .setParameter("tmp1", dateFrom)
+                .setParameter("tmp2", dateTo);
         return query.list();
     }
 
@@ -57,8 +46,9 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         return query.list();
     }
 
+
     @Override
-    public List<Schedule> getSchedulesByTrainIdAndTripId(int trainId, int tripId){
+    public List<Schedule> getSchedulesByTrainIdAndTripId(int trainId, int tripId) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session
                 .createQuery("from Schedule s where s.train.id = :trainId and s.trip.id = :tripId")
@@ -67,5 +57,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         return query.list();
     }
 
+    @Override
+    public void add(Schedule schedule) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(schedule);
+    }
 
 }

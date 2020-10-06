@@ -17,19 +17,19 @@ public class TripRepositoryImpl implements TripRepository {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<Trip> getAllRoutes() {
+    public List<Trip> getAllTrips() {
         Session session = sessionFactory.getCurrentSession();
         return session.createQuery("from Trip").list();
     }
 
     @Override
-    public Trip getRouteById(int id) {
+    public Trip getTripById(int id) {
         Session session = sessionFactory.getCurrentSession();
         return session.get(Trip.class, id);
     }
 
     @Override
-    public void add(Trip Trip) {
+    public void addTrip(Trip Trip) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(Trip);
     }

@@ -1,20 +1,24 @@
 package com.tsystems.javaschool.SBB.service.interfaces;
 
-import com.tsystems.javaschool.SBB.entities.Passenger;
 
-import java.util.List;
+import com.tsystems.javaschool.SBB.dto.PassengerDTO;
+import com.tsystems.javaschool.SBB.dto.TicketDTO;
+
+import java.sql.Date;
 
 
 public interface PassengerService {
 
-    List<Passenger> getAllPassengers();
+    PassengerDTO getPassengerDTOById(int id);
 
-    Passenger getPassengerById(int id);
+    PassengerDTO findPassengerByPersonalData(String firstName, String lastName, Date birthDate);
 
-    void add(Passenger passenger);
+    boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTO rawTicketDTO);
 
-    void update(Passenger passenger);
+    void add(PassengerDTO passengerDTO);
 
-    void delete(Passenger passenger);
+    void update(PassengerDTO passengerDTO);
+
+    void delete(PassengerDTO passengerDTO);
 
 }

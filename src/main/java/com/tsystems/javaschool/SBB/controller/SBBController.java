@@ -1,13 +1,14 @@
 package com.tsystems.javaschool.SBB.controller;
 
+import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
+import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.dto.UserDTO;
+import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.entities.Ticket;
-import com.tsystems.javaschool.SBB.repository.impl.TicketRepositoryImpl;
-import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
-import com.tsystems.javaschool.SBB.service.interfaces.SecurityService;
-import com.tsystems.javaschool.SBB.service.interfaces.StationService;
-import com.tsystems.javaschool.SBB.service.interfaces.UserService;
+import com.tsystems.javaschool.SBB.mapper.PassengerMapper;
+import com.tsystems.javaschool.SBB.repository.interfaces.PassengerRepository;
+import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -35,6 +35,8 @@ public class SBBController {
     private RoleService roleService;
 
     private final LocalDateTime currentTime = LocalDateTime.now().withSecond(0).withNano(0);
+
+
 
     @GetMapping(value = "/")
     public ModelAndView mainPage() {

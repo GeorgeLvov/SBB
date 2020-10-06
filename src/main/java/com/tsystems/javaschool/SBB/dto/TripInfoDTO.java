@@ -7,12 +7,23 @@ import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
 
+/**
+ * Data access object that provides info about one segment of all train's trip
+ *
+ * @author George Lvov
+ * @version 1.0
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class TripInfoDTO {
+
     private Station stationFrom;
+
     private Station stationTo;
+
     private Timestamp departureTime;
+
     private Timestamp arrivalTime;
 }

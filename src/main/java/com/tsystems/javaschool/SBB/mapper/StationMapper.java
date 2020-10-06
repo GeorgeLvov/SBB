@@ -12,8 +12,11 @@ import java.util.List;
 public interface StationMapper {
 
     Station toEntity(StationDTO stationDTO);
+
     StationDTO toDTO(Station station);
+
     List<StationDTO> toDTOList(List<Station> stationList);
+
     List<Station> toEntityList(List<StationDTO> stationDTOList);
 
 }

@@ -8,6 +8,15 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+
+/**
+ * JavaBean domain object that represents Schedule
+ *
+ * @author George Lvov
+ * @version 1.0
+ */
+
+
 @Entity
 @Table(name = "schedule")
 @Data

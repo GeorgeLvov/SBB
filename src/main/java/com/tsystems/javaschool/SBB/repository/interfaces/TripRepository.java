@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface TripRepository {
 
-    public List<Trip> getAllRoutes();
+    List<Trip> getAllTrips();
 
-    Trip getRouteById(int id);
+    Trip getTripById(int id);
 
-    void add(Trip trip);
+    void addTrip(Trip trip);
 }
