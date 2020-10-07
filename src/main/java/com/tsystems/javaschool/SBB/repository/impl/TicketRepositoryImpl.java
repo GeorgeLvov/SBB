@@ -31,6 +31,12 @@ public class TicketRepositoryImpl implements TicketRepository {
     @Autowired
     TrainRepository trainRepository;
 
+    @Override
+    public Ticket getTicketById(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        return session.get(Ticket.class, id);
+    }
+
 
     @Override
     public void setValidityOfTickets() {
@@ -52,11 +58,13 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
 
+
+
     @Override
     public List<Object[]> getAllTicketsByUserId(int userId) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session
-                .createNativeQuery("select tr.name as tname, p.firstname, p.lastname, p.birthdate, st1.name as stfname, st2.name as sttname, t.departure_time, t.arrival_time, t.valid FROM ticket t " +
+                .createNativeQuery("select t.id, tr.name as tname, p.firstname, p.lastname, p.birthdate, st1.name as stfname, st2.name as sttname, t.departure_time, t.arrival_time, t.valid FROM ticket t " +
                         "inner join trains tr on tr.id = t.train_id " +
                         "inner join passenger p on p.id = t.passenger_id " +
                         "inner join stations st1 on st1.id=t.station_from_id " +

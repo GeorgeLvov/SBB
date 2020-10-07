@@ -60,6 +60,13 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
+    public TicketDTO getTicketDTOById(int id) {
+        Ticket ticket = ticketRepository.getTicketById(id);
+        return ticketMapper.toDTO(ticket);
+    }
+
+    @Override
+    @Transactional
     public List<TicketInfoDTO> getAllTicketInfosByUsername(String username) {
 
         User user = userRepository.findByUsername(username);
@@ -68,18 +75,19 @@ public class TicketServiceImpl implements TicketService {
 
         List<TicketInfoDTO> ticketInfos = new ArrayList<>();
         for (Object[] objects : tickets) {
-            String trainName = (String) objects[0];
-            String firstName = (String) objects[1];
-            String lastName = (String) objects[2];
-            Date birthDate = (Date) objects[3];
-            String statFromTitle = (String) objects[4];
-            String statToTitle = (String) objects[5];
-            Timestamp departureTime = (Timestamp) objects[6];
-            Timestamp arrivalTime = (Timestamp) objects[7];
-            boolean valid = (boolean) objects[8];
+            int ticketId = (int) objects[0];
+            String trainName = (String) objects[1];
+            String firstName = (String) objects[2];
+            String lastName = (String) objects[3];
+            Date birthDate = (Date) objects[4];
+            String statFromTitle = (String) objects[5];
+            String statToTitle = (String) objects[6];
+            Timestamp departureTime = (Timestamp) objects[7];
+            Timestamp arrivalTime = (Timestamp) objects[8];
+            boolean valid = (boolean) objects[9];
 
             ticketInfos
-                    .add(new TicketInfoDTO(trainName, firstName, lastName, birthDate, statFromTitle, statToTitle, departureTime, arrivalTime, valid));
+                    .add(new TicketInfoDTO(ticketId, trainName, firstName, lastName, birthDate, statFromTitle, statToTitle, departureTime, arrivalTime, valid));
         }
 
         return ticketInfos;

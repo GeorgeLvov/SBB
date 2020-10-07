@@ -64,7 +64,7 @@
             <th scope="col">Arrival</th>
             <th scope="col">Passenger</th>
             <th scope="col"></th>
-            <th scope="col"></th>
+            <th scope="col">Download e-ticket</th>
         </tr>
         </thead>
         <tbody>
@@ -122,7 +122,7 @@
                                         <td>${ticketInfo.lastName}</td>
                                     </tr>
                                     <tr>
-                                        <td>Birthdate</td>
+                                        <td>Date of Birth</td>
                                         <td>${ticketInfo.birthDate}</td>
                                     </tr>
                                     </tbody>
@@ -147,6 +147,8 @@
                     </c:otherwise>
                 </c:choose>
             </td>
+            
+            <td><a href="/export/${ticketInfo.ticketId}">Download</a></td>
         </tr>
         </c:forEach>
         </tbody>

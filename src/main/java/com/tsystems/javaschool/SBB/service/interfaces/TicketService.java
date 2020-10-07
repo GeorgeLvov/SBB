@@ -7,6 +7,9 @@ import java.util.List;
 
 public interface TicketService {
 
+
+    TicketDTO getTicketDTOById(int id);
+
     void add(TicketDTO ticketDTO);
 
     void setValidityOfTickets();

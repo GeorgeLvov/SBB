@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface TicketRepository {
 
+    Ticket getTicketById(int id);
+
     void add(Ticket ticket);
 
     /**

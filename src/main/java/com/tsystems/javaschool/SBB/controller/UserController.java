@@ -1,5 +1,7 @@
 package com.tsystems.javaschool.SBB.controller;
 
+import com.tsystems.javaschool.SBB.dto.TicketDTO;
+import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
 import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
 import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
@@ -15,9 +17,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -61,7 +66,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping("/alltickets")
+    @GetMapping(value = "/alltickets")
     public ModelAndView showAllTickets(){
         ModelAndView modelAndView = new ModelAndView();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -69,5 +74,18 @@ public class UserController {
         modelAndView.addObject("ticketInfos", ticketInfos);
         modelAndView.setViewName("UserTicketsPage");
         return modelAndView;
+    }
+
+
+    @GetMapping(value = "/export/{id}")
+    public void exportToPDF(@PathVariable("id")int ticketId, HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=eTicket_SBB.pdf";
+        response.setHeader(headerKey,headerValue);
+        TicketDTO ticketDTO = ticketService.getTicketDTOById(ticketId);
+        System.out.println(ticketDTO);
+        TicketPDFExporter pdfExporter = new TicketPDFExporter(ticketDTO);
+        pdfExporter.export(response);
     }
 }

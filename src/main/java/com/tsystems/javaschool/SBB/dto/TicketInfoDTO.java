@@ -12,6 +12,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class TicketInfoDTO {
 
+    int ticketId;
+
     String trainName;
 
     String firstName;
