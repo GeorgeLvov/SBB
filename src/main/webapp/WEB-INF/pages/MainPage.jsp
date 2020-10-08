@@ -28,15 +28,19 @@
 
         <ul class="navbar-nav mr-auto">
 
+            <li class="nav-item">
+                <a class="nav-link" href="#exampleModalCenter" data-toggle="modal" data-target="#exampleModalCenter"> Timetable </a>
+            </li>
+
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin" >Management</a>
+                    <a class="nav-link" href="<c:url value="/admin"/>" >Management</a>
                 </li>
             </security:authorize>
 
             <security:authorize access="hasRole('USER')">
                 <li class="nav-item">
-                    <a class="nav-link" href="/alltickets" >My tickets</a>
+                    <a class="nav-link" href="<c:url value="/alltickets"/>" >My tickets</a>
                 </li>
             </security:authorize>
 
@@ -62,6 +66,39 @@
 
     </div>
 </nav>
+
+<%--Timetable --%>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Timetable</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <c:url value="/timetable" var="v"/>
+                <form action="${v}" method="GET">
+                    <div class="form-group">
+                        <select class="form-control" name="timeTable" id="exampleSelectSt">
+                            <option value="" disabled selected>Select station</option>
+                            <c:forEach var="station" items="${stationsList}">
+                                <option value="${station.id}">${station.title}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger">Search</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <div class="row" style="height: 80px">
@@ -121,39 +158,6 @@
         </div>
         <div class="col-1"></div>
     </div>
-</div>
-
-<%-- Timetable --%>
-<div class="container">
-    <div class="row" style="height: 80px">
-    </div>
-    <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
-            <c:url value="/timetable" var="v"/>
-            <form action="${v}" method="GET" style="padding-top: 40px">
-                <div class="row">
-                    <div class="col-6">
-                        <div class="form-group">
-                            <select class="form-control" name="timeTable" id="exampleSelectSt">
-                                <option value="" disabled selected>Timetable for</option>
-                                <c:forEach var="station" items="${stationsList}">
-                                    <option value="${station.id}">${station.title}</option>
-                                </c:forEach>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-3">
-                        <button type="submit" class="btn btn-danger" style="width: 100px;">Search
-                        </button>
-                    </div>
-                </div>
-
-            </form>
-        </div>
-        <div class="col-1"></div>
-    </div>
-
 </div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
