@@ -38,6 +38,15 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
+    public List<Schedule> getSchedulesByStationFrom(Station stationFrom) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session
+                .createQuery("from Schedule s where s.stationFrom = :stationFrom order by s.departureTime")
+                .setParameter("stationFrom", stationFrom);
+        return query.list();
+    }
+
+    @Override
     public List<Schedule> getSchedulesByStationTo(Station stationTo) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session

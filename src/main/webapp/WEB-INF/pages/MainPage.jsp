@@ -28,10 +28,6 @@
 
         <ul class="navbar-nav mr-auto">
 
-            <li class="nav-item">
-                <a class="nav-link" href="#" >Timetable</a>
-            </li>
-
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
                     <a class="nav-link" href="/admin" >Management</a>
@@ -47,7 +43,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="<c:url value="/setroute"/>" >Set route</a>
                 </li>
-
 
         </ul>
 
@@ -83,7 +78,7 @@
                             <select class="form-control" name="stationFrom" id="exampleSelect">
                                 <option value="" disabled selected>From</option>
                                 <c:forEach var="station" items="${stationsList}">
-                                    <option value="${station.title}">${station.title}</option>
+                                    <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -93,7 +88,7 @@
                             <select class="form-control b" name="stationTo" id="examplSelect">
                                 <option value="" disabled selected>To</option>
                                 <c:forEach var="station" items="${stationsList}">
-                                    <option value="${station.title}">${station.title}</option>
+                                    <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
                             </select>
                         </div>
@@ -118,7 +113,38 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button type="submit" class="btn btn-danger" style="width: 100px;  ">Search
+                        <button type="submit" class="btn btn-danger" style="width: 100px;">Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+<%-- Timetable --%>
+<div class="container">
+    <div class="row" style="height: 80px">
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <c:url value="/timetable" var="v"/>
+            <form action="${v}" method="GET" style="padding-top: 40px">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="form-group">
+                            <select class="form-control" name="timeTable" id="exampleSelectSt">
+                                <option value="" disabled selected>Timetable for</option>
+                                <c:forEach var="station" items="${stationsList}">
+                                    <option value="${station.id}">${station.title}</option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <button type="submit" class="btn btn-danger" style="width: 100px;">Search
                         </button>
                     </div>
                 </div>
@@ -127,8 +153,8 @@
         </div>
         <div class="col-1"></div>
     </div>
-</div>
 
+</div>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -142,26 +168,5 @@
 
 </body>
 </html>
-
-<%--          <div class="form-group">
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" name="stationfrom" id="exampleFormControlSelect1">
-                        <option selected>From</option>
-                        <c:forEach var="station" items="${stationsList}">
-                            <option>${station.title}</option>
-                        </c:forEach>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Example select</label>
-                    <select class="form-control" id="exampleFormControlSelect13">
-                        <option selected>To</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>--%>
 
 

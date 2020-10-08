@@ -21,9 +21,15 @@ public interface ScheduleRepository {
      */
     List<Schedule> getSchedulesByDepartureStationAndTime(Station stationFrom, Timestamp dateFrom, Timestamp dateTo);
 
+    /**
+     * Provides all schedules with specified param
+     *
+     * @param stationFrom chosen station for timetable
+     */
+    List<Schedule> getSchedulesByStationFrom(Station stationFrom);
 
     /**
-     * Provides all schedules with specified params
+     * Provides all schedules with specified param
      * Helper method for searching trips from station A to station B at a given time
      *
      * @param stationTo end station

@@ -49,13 +49,6 @@ public class TicketController {
         String departureTime = allRequestParams.get("departureTime");
         String arrivalTime = allRequestParams.get("arrivalTime");
 
-        System.out.println(trainId);
-        System.out.println(tripId);
-        System.out.println(stationFromId);
-        System.out.println(stationToId);
-        System.out.println(departureTime);
-        System.out.println(arrivalTime);
-
         if (ticketService.isTimeValid(departureTime)
                 && !ticketService.isTrainFull(departureTime, arrivalTime, trainId, tripId)) {
 
@@ -79,7 +72,8 @@ public class TicketController {
             return modelAndView;
         }
 
-        modelAndView.setViewName("redirect:/");
+
+        modelAndView.setViewName("redirect:/schedule");
         return modelAndView;
     }
 
@@ -110,6 +104,7 @@ public class TicketController {
             ticketDTO.setPassengerDTO(newPassenger);
 
         } else ticketDTO.setPassengerDTO(existingPassenger);
+
 
         ticketService.add(ticketDTO);
 

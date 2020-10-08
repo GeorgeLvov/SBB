@@ -10,6 +10,11 @@
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
+
+    <script type="text/javascript">
+
+
+    </script>
 </head>
 
 <body>
@@ -60,8 +65,169 @@
     </div>
 </nav>
 
+<c:if test="${param.error != null}">
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Failed to log in.</strong>
+        <br>
+        Please make sure that you have entered your <strong>login</strong> and
+        <strong>password </strong>
+        correctly.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</c:if>
 
-<form:form method="POST" modelAttribute="schInfoDTO" class="form-signin">
+
+<div class="container-fluid">
+    <div class="row" style="height: 80px"></div>
+    <div class="col-md-12 bg-light" style="border-radius: 2%">
+
+        <form:form method="POST" modelAttribute="schInfoDTO" class="form-signin">
+            <div class="row" style="height: 40px">
+            </div>
+            <div class="row">
+                <div class="col-4">
+                    <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <form:select class="form-control" path="trainId">
+                            <form:option value="0" label="Choose train"/>
+                            <form:options items="${trainsList}" itemValue="id" itemLabel="trainName"/>
+                        </form:select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-3">
+
+
+                    <spring:bind path="stations">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <form:select class="form-control" path="stations" varStatus="tagStatus" multiple="0">
+                               <form:option value="" label="From"/>
+                                <form:options items="${stationsList}" itemValue="id" itemLabel="title"/>
+                            </form:select>
+                            <form:errors path="stations" cssStyle="color: red; font-size: 14px"></form:errors>
+                        </div>
+                    </spring:bind>
+
+                </div>
+                <div class="col-3">
+                    <spring:bind path="stations">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <form:select class="form-control" path="stations" multiple="0">
+                                <form:option value="" label="To"/>
+                                <form:options items="${stationsList}" itemValue="id" itemLabel="title"/>
+                            </form:select>
+                            <form:errors path="stations" cssStyle="color: red; font-size: 14px"></form:errors>
+                        </div>
+                    </spring:bind>
+                </div>
+                <div class="col-3">
+                    <spring:bind path="times">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <form:input type="datetime-local" path="times" class="form-control"
+                                        placeholder="Birthdate"></form:input>
+                            <form:errors path="times" cssStyle="color: red; font-size: 14px"></form:errors>
+                        </div>
+                    </spring:bind>
+                </div>
+                <div class="col-3">
+                    <spring:bind path="times">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <form:input type="datetime-local" path="times" class="form-control"
+                                        placeholder="Birthdate"></form:input>
+                            <form:errors path="times" cssStyle="color: red; font-size: 14px"></form:errors>
+                        </div>
+                    </spring:bind>
+                </div>
+
+            </div>
+
+         <%--   <button type="button" class="btn btn-success">+</button>--%>
+            Добавить еще станцию
+            <div class="row">
+                <div class="col-3">
+
+                    <spring:bind path="stations">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <form:select class="form-control" path="stations" multiple="0">
+                                <form:option value="" label="To"/>
+                                <form:options items="${stationsList}" itemValue="id" itemLabel="title"/>
+                            </form:select>
+                            <form:errors path="stations" cssStyle="color: red; font-size: 14px"></form:errors>
+                        </div>
+                    </spring:bind>
+                </div>
+                <div class="col-3">
+                    <spring:bind path="times">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <form:input type="datetime-local" path="times" class="form-control"
+                                        placeholder="Birthdate"></form:input>
+                            <form:errors path="times" id="12" cssStyle="color: red; font-size: 14px"></form:errors>
+                        </div>
+                    </spring:bind>
+                </div>
+            </div>
+
+            <button class="btn btn-success" type="submit" style="margin-top: 35px">Sign Up</button>
+
+        </form:form>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
+
+<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<table width="100%">
+    <tr>
+        <td>Ширина</td>
+        <td>Высота</td>
+        <td>Артикуль</td>
+        <td>Кол-во полотен</td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" name="width[0]" class="add_product_input" style="width:200px;" />
+        </td>
+        <td>
+            <input type="text" name="height[0]" class="add_product_input" style="width:200px;" />
+        </td>
+        <td>
+            <input type="text" name="articul[0]" class="add_product_input" style="width:200px;" />
+        </td>
+        <td>
+            <input type="text" name="count[0]" class="add_product_input" style="width:200px;" />
+        </td>
+    </tr>
+</table>
+<button class="add_attr">Добавить</button>
+
+<script>
+    $('.add_attr').click(function() {
+        var rowCount = $('tr').length - 1;
+        var row = $('tr').last().clone();
+        row.find('input').each(function() {
+            var name = $(this).attr('name');
+            $(this).attr('name', name.replace(/\[\d+\]/, '[' + rowCount + ']'))
+        });
+        $('table').append(row);
+    });
+</script>--%>
+
+<%--<form:form method="POST" modelAttribute="schInfoDTO" class="form-signin">
 
     <spring:bind path="trainId">
     <form:select class="form-control" path="trainId">
@@ -118,54 +284,4 @@
 
 
     <button class="btn btn-success" type="submit" style="margin-top: 35px">Sign Up</button>
-</form:form>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-
-</body>
-</html>
-
-<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<table width="100%">
-    <tr>
-        <td>Ширина</td>
-        <td>Высота</td>
-        <td>Артикуль</td>
-        <td>Кол-во полотен</td>
-    </tr>
-    <tr>
-        <td>
-            <input type="text" name="width[0]" class="add_product_input" style="width:200px;" />
-        </td>
-        <td>
-            <input type="text" name="height[0]" class="add_product_input" style="width:200px;" />
-        </td>
-        <td>
-            <input type="text" name="articul[0]" class="add_product_input" style="width:200px;" />
-        </td>
-        <td>
-            <input type="text" name="count[0]" class="add_product_input" style="width:200px;" />
-        </td>
-    </tr>
-</table>
-<button class="add_attr">Добавить</button>
-
-<script>
-    $('.add_attr').click(function() {
-        var rowCount = $('tr').length - 1;
-        var row = $('tr').last().clone();
-        row.find('input').each(function() {
-            var name = $(this).attr('name');
-            $(this).attr('name', name.replace(/\[\d+\]/, '[' + rowCount + ']'))
-        });
-        $('table').append(row);
-    });
-</script>--%>
+</form:form>--%>

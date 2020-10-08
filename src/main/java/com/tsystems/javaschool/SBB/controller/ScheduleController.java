@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -24,8 +25,7 @@ public class ScheduleController {
     private ScheduleService scheduleService;
     @Autowired
     private StationService stationService;
-    @Autowired
-    private StationMapper stationMapper;
+
 
     @GetMapping(value = "/schedule")
     public ModelAndView schedule(){
@@ -35,23 +35,31 @@ public class ScheduleController {
     }
 
     @PostMapping(value = "/schedule")
-    public ModelAndView searchTrips(@RequestParam("stationFrom") String stationFromTitle,
-                                    @RequestParam("stationTo") String stationToTitle,
+    public ModelAndView searchTrips(@RequestParam("stationFrom") int stationFromId,
+                                    @RequestParam("stationTo") int stationToId,
                                     @RequestParam("dateFrom") String dateFrom,
                                     @RequestParam("dateTo") String dateTo) {
         ModelAndView modelAndView = new ModelAndView();
-        StationDTO stationDTOFrom = stationService.findByStationDTOTitle(stationFromTitle);
-        StationDTO stationDTOTo = stationService.findByStationDTOTitle(stationToTitle);
-        Station stationFrom = stationMapper.toEntity(stationDTOFrom);
-        Station stationTo = stationMapper.toEntity(stationDTOTo);
 
+        StationDTO stationDTOFrom = stationService.getStationDTOById(stationFromId);
+        StationDTO stationDTOTo = stationService.getStationDTOById(stationToId);
         Timestamp tmp1 = Timestamp.valueOf(LocalDateTime.parse(dateFrom));
         Timestamp tmp2 = Timestamp.valueOf(LocalDateTime.parse(dateTo));
 
-        List<ScheduleDTO> list = scheduleService.getSchedulesByStationsAndDate(stationFrom, stationTo, tmp1, tmp2);
+        List<ScheduleDTO> list = scheduleService.getSchedulesByStationsAndDate(stationDTOFrom, stationDTOTo, tmp1, tmp2);
         modelAndView.addObject("scheduleDTOList", list);
+
         modelAndView.setViewName("schedulePage");
         return modelAndView;
     }
 
+
+    @GetMapping(value = "/timetable")
+    public ModelAndView getTimetable(@RequestParam("timeTable") int stationId) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<ScheduleDTO> scheduleDTOs = scheduleService.getSchedulesByStationFrom(stationService.getStationDTOById(stationId));
+        modelAndView.addObject("scheduleDTOList", scheduleDTOs);
+        modelAndView.setViewName("TimeTable");
+        return modelAndView;
+    }
 }

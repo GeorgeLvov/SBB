@@ -36,6 +36,8 @@ public class ScheduleDTO {
 
     private Timestamp arrivalTime;
 
+
+
     private List<TripInfoDTO> tripInfoDTOList;
 
     public ScheduleDTO(int id, TrainDTO trainDTO, TripDTO tripDTO, int stationIndex, StationDTO stationFromDTO, StationDTO stationToDTO, Timestamp departureTime, Timestamp arrivalTime) {

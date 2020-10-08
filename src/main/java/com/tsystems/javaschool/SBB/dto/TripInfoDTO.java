@@ -19,9 +19,9 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class TripInfoDTO {
 
-    private Station stationFrom;
+    private StationDTO stationFrom;
 
-    private Station stationTo;
+    private StationDTO stationTo;
 
     private Timestamp departureTime;
 

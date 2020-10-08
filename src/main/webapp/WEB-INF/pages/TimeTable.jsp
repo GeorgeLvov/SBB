@@ -6,7 +6,7 @@
 
 <html>
 <head>
-    <title>SBB: Schedule</title>
+    <title>SBB: Timetable</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -19,11 +19,6 @@
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         SBB CFF FFS
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
@@ -60,11 +55,13 @@
 </nav>
 
 <div class="container">
-    <div class="row" style="height: 50px">
+    <div class="row" style="height: 30px">
     </div>
 </div>
 
+
 <div class="container mt-4 p-md-4 col-12 rounded-container">
+    <h2 style="margin-bottom: 30px">Departure</h2>
     <table class="table" style="text-align: center">
         <tr>
             <th scope="col">Train</th>
@@ -80,9 +77,9 @@
 
         <c:forEach var="scheduleDTO" items="${scheduleDTOList}" varStatus="vs">
             <tr>
-                <th scope="row">${scheduleDTO.trainDTO.trainName}</th>
-                <td>${scheduleDTO.stationFromDTO.title}</td>
-                <td>${scheduleDTO.stationToDTO.title}</td>
+                <td>${scheduleDTO.trainDTO.trainName}</td>
+                <th scope="row">${scheduleDTO.stationFromDTO.title}</th>
+                <td>${scheduleDTO.tripInfoDTOList.get(scheduleDTO.tripInfoDTOList.size()-1).stationTo.title}</td>
                 <fmt:setLocale value="en_US" scope="session"/>
                 <td>
                     <strong><fmt:formatDate value="${scheduleDTO.departureTime}" pattern="HH:mm"/></strong>
@@ -90,10 +87,11 @@
                     <fmt:formatDate value="${scheduleDTO.departureTime}" pattern="E, dd.MM.yyyy"/>
                 </td>
                 <td>
-                    <strong><fmt:formatDate value="${scheduleDTO.arrivalTime}" pattern="HH:mm"/></strong>
+                    <fmt:formatDate value="${scheduleDTO.tripInfoDTOList.get(scheduleDTO.tripInfoDTOList.size()-1).arrivalTime}" pattern="HH:mm"/>
                     <br>
-                    <fmt:formatDate value="${scheduleDTO.arrivalTime}" pattern="E, dd.MM.yyyy"/>
+                    <fmt:formatDate value="${scheduleDTO.tripInfoDTOList.get(scheduleDTO.tripInfoDTOList.size()-1).arrivalTime}" pattern="E, dd.MM.yyyy"/>
                 </td>
+
                 <td><!-- Button trigger modal -->
                     <button type="button" class="btn btn-info" data-toggle="modal"
                             data-target="#exampleModal${vs.index}" id="viewDetailButton${vs.index}">
@@ -115,26 +113,41 @@
                                 </div>
                                 <div class="modal-body">
                                         <%--Modalbody--%>
-                                        <table class="table">
-                                            <thead class="thead-success">
+                                    <table class="table">
+                                        <thead class="thead-success">
+                                        <tr>
+                                            <th scope="col">From</th>
+                                            <th scope="col">To</th>
+                                            <th scope="col">Departure</th>
+                                            <th scope="col">Arrival</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoDTOList}">
+
                                             <tr>
-                                                <th scope="col">from</th>
-                                                <th scope="col">to</th>
-                                                <th scope="col">departure</th>
-                                                <th scope="col">arrival</th>
+                                                <c:choose>
+                                                    <c:when test="${tripInfo.stationFrom.title.equals(scheduleDTO.stationFromDTO.title)}">
+                                                        <td><strong>${tripInfo.stationFrom.title}</strong></td>
+                                                        <td>${tripInfo.stationTo.title}</td>
+                                                        <td><strong><fmt:formatDate value="${tripInfo.departureTime}"
+                                                                            pattern="HH:mm dd.MM"/></strong></td>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <td>${tripInfo.stationFrom.title}</td>
+                                                        <td>${tripInfo.stationTo.title}</td>
+                                                        <td><fmt:formatDate value="${tripInfo.departureTime}"
+                                                                            pattern="HH:mm dd.MM"/></td>
+                                                    </c:otherwise>
+                                                </c:choose>
+
+                                                <td><fmt:formatDate value="${tripInfo.arrivalTime}"
+                                                                    pattern="HH:mm dd.MM"/></td>
                                             </tr>
-                                            </thead>
-                                            <tbody>
-                                            <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoDTOList}">
-                                                <tr>
-                                                    <td>${tripInfo.stationFrom.title}</td>
-                                                    <td>${tripInfo.stationTo.title}</td>
-                                                    <td>${tripInfo.departureTime}</td>
-                                                    <td>${tripInfo.arrivalTime}</td>
-                                                </tr>
-                                            </c1:forEach>
-                                            </tbody>
-                                        </table>
+
+                                        </c1:forEach>
+                                        </tbody>
+                                    </table>
 
                                 </div>
                                 <div class="modal-footer">
@@ -144,12 +157,6 @@
                             </div>
                         </div>
                     </div>
-                </td>
-                <td>
-                    <a class="btn btn-danger"
-                       href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripDTO.id}&stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
-                    &departureTime=${scheduleDTO.departureTime}&arrivalTime=${scheduleDTO.arrivalTime}"
-                       role="button" target="_blank">Buy ticket</a>
                 </td>
             </tr>
         </c:forEach>

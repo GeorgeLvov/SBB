@@ -1,10 +1,12 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.dto.ScheduleDTO;
+import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.dto.TripInfoDTO;
 import com.tsystems.javaschool.SBB.entities.Schedule;
 import com.tsystems.javaschool.SBB.entities.Station;
 import com.tsystems.javaschool.SBB.mapper.ScheduleMapper;
+import com.tsystems.javaschool.SBB.mapper.StationMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.ScheduleRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +22,14 @@ import java.util.stream.Collectors;
 public class ScheduleServiceImpl implements ScheduleService {
 
     @Autowired
-    ScheduleRepository scheduleRepository;
+    private ScheduleRepository scheduleRepository;
     @Autowired
-    ScheduleMapper scheduleMapper;
+    private ScheduleMapper scheduleMapper;
+    @Autowired
+    private StationMapper stationMapper;
 
     @Override
+    @Transactional
     public void add(ScheduleDTO scheduleDTO) {
         Schedule schedule = scheduleMapper.toEntity(scheduleDTO);
         scheduleRepository.add(schedule);
@@ -33,7 +38,22 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public List<ScheduleDTO> getSchedulesByStationsAndDate(Station stationFrom, Station stationTo, Timestamp tmp1, Timestamp tmp2) {
+    public List<ScheduleDTO> getSchedulesByStationFrom(StationDTO stationDTOFrom){
+        Station stationFrom = stationMapper.toEntity(stationDTOFrom);
+        List<ScheduleDTO> schedules = scheduleMapper
+                .toDTOList(scheduleRepository.getSchedulesByStationFrom(stationFrom));
+        for (ScheduleDTO scheduleDTO : schedules){
+           scheduleDTO.setTripInfoDTOList(getInfoOfAllTripsByTrainIdAndTripId(scheduleDTO.getTrainDTO().getId(), scheduleDTO.getTripDTO().getId()));
+        }
+        return schedules;
+    }
+
+    @Override
+    @Transactional
+    public List<ScheduleDTO> getSchedulesByStationsAndDate(StationDTO stationDTOFrom, StationDTO stationDTOTo, Timestamp tmp1, Timestamp tmp2) {
+
+        Station stationFrom = stationMapper.toEntity(stationDTOFrom);
+        Station stationTo = stationMapper.toEntity(stationDTOTo);
 
         List<ScheduleDTO> list1 = scheduleMapper
                 .toDTOList(scheduleRepository.getSchedulesByDepartureStationAndTime(stationFrom, tmp1, tmp2));
@@ -47,7 +67,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             for (ScheduleDTO schedule2 : list2) {
                 if (schedule1.getId() == schedule2.getId()) {
 
-                    schedule1.setTripInfoDTOList(getInfoOfAllTripsByTrainId(schedule1.getTrainDTO().getId(), schedule1.getTripDTO().getId()));
+                    schedule1.setTripInfoDTOList(getInfoOfAllTripsByTrainIdAndTripId(schedule1.getTrainDTO().getId(), schedule1.getTripDTO().getId()));
 
                     result.add(schedule1);
 
@@ -60,7 +80,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                             schedule2.getStationIndex(),schedule1.getStationFromDTO(),schedule2.getStationToDTO(),
                             schedule1.getDepartureTime(),schedule2.getArrivalTime());
 
-                    scheduleDTO.setTripInfoDTOList(getInfoOfAllTripsByTrainId(scheduleDTO.getTrainDTO().getId(), scheduleDTO.getTripDTO().getId()));
+                    scheduleDTO.setTripInfoDTOList(getInfoOfAllTripsByTrainIdAndTripId(scheduleDTO.getTrainDTO().getId(), scheduleDTO.getTripDTO().getId()));
 
                     result.add(scheduleDTO);
                 }
@@ -72,13 +92,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public List<TripInfoDTO> getInfoOfAllTripsByTrainId(int trainId, int tripId){
-        List<Schedule> schedules = scheduleRepository.getSchedulesByTrainIdAndTripId(trainId,tripId);
+    public List<TripInfoDTO> getInfoOfAllTripsByTrainIdAndTripId(int trainId, int tripId) {
+        List<ScheduleDTO> schedules = scheduleMapper.toDTOList(scheduleRepository.getSchedulesByTrainIdAndTripId(trainId, tripId));
         List<TripInfoDTO> tripInfoDTOList = new ArrayList<>();
-        for (Schedule schedule : schedules) {
+        for (ScheduleDTO schedule : schedules) {
             tripInfoDTOList
-                    .add(new TripInfoDTO(schedule.getStationFrom(),schedule.getStationTo(),schedule.getDepartureTime(),schedule.getArrivalTime()));
+                    .add(new TripInfoDTO(schedule.getStationFromDTO(), schedule.getStationToDTO(), schedule.getDepartureTime(), schedule.getArrivalTime()));
         }
         return tripInfoDTOList;
     }
+
 }
