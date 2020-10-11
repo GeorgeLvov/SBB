@@ -33,7 +33,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/setroute"/>" style="color: white">Set trip for train</a>
+                <a class="nav-link" href="<c:url value="/admin/trainselect"/>" style="color: white">Set trip for train</a>
             </li>
 
             <li class="nav-item dropdown">
@@ -69,19 +69,40 @@
         </div>
 
         <div class="col-md-4 bg-light" style="border-radius: 2%">
+
             <h2 style="padding-top: 25px;  padding-bottom: 10px">Create new station</h2>
             <form:form method="POST" action="/admin/addStation" modelAttribute="stationDTO" class="form-signin">
+
                 <spring:bind path="title">
+
                     <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <form:errors path="title" >
+
+
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+
+                                <c:if test="${status.errorMessage eq 'This field cant be empty.'}">
+                                    ${status.errorMessage}
+                                </c:if>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                        </form:errors>
                         <label for="stationTitleId">Station Title:</label>
                         <form:input type="text" path="title" class="form-control" placeholder="Enter station title"
                                     autofocus="true" id="stationTitleId"></form:input>
-                        <form:errors path="title" cssStyle="color: red; font-size: 14px"></form:errors>
+                        <p style="color: red; font-size: 14px">${status.errorMessage}</p>
                     </div>
                 </spring:bind>
+
+
                 <button type="submit" class="btn btn-success" style="width: 100px; margin-top:15px">Create</button>
             </form:form>
+
         </div>
+
 
         <div class="col-md-1">
         </div>
@@ -129,42 +150,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-<%--  <h2 style="padding-top: 25px">Add Train</h2>
-            <c:url value="/addTrain" var="varT"/>
-            <form action="${varT}" method="POST">
-                <security:csrfInput />
-                <div class="form-group">
-                    <label for="trainNameLbl">Train name:</label>
-                    <input type="text" name="trainName" class="form-control" id="trainNameLbl"
-                           aria-describedby="emailHelp"
-                           placeholder="Enter name">
-                    <small id="trainNameHelp" class="form-text text-muted">Train name must not exceed 5
-                        characters</small>
-                </div>
-                <div class="form-group">
-                    <label for="capacityLbl">Train capacity:</label>
-                    <input type="text" name="capacity" class="form-control" id="capacityLbl"
-                           placeholder="Enter capacity">
-                </div>
-                <button type="submit" class="btn btn-success">Add</button>
-            </form>--%>
-
-<%--<c:url value="/addStation" var="var"/>
-            <form action="${var}" method="POST">
-                <security:csrfInput />
-                <div class="form-group">
-                    <label for="stationTitle">Station Title:</label>
-                    <input type="text" name="title" class="form-control" id="stationTitle"
-                           aria-describedby="emailHelp"
-                           placeholder="Enter station title">
-                </div>
-                <button type="submit" class="btn btn-success">Add</button>
-            </form>--%>

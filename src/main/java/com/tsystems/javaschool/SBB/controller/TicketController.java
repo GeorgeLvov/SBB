@@ -2,9 +2,12 @@ package com.tsystems.javaschool.SBB.controller;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
+import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
+import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
 import com.tsystems.javaschool.SBB.validator.PassengerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -12,8 +15,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -25,8 +31,6 @@ public class TicketController {
     TrainService trainService;
     @Autowired
     TicketService ticketService;
-    @Autowired
-    TripService tripService;
     @Autowired
     UserService userService;
     @Autowired
@@ -53,7 +57,7 @@ public class TicketController {
                 && !ticketService.isTrainFull(departureTime, arrivalTime, trainId, tripId)) {
 
             ticketDTO.setTrainDTO(trainService.getTrainDTOById(trainId));
-            ticketDTO.setTripDTO(tripService.getTripById(tripId));
+            ticketDTO.setTripId(tripId);
             ticketDTO.setStationFromDTO(stationService.getStationDTOById(stationFromId));
             ticketDTO.setStationToDTO(stationService.getStationDTOById(stationToId));
             ticketDTO.setDepartureTime(Timestamp.valueOf(departureTime));
@@ -73,7 +77,7 @@ public class TicketController {
         }
 
 
-        modelAndView.setViewName("redirect:/schedule");
+        modelAndView.setViewName("redirect:/");
         return modelAndView;
     }
 
@@ -110,6 +114,31 @@ public class TicketController {
 
         modelAndView.setViewName("redirect:/");
         return modelAndView;
+    }
+
+    @GetMapping(value = "/alltickets")
+    public ModelAndView showAllTickets(){
+        ModelAndView modelAndView = new ModelAndView();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        ticketService.setValidityOfTickets();
+        List<TicketInfoDTO> ticketInfos = ticketService.getAllTicketInfosByUsername(auth.getName());
+        System.out.println(ticketInfos.size());
+        modelAndView.addObject("ticketInfos", ticketInfos);
+        modelAndView.setViewName("UserTicketsPage");
+        return modelAndView;
+    }
+
+
+    @GetMapping(value = "/export/{id}")
+    public void exportToPDF(@PathVariable("id")int ticketId, HttpServletResponse response) throws IOException {
+        response.setContentType("application/pdf");
+        String headerKey = "Content-Disposition";
+        String headerValue = "attachment; filename=eTicket_SBB.pdf";
+        response.setHeader(headerKey,headerValue);
+        ticketService.setValidityOfTickets();
+        TicketDTO ticketDTO = ticketService.getTicketDTOById(ticketId);
+        TicketPDFExporter pdfExporter = new TicketPDFExporter(ticketDTO);
+        pdfExporter.export(response);
     }
 
 }

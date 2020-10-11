@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -25,6 +26,13 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+
+    @Override
+    public void add(Schedule schedule) {
+        Session session = sessionFactory.getCurrentSession();
+        session.persist(schedule);
+    }
 
     @Override
     public List<Schedule> getSchedulesByDepartureStationAndTime(Station stationFrom, Timestamp dateFrom, Timestamp dateTo) {
@@ -60,16 +68,47 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     public List<Schedule> getSchedulesByTrainIdAndTripId(int trainId, int tripId) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session
-                .createQuery("from Schedule s where s.train.id = :trainId and s.trip.id = :tripId")
+                .createQuery("from Schedule s where s.train.id = :trainId and s.tripId = :tripId")
                 .setParameter("trainId", trainId)
                 .setParameter("tripId", tripId);
         return query.list();
     }
 
     @Override
-    public void add(Schedule schedule) {
+    public Integer getMaxTripId() {
         Session session = sessionFactory.getCurrentSession();
-        session.persist(schedule);
+        Query query = session.createQuery("select max(s.tripId) from Schedule s");
+        return (Integer) query.getSingleResult();
+    }
+
+
+    @Override
+    public List<Timestamp> getAllDepartureTimesByTrainId(int trainId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createNativeQuery("select s1.departure_time from schedule s1\n" +
+                "inner join\n" +
+                "(select trip_id, min(station_index) as MinStIndex from schedule\n" +
+                "where train_id = ? group by trip_id) groupedSched\n" +
+                "on s1.trip_id = groupedSched.trip_id\n" +
+                "and s1.station_index = groupedSched.MinStIndex;");
+        query.setParameter(1, trainId);
+
+        return (List<Timestamp>) query.list();
+    }
+
+
+    @Override
+    public List<Timestamp> getAllArrivalTimesByTrainId(int trainId) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createNativeQuery("select s1.arrival_time from schedule s1\n" +
+                "inner join\n" +
+                "(select trip_id, max(station_index) as MaxStIndex from schedule\n" +
+                "where train_id = ? group by trip_id) groupedSched\n" +
+                "on s1.trip_id = groupedSched.trip_id\n" +
+                "and s1.station_index = groupedSched.MaxStIndex;");
+        query.setParameter(1, trainId);
+
+        return (List<Timestamp>) query.list();
     }
 
 }

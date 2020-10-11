@@ -9,12 +9,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Mapper(uses = {TrainMapper.class, TripMapper.class, StationMapper.class})
+@Mapper(uses = {TrainMapper.class, StationMapper.class})
 @Component
 public interface ScheduleMapper {
     @Mappings({
             @Mapping(target = "trainDTO", source = "schedule.train"),
-            @Mapping(target = "tripDTO", source = "schedule.trip"),
             @Mapping(target = "stationFromDTO", source = "schedule.stationFrom"),
             @Mapping(target = "stationToDTO", source = "schedule.stationTo")
     })
@@ -22,7 +21,6 @@ public interface ScheduleMapper {
 
     @Mappings({
             @Mapping(target = "train", source = "scheduleDTO.trainDTO"),
-            @Mapping(target = "trip", source = "scheduleDTO.tripDTO"),
             @Mapping(target = "stationFrom", source = "scheduleDTO.stationFromDTO"),
             @Mapping(target = "stationTo", source = "scheduleDTO.stationToDTO")
     })

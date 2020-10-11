@@ -30,9 +30,8 @@ public class Ticket {
     @JoinColumn(name = "train_id")
     private Train train;
 
-    @ManyToOne
-    @JoinColumn(name = "trip_id")
-    private Trip trip;
+    @Column(name = "trip_id")
+    private Integer tripId;
 
     @ManyToOne
     @JoinColumn(name = "station_from_id")

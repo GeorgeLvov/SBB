@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -25,6 +26,13 @@ public class SBBController {
         modelAndView.addObject("stationsList", list);
         modelAndView.addObject("currentDateTime", LocalDateTime.now().withSecond(0).withNano(0));
         modelAndView.setViewName("MainPage");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/test")
+    public ModelAndView test() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("test");
         return modelAndView;
     }
 

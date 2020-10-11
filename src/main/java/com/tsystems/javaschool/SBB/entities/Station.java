@@ -32,9 +32,6 @@ public class Station {
     private int id;
 
     @NaturalId
-    @NotNull(message = "Name can't be empty")
-    @Size(min = 3, max = 50, message = "Min name length is 3, max is 50")
-    @Pattern(regexp = "^[a-zA-Z \\-]+$", message = "Latin letters, hyphens and spaces are allowed")
     @Column(name = "name")
     private String title;
 

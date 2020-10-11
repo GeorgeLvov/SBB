@@ -61,6 +61,7 @@
                     <h2 class="form-signin-heading" style="text-align:center; padding-top: 15px; padding-bottom: 15px">
                         Create your account</h2>
                 </security:authorize>
+
                 <security:authorize access="hasRole('ADMIN')">
                     <h2 class="form-signin-heading" style="text-align:center; padding-top: 15px; padding-bottom: 15px">
                         Add new employee account</h2>
@@ -90,7 +91,15 @@
                     </div>
                 </spring:bind>
 
-                <button class="btn btn-lg btn-success btn-block" type="submit" style="margin-top: 35px">Sign Up</button>
+                <button class="btn btn-lg btn-success btn-block" type="submit" style="margin-top: 35px">
+                <security:authorize access="isAnonymous()">
+                    Sign Up
+                </security:authorize>
+                    <security:authorize access="hasRole('ADMIN')">
+                    Create account
+                    </security:authorize>
+                </button>
+
             </form:form>
         </div>
         <div class="col-md-4">

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -38,7 +39,7 @@ public class CrudController {
     }
 
     @PostMapping(value = "/admin/addStation")
-    public ModelAndView addStation(@ModelAttribute("stationDTO") StationDTO stationDTO,
+    public ModelAndView addStation(@ModelAttribute("stationDTO")@Valid StationDTO stationDTO,
                                    BindingResult bindingResult,
                                    @ModelAttribute("trainDTO") TrainDTO trainDTO
     ) {

@@ -29,7 +29,7 @@
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/setroute"/>" style="color: white"> Set trip for train </a>
+                <a class="nav-link" href="<c:url value="/admin/trainselect"/>" style="color: white"> Set trip for train </a>
             </li>
 
             <li class="nav-item dropdown">

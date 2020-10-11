@@ -27,20 +27,8 @@ public class StationValidator implements Validator {
 
         StationDTO stationDTO = (StationDTO) o;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "title", "Required.stationTitle");
-
-        if (stationDTO.getTitle().length() < 3 || stationDTO.getTitle().length() > 50) {
-            errors.rejectValue("title", "Size.stationTitle");
-        }
-
         if (stationService.findByStationDTOTitle(stationDTO.getTitle()) != null) {
             errors.rejectValue("title", "Duplicate.stationTitle");
-        }
-
-        Pattern pattern = Pattern.compile("^[a-zA-Z \\-]+$",
-                Pattern.CASE_INSENSITIVE);
-        if (!(pattern.matcher(stationDTO.getTitle()).matches())) {
-            errors.rejectValue("title", "Invalid.stationTitle");
         }
 
     }

@@ -50,7 +50,7 @@ public class PassengerServiceImpl implements PassengerService {
             int tripId = (int) objects[1];
             Timestamp departureTime = (Timestamp) objects[2];
             Timestamp arrivalTime = (Timestamp) objects[3];
-            if (trainId == rawTicketDTO.getTrainDTO().getId() && tripId == rawTicketDTO.getTripDTO().getId()
+            if (trainId == rawTicketDTO.getTrainDTO().getId() && tripId == rawTicketDTO.getTripId()
                     && departureTime.equals(rawTicketDTO.getDepartureTime()) && arrivalTime.equals(rawTicketDTO.getArrivalTime())) {
                 return true;
             }

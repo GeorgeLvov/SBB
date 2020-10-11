@@ -24,7 +24,7 @@ public class ScheduleDTO {
 
     private TrainDTO trainDTO;
 
-    private TripDTO tripDTO;
+    private Integer tripId;
 
     private int stationIndex;
 
@@ -36,14 +36,12 @@ public class ScheduleDTO {
 
     private Timestamp arrivalTime;
 
-
-
     private List<TripInfoDTO> tripInfoDTOList;
 
-    public ScheduleDTO(int id, TrainDTO trainDTO, TripDTO tripDTO, int stationIndex, StationDTO stationFromDTO, StationDTO stationToDTO, Timestamp departureTime, Timestamp arrivalTime) {
+    public ScheduleDTO(int id, TrainDTO trainDTO, Integer tripId, int stationIndex, StationDTO stationFromDTO, StationDTO stationToDTO, Timestamp departureTime, Timestamp arrivalTime) {
         this.id = id;
         this.trainDTO = trainDTO;
-        this.tripDTO = tripDTO;
+        this.tripId = tripId;
         this.stationIndex = stationIndex;
         this.stationFromDTO = stationFromDTO;
         this.stationToDTO = stationToDTO;

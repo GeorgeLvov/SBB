@@ -27,7 +27,7 @@ public class TicketDTO {
 
     private TrainDTO trainDTO;
 
-    private TripDTO tripDTO;
+    private Integer tripId;
 
     private StationDTO stationFromDTO;
 

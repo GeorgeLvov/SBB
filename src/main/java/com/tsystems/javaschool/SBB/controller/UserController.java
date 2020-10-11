@@ -65,27 +65,4 @@ public class UserController {
         return modelAndView;
     }
 
-    @PreAuthorize("hasRole('ROLE_USER')")
-    @GetMapping(value = "/alltickets")
-    public ModelAndView showAllTickets(){
-        ModelAndView modelAndView = new ModelAndView();
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<TicketInfoDTO> ticketInfos = ticketService.getAllTicketInfosByUsername(auth.getName());
-        modelAndView.addObject("ticketInfos", ticketInfos);
-        modelAndView.setViewName("UserTicketsPage");
-        return modelAndView;
-    }
-
-
-    @GetMapping(value = "/export/{id}")
-    public void exportToPDF(@PathVariable("id")int ticketId, HttpServletResponse response) throws IOException {
-        response.setContentType("application/pdf");
-        String headerKey = "Content-Disposition";
-        String headerValue = "attachment; filename=eTicket_SBB.pdf";
-        response.setHeader(headerKey,headerValue);
-        TicketDTO ticketDTO = ticketService.getTicketDTOById(ticketId);
-        System.out.println(ticketDTO);
-        TicketPDFExporter pdfExporter = new TicketPDFExporter(ticketDTO);
-        pdfExporter.export(response);
-    }
 }

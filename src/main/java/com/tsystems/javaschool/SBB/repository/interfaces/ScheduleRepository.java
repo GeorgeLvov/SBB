@@ -44,4 +44,10 @@ public interface ScheduleRepository {
      * @param tripId  id of trip
      */
     List<Schedule> getSchedulesByTrainIdAndTripId(int trainId, int tripId);
+
+    Integer getMaxTripId();
+
+    List<Timestamp> getAllDepartureTimesByTrainId(int trainId);
+
+    List<Timestamp> getAllArrivalTimesByTrainId(int trainId);
 }

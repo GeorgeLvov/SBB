@@ -40,16 +40,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
                 .setParameter(1, firstName)
                 .setParameter(2, lastName)
                 .setParameter(3, birthDate);
-        /*for (Object[] objects : list) {
-            int trainId = (int) objects[0];
-            int tripId = (int) objects[1];
-            Timestamp departureTime = (Timestamp) objects[2];
-            Timestamp arrivalTime = (Timestamp) objects[3];
-            System.out.println("trainId" + trainId);
-            System.out.println("tripId" + tripId);
-            System.out.println("departureTime" + departureTime);
-            System.out.println("arrivalTime" + arrivalTime);
-        }*/
         return query.list();
     }
 

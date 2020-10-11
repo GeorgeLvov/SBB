@@ -29,9 +29,6 @@
 
         <ul class="navbar-nav mr-auto">
 
-            <li class="nav-item">
-                <a class="nav-link" href="#">Timetable</a>
-            </li>
         </ul>
 
         <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
@@ -42,119 +39,136 @@
     </div>
 </nav>
 
+<c:choose>
+    <c:when test="${empty ticketInfos}">
+        <div class="container-fluid">
+            <div class="row" style="height: 100px">
+                <div class="col-2"></div>
+                <div class="col-8"  style="text-align:center;" >
+                    <h1 style="font-size: 50px; margin-top: 100px">You have no tickets!</h1>
+                    <p style="font-size: 20px; margin-top:20px;">You can buy them after choosing a trip on the main page.</p>
+                </div>
+                <div class="col-2"></div>
 
-
-
-<div class="container mt-4 p-md-4 col-12 rounded-container">
-    <div class="container-fluid">
-        <div class="row" style="height: 100px">
-            <div class="col-5"></div>
-            <div class="col-4"><h1 style="padding-top: 25px">Tickets</h1></div>
-            <div class="col-5"></div>
-
+            </div>
         </div>
-    </div>
-    <table class="table" style="text-align: center">
-        <thead class="thead-light">
-        <tr>
-            <th scope="col">Trains</th>
-            <th scope="col">From</th>
-            <th scope="col">To</th>
-            <th scope="col">Departure</th>
-            <th scope="col">Arrival</th>
-            <th scope="col">Passenger</th>
-            <th scope="col"></th>
-            <th scope="col">Download e-ticket</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="ticketInfo" items="${ticketInfos}" varStatus="vs">
-        <tbody>
-        <tr>
-            <th scope="row">${ticketInfo.trainName}</th>
-            <td>${ticketInfo.statFromTitle}</td>
-            <td>${ticketInfo.statToTitle}</td>
-            <fmt:setLocale value="en_US" scope="session"/>
-            <td>
-                <strong><fmt:formatDate value="${ticketInfo.departureTime}" pattern="HH:mm"/></strong>
-                <br>
-                <fmt:formatDate value="${ticketInfo.departureTime}" pattern="E, dd.MM.yyyy"/>
-            </td>
-            <td>
-                <strong><fmt:formatDate value="${ticketInfo.arrivalTime}" pattern="HH:mm"/></strong>
-                <br>
-                <fmt:formatDate value="${ticketInfo.arrivalTime}" pattern="E, dd.MM.yyyy"/>
-            </td>
+    </c:when>
+    <c:otherwise>
 
-            <td><!-- Button trigger modal -->
-                <button type="button" class="btn btn-info" data-toggle="modal"
-                        data-target="#exampleModal${vs.index}" id="viewDetailButton${vs.index}">
-                    Show data
-                </button>
 
-                <!-- Modal -->
-                <div class="modal fade" id="exampleModal${vs.index}" tabindex="-1" role="dialog"
-                     aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLabel">
-                                    Passenger
-                                </h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                    <%--Modalbody--%>
-                                <table class="table">
-                                    <thead class="thead-success">
-                                    <tr>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Name</td>
-                                        <td>${ticketInfo.firstName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Surname</td>
-                                        <td>${ticketInfo.lastName}</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Date of Birth</td>
-                                        <td>${ticketInfo.birthDate}</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
-                                </button>
+        <div class="container mt-4 p-md-4 col-12 rounded-container">
+            <div class="container-fluid">
+                <div class="row" style="height: 100px">
+                    <div class="col-5"></div>
+                    <div class="col-4">
+                        <h1 style="padding-top: 25px">Tickets</h1>
+                    </div>
+                    <div class="col-5"></div>
+
+                </div>
+            </div>
+            <table class="table" style="text-align: center">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">Train</th>
+                    <th scope="col">From</th>
+                    <th scope="col">To</th>
+                    <th scope="col">Departure</th>
+                    <th scope="col">Arrival</th>
+                    <th scope="col">Passenger</th>
+                    <th scope="col"></th>
+                    <th scope="col">Download e-ticket</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="ticketInfo" items="${ticketInfos}" varStatus="vs">
+                <tbody>
+                <tr>
+                    <th scope="row">${ticketInfo.trainName}</th>
+                    <td>${ticketInfo.statFromTitle}</td>
+                    <td>${ticketInfo.statToTitle}</td>
+                    <fmt:setLocale value="en_US" scope="session"/>
+                    <td>
+                        <strong><fmt:formatDate value="${ticketInfo.departureTime}" pattern="HH:mm"/></strong>
+                        <br>
+                        <fmt:formatDate value="${ticketInfo.departureTime}" pattern="E, dd.MM.yyyy"/>
+                    </td>
+                    <td>
+                        <strong><fmt:formatDate value="${ticketInfo.arrivalTime}" pattern="HH:mm"/></strong>
+                        <br>
+                        <fmt:formatDate value="${ticketInfo.arrivalTime}" pattern="E, dd.MM.yyyy"/>
+                    </td>
+
+                    <td><!-- Button trigger modal -->
+                        <button type="button" class="btn btn-info" data-toggle="modal"
+                                data-target="#exampleModal${vs.index}" id="viewDetailButton${vs.index}">
+                            Show data
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModal${vs.index}" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="border-bottom: 0 none">
+                                        <h5 class="modal-title" id="exampleModalLabel">
+                                            Passenger
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                            <%--Modalbody--%>
+                                        <table class="table">
+                                            <thead class="thead-success">
+                                            <tr>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <td> <strong>Name</strong></td>
+                                                <td>${ticketInfo.firstName}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Surname</strong></td>
+                                                <td>${ticketInfo.lastName}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Date of Birth</strong></td>
+                                                <td>${ticketInfo.birthDate}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="modal-footer" style="border-top: 0 none">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </td>
+                    </td>
 
-            <td>
-                <c:choose>
-                    <c:when test="${ticketInfo.valid == true}">
-                       <span class="badge badge-success">valid</span>
-                    </c:when>
-                    <c:otherwise>
-                       <span class="badge badge-secondary">invalid</span>
-                    </c:otherwise>
-                </c:choose>
-            </td>
-            
-            <td><a href="/export/${ticketInfo.ticketId}">Download</a></td>
-        </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-</div>
+                    <td>
+                        <c:choose>
+                            <c:when test="${ticketInfo.valid == true}">
+                                <span class="badge badge-success">valid</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="badge badge-secondary">invalid</span>
+                            </c:otherwise>
+                        </c:choose>
+                    </td>
 
+                    <td><a href="/export/${ticketInfo.ticketId}">Download</a></td>
+                </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </c:otherwise>
+</c:choose>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

@@ -10,10 +10,25 @@
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
+    <script>
+        function mainFunction() {
+            if (${resultRouteDTO.sideArrivalTimes == null || empty resultRouteDTO.sideArrivalTimes}) {
+                alert("Вы не добавили станций!");
+            } else {
+                var x = Date.parse("${resultRouteDTO.declaredArrivalDate}");
+                var y = Date.parse("${(resultRouteDTO.sideArrivalTimes != null && !empty resultRouteDTO.sideArrivalTimes) ? resultRouteDTO.sideArrivalTimes.get(resultRouteDTO.sideArrivalTimes.size()-1) : "0"}");
 
-    <script type="text/javascript">
-
-
+                if (x !== y) {
+                    $('#WARN').modal({
+                        show: true
+                    });
+                } else {
+                    $('#CR').modal({
+                        show: true
+                    });
+                }
+            }
+        }
     </script>
 </head>
 
@@ -35,10 +50,6 @@
 
             <li class="nav-item">
                 <a class="nav-link" href="<c:url value="/admin/crud"/>" style="color: white">Add train | station</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#" style="color: white">Set trip for train</a>
             </li>
 
             <li class="nav-item dropdown">
@@ -65,116 +76,134 @@
     </div>
 </nav>
 
-<c:if test="${param.error != null}">
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <strong>Failed to log in.</strong>
-        <br>
-        Please make sure that you have entered your <strong>login</strong> and
-        <strong>password </strong>
-        correctly.
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
+${resultRouteDTO}
+
+
+<form:form method="POST" action="/admin/setRoute" modelAttribute="routeDTO" class="form-signin">
+
+    <div class="row" style="height: 40px">
     </div>
-</c:if>
+    <div class="row">
+
+        <div class="col-3">
+            <spring:bind path="sideStations">
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <form:select class="form-control" path="sideStations" varStatus="tagStatus" multiple="0">
+                        <form:option value="" label="Select"/>
+                        <form:options items="${stationList}" itemValue="title" itemLabel="title"/>
+                    </form:select>
+                    <form:errors path="sideStations" cssStyle="color: red; font-size: 14px"></form:errors>
+                </div>
+            </spring:bind>
+        </div>
 
 
-<div class="container-fluid">
-    <div class="row" style="height: 80px"></div>
-    <div class="col-md-12 bg-light" style="border-radius: 2%">
+        <div class="col-3">
+            <spring:bind path="sideArrivalTimes">
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <form:input type="datetime-local" path="sideArrivalTimes" class="form-control"
+                                placeholder=""></form:input>
+                    <form:errors path="sideArrivalTimes" cssStyle="color: red; font-size: 14px"></form:errors>
+                </div>
+            </spring:bind>
+        </div>
 
-        <form:form method="POST" modelAttribute="schInfoDTO" class="form-signin">
-            <div class="row" style="height: 40px">
+        <div class="col-1">
+            <spring:bind path="stops">
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+                    <form:input type="number" path="stops" class="form-control"
+                                min="5" max="180" step="5" placeholder=""></form:input>
+                    <form:errors path="stops" cssStyle="color: red; font-size: 14px"></form:errors>
+                </div>
+            </spring:bind>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-success"> Add station</button>
+</form:form>
+
+
+
+<button class="btn btn-danger" onclick="mainFunction()"> Create trip</button>
+
+
+
+
+
+
+<!-- Modal -->
+<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal13">
+    Reset last change
+</button>
+<div class="modal fade" id="exampleModal13" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel13" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel13">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="row">
-                <div class="col-4">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <form:select class="form-control" path="trainId">
-                            <form:option value="0" label="Choose train"/>
-                            <form:options items="${trainsList}" itemValue="id" itemLabel="trainName"/>
-                        </form:select>
-                    </div>
-                </div>
+            <div class="modal-body">
+                Are you sure?
             </div>
-
-            <div class="row">
-                <div class="col-3">
-
-
-                    <spring:bind path="stations">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:select class="form-control" path="stations" varStatus="tagStatus" multiple="0">
-                               <form:option value="" label="From"/>
-                                <form:options items="${stationsList}" itemValue="id" itemLabel="title"/>
-                            </form:select>
-                            <form:errors path="stations" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
-
-                </div>
-                <div class="col-3">
-                    <spring:bind path="stations">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:select class="form-control" path="stations" multiple="0">
-                                <form:option value="" label="To"/>
-                                <form:options items="${stationsList}" itemValue="id" itemLabel="title"/>
-                            </form:select>
-                            <form:errors path="stations" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
-                </div>
-                <div class="col-3">
-                    <spring:bind path="times">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:input type="datetime-local" path="times" class="form-control"
-                                        placeholder="Birthdate"></form:input>
-                            <form:errors path="times" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
-                </div>
-                <div class="col-3">
-                    <spring:bind path="times">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:input type="datetime-local" path="times" class="form-control"
-                                        placeholder="Birthdate"></form:input>
-                            <form:errors path="times" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
-                </div>
-
+            <div class="modal-footer">
+                <a class="btn btn-secondary" href="/admin/deleteLast">Reset Change</a>
             </div>
-
-         <%--   <button type="button" class="btn btn-success">+</button>--%>
-            Добавить еще станцию
-            <div class="row">
-                <div class="col-3">
-
-                    <spring:bind path="stations">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:select class="form-control" path="stations" multiple="0">
-                                <form:option value="" label="To"/>
-                                <form:options items="${stationsList}" itemValue="id" itemLabel="title"/>
-                            </form:select>
-                            <form:errors path="stations" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
-                </div>
-                <div class="col-3">
-                    <spring:bind path="times">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:input type="datetime-local" path="times" class="form-control"
-                                        placeholder="Birthdate"></form:input>
-                            <form:errors path="times" id="12" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
-                </div>
-            </div>
-
-            <button class="btn btn-success" type="submit" style="margin-top: 35px">Sign Up</button>
-
-        </form:form>
+        </div>
     </div>
 </div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="WARN" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-show="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Сейчас время прибытия маршрута не совпадает с введенным вами ранее!
+                Но вы все равно можете добавить такой маршрут или удалите последнее изменение
+                и вбейте правильную дату.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a class="btn btn-danger" href="<c:url value="/admin/createtrip"/>">Create trip</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="CR" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-show="">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Создать маршрут??
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <%-- <button type="button" class="btn btn-primary">Save changes</button>--%>
+                <a class="btn btn-danger" href="<c:url value="/admin/createtrip"/>">Create trip</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -189,99 +218,3 @@
 
 </body>
 </html>
-
-<%--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<table width="100%">
-    <tr>
-        <td>Ширина</td>
-        <td>Высота</td>
-        <td>Артикуль</td>
-        <td>Кол-во полотен</td>
-    </tr>
-    <tr>
-        <td>
-            <input type="text" name="width[0]" class="add_product_input" style="width:200px;" />
-        </td>
-        <td>
-            <input type="text" name="height[0]" class="add_product_input" style="width:200px;" />
-        </td>
-        <td>
-            <input type="text" name="articul[0]" class="add_product_input" style="width:200px;" />
-        </td>
-        <td>
-            <input type="text" name="count[0]" class="add_product_input" style="width:200px;" />
-        </td>
-    </tr>
-</table>
-<button class="add_attr">Добавить</button>
-
-<script>
-    $('.add_attr').click(function() {
-        var rowCount = $('tr').length - 1;
-        var row = $('tr').last().clone();
-        row.find('input').each(function() {
-            var name = $(this).attr('name');
-            $(this).attr('name', name.replace(/\[\d+\]/, '[' + rowCount + ']'))
-        });
-        $('table').append(row);
-    });
-</script>--%>
-
-<%--<form:form method="POST" modelAttribute="schInfoDTO" class="form-signin">
-
-    <spring:bind path="trainId">
-    <form:select class="form-control" path="trainId">
-        <form:option value="0" label="Choose train" />
-        <form:options items="${trainsList}" itemValue="id" itemLabel="trainName" />
-    </form:select>
-    </spring:bind>
-
-    <spring:bind path="stationDTOs">
-    <form:select class="form-control" path="stationFromId">
-        <form:option value="0" label="From" />
-        <form:options items="${stationsList}" itemValue="id" itemLabel="title" />
-    </form:select>
-    </spring:bind>
-
-    <spring:bind path="stationDTOs">
-    <form:select class="form-control" path="stationDTOs[0].id">
-        <form:option value="0" label="To" />
-        <form:options items="${stationsList}" itemValue="id" itemLabel="title" />
-    </form:select>
-    </spring:bind>
-
-    <spring:bind path="stationDTOs">
-        <form:select class="form-control" path="stationDTOs[1].id">
-            <form:option value="0" label="To2" />
-            <form:options items="${stationsList}" itemValue="id" itemLabel="title" />
-        </form:select>
-    </spring:bind>
-
-
-    <spring:bind path="departureTime">
-        <div class="form-group ${status.error ? 'has-error' : ''}">
-            <form:input type="datetime-local" path="departureTime" class="form-control" value="${currentTime}"
-                        autofocus="true"></form:input>
-            <form:errors path="departureTime" cssStyle="color: red; font-size: 14px"></form:errors>
-        </div>
-    </spring:bind>
-
-    <spring:bind path="arrTimes">
-        <div class="form-group ${status.error ? 'has-error' : ''}">
-            <form:input type="datetime-local" path="arrTimes[0].arrivalTime" class="form-control" value="1994-11-22T17:00:00"
-                        autofocus="true"></form:input>
-            <form:errors path="departureTime" cssStyle="color: red; font-size: 14px"></form:errors>
-        </div>
-    </spring:bind>
-
-    <spring:bind path="arrTimes">
-        <div class="form-group ${status.error ? 'has-error' : ''}">
-            <form:input type="datetime-local" path="arrTimes[0].arrivalTime" class="form-control" value="1994-11-22T17:00:00"
-                        autofocus="true"></form:input>
-            <form:errors path="departureTime" cssStyle="color: red; font-size: 14px"></form:errors>
-        </div>
-    </spring:bind>
-
-
-    <button class="btn btn-success" type="submit" style="margin-top: 35px">Sign Up</button>
-</form:form>--%>

@@ -35,9 +35,9 @@
                 </li>
             </security:authorize>
 
-            <security:authorize access="hasRole('USER')">
+            <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My tickets</a>
+                    <a class="nav-link" href="/alltickets">My tickets</a>
                 </li>
             </security:authorize>
         </ul>
@@ -58,7 +58,19 @@
 
     </div>
 </nav>
-
+<c:choose>
+    <c:when test="${empty scheduleDTOList}">
+        <div class="container-fluid">
+            <div class="row" style="height: 100px">
+                <div class="col-2"></div>
+                <div class="col-8"  style="text-align:center;" >
+                    <h1 style="font-size: 50px; margin-top: 100px">No trains available!</h1>
+                </div>
+                <div class="col-2"></div>
+            </div>
+        </div>
+    </c:when>
+    <c:otherwise>
 <div class="container">
     <div class="row" style="height: 50px">
     </div>
@@ -147,7 +159,7 @@
                 </td>
                 <td>
                     <a class="btn btn-danger"
-                       href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripDTO.id}&stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
+                       href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripId}&stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
                     &departureTime=${scheduleDTO.departureTime}&arrivalTime=${scheduleDTO.arrivalTime}"
                        role="button" target="_blank">Buy ticket</a>
                 </td>
@@ -156,7 +168,8 @@
         </tbody>
     </table>
 </div>
-
+    </c:otherwise>
+</c:choose>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

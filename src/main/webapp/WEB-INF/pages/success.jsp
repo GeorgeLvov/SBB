@@ -30,7 +30,7 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="#">Timetable</a>
+                <a class="nav-link" href="#exampleModalCenter" data-toggle="modal" data-target="#exampleModalCenter"> Timetable </a>
             </li>
 
             <security:authorize access="hasRole('ADMIN')">
@@ -65,6 +65,36 @@
 
 </nav>
 
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Timetable</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <c:url value="/timetable" var="v"/>
+                <form action="${v}" method="GET">
+                    <div class="form-group">
+                        <select class="form-control" name="timeTable" id="exampleSelectSt" style="margin-top: 20px;">
+                            <option value="" disabled selected>Select station</option>
+                            <c:forEach var="station" items="${stationsList}">
+                                <option value="${station.id}">${station.title}</option>
+                            </c:forEach>
+                        </select>
+                    </div>
+                    <div class="modal-footer" style="border-top: 0 none;">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" style="margin-top: 30px;">Close</button>
+                        <button type="submit" class="btn btn-danger" style="margin-top: 30px;">Search</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <div class="container">
     <div class="row" style="height: 80px">
@@ -81,9 +111,8 @@
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
 
             </div>
-
             <c:url value="/schedule" var="varT"/>
-            <form action="${varT}" method="POST" style="padding-top: 40px">
+            <form action="${varT}" method="GET" style="padding-top: 40px">
                 <security:csrfInput/>
                 <div class="row">
                     <div class="col-6">
@@ -91,31 +120,31 @@
                             <select class="form-control" name="stationFrom" id="exampleSelect">
                                 <option value="" disabled selected>From</option>
                                 <c:forEach var="station" items="${stationsList}">
-                                    <option value="${station.title}">${station.title}</option>
+                                    <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
                             </select>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="form-group">
-                            <select class="form-control" name="stationTo" id="examplSelect">
+                            <select class="form-control b" name="stationTo" id="examplSelect">
                                 <option value="" disabled selected>To</option>
                                 <c:forEach var="station" items="${stationsList}">
-                                    <option value="${station.title}">${station.title}</option>
+                                    <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
                             </select>
                         </div>
                     </div>
                 </div>
                 <br>
+
                 <div class="row">
                     <div class="col-3">
                         <div class="form-group">
-                            <div class="form-group">
-                                <input class="form-control" name="dateTo" type="datetime-local"
-                                       value="${currentDateTime}"
-                                       id="exdatetime">
-                            </div>
+                            <span lang="en">
+                            <input class="form-control" name="dateFrom" type="datetime-local" value="${currentDateTime}"
+                                   id="exdatetimelo">
+                            </span>
                         </div>
                     </div>
 
@@ -126,7 +155,7 @@
                         </div>
                     </div>
                     <div class="col-3">
-                        <button type="submit" class="btn btn-danger" style="width: 100px;  ">Search
+                        <button type="submit" class="btn btn-danger" style="width: 100px;">Search
                         </button>
                     </div>
                 </div>

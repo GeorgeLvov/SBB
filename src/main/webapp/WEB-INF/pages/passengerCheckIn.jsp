@@ -66,7 +66,7 @@
                     </div>
                 </spring:bind>
 
-                <button class="btn btn-lg btn-success btn-block" type="submit" style="margin-top: 35px">Sign Up</button>
+                <button class="btn btn-lg btn-success btn-block" type="submit" style="margin-top: 35px">Check In</button>
             </form:form>
         </div>
 
