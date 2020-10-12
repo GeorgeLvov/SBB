@@ -2,6 +2,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://sargue.net/jsptags/time" prefix="javatime" %>
 <%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"  %>
 
 <html>
@@ -9,11 +11,17 @@
     <title>SBB: Set trip</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <%--<link rel="stylesheet" href="<c:url value="/res/css/setRoute.css"/>" />--%>
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
+
+
     <script>
         function mainFunction() {
             if (${resultRouteDTO.sideArrivalTimes == null || empty resultRouteDTO.sideArrivalTimes}) {
-                alert("Вы не добавили станций!");
+              alert("You haven't added any arrival stations!");
+              /*  $("#myBut").click(function(){
+                    $("#aleT").addClass('show');
+                })*/
             } else {
                 var x = Date.parse("${resultRouteDTO.declaredArrivalDate}");
                 var y = Date.parse("${(resultRouteDTO.sideArrivalTimes != null && !empty resultRouteDTO.sideArrivalTimes) ? resultRouteDTO.sideArrivalTimes.get(resultRouteDTO.sideArrivalTimes.size()-1) : "0"}");
@@ -23,7 +31,7 @@
                         show: true
                     });
                 } else {
-                    $('#CR').modal({
+                    $('#CT').modal({
                         show: true
                     });
                 }
@@ -33,7 +41,12 @@
 </head>
 
 <body>
-
+<%--<div class="alert alert-warning alert-dismissible fade hide" role="alert" id="aleT">
+    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>--%>
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
 
     <a class="navbar-brand" href="<c:url value="/admin"/>" style="color: white">
@@ -76,7 +89,67 @@
     </div>
 </nav>
 
-${resultRouteDTO}
+
+<div class="container bg-light col-12">
+    <table class="table table-sm">
+        <thead class="thead-light" style="text-align: center">
+        <tr>
+            <th style="width: 25%" scope="col">Train</th>
+            <th scope="col">Departure station</th>
+            <th scope="col">Departure time</th>
+            <th scope="col">Declared end time</th>
+        </tr>
+        </thead>
+        <tbody style="text-align: center">
+            <tr>
+                <td>${resultRouteDTO.trainName}</td>
+                <td>${resultRouteDTO.departureStationName}</td>
+
+                <javatime:parseLocalDateTime value="${resultRouteDTO.departureDate}" pattern="yyyy-MM-dd'T'HH:mm" var="depDate"/>
+                <td><strong><javatime:format pattern="HH:mm" value="${depDate}" style="MS" /></strong>
+                    <javatime:format pattern="dd.MM.yy" value="${depDate}" style="MS" />
+                </td>
+
+                <javatime:parseLocalDateTime value="${resultRouteDTO.declaredArrivalDate}" pattern="yyyy-MM-dd'T'HH:mm" var="arrDate"/>
+                <td><strong><javatime:format pattern="HH:mm" value="${arrDate}" style="MS" /></strong>
+                    <javatime:format pattern="dd.MM.yy" value="${arrDate}" style="MS" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<c:if test="${!empty resultRouteDTO.sideStations}">
+    <h3 style="text-align: center; padding: 20px">Segments</h3>
+
+    <div class="container bg-light">
+        <table class="table table-sm">
+            <thead class="thead-light" style="text-align: center">
+            <tr>
+                <th scope="col">Arrival station</th>
+                <th scope="col">Arrival datetime</th>
+                <th scope="col">Stop duration</th>
+            </tr>
+            </thead>
+            <tbody style="text-align: center">
+            <c:forEach items="${resultRouteDTO.sideStations}" varStatus="vs">
+                <tr>
+                    <td>${resultRouteDTO.sideStations[vs.index]}</td>
+
+                    <javatime:parseLocalDateTime value="${resultRouteDTO.sideArrivalTimes[vs.index]}" pattern="yyyy-MM-dd'T'HH:mm" var="arD"/>
+                    <td><strong><javatime:format pattern="HH:mm" value="${arD}" style="MS" /></strong>
+                        <javatime:format pattern="dd.MM.yy" value="${arD}" style="MS" />
+                    </td>
+
+
+                    <td>${resultRouteDTO.stops[vs.index]}</td>
+                </tr>
+            </c:forEach>
+            </tbody>
+        </table>
+    </div>
+</c:if>
+
 
 
 <form:form method="POST" action="/admin/setRoute" modelAttribute="routeDTO" class="form-signin">
@@ -84,46 +157,58 @@ ${resultRouteDTO}
     <div class="row" style="height: 40px">
     </div>
     <div class="row">
+        <div class="col-2"></div>
 
-        <div class="col-3">
-            <spring:bind path="sideStations">
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    <form:select class="form-control" path="sideStations" varStatus="tagStatus" multiple="0">
-                        <form:option value="" label="Select"/>
-                        <form:options items="${stationList}" itemValue="title" itemLabel="title"/>
-                    </form:select>
-                    <form:errors path="sideStations" cssStyle="color: red; font-size: 14px"></form:errors>
+        <div class="col-8">
+            <div class="row">
+                <div class="col-4">
+                    <spring:bind path="sideStations">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label for="stat">Station:</label>
+                            <form:select class="form-control" path="sideStations" varStatus="tagStatus" multiple="0" id="stat">
+                                <form:option value="" label="Select"/>
+                                <form:options items="${stationList}" itemValue="title" itemLabel="title"/>
+                            </form:select>
+                            <form:errors path="sideStations" cssStyle="color: red; font-size: 14px"></form:errors>
+                        </div>
+                    </spring:bind>
                 </div>
-            </spring:bind>
-        </div>
 
-
-        <div class="col-3">
-            <spring:bind path="sideArrivalTimes">
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    <form:input type="datetime-local" path="sideArrivalTimes" class="form-control"
-                                placeholder=""></form:input>
-                    <form:errors path="sideArrivalTimes" cssStyle="color: red; font-size: 14px"></form:errors>
+                <div class="col-4">
+                    <spring:bind path="sideArrivalTimes">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label for="arrDt">Arrival date:</label>
+                            <form:input type="datetime-local" path="sideArrivalTimes" class="form-control"
+                                        placeholder="" id="arrDt"></form:input>
+                            <form:errors path="sideArrivalTimes" cssStyle="color: red; font-size: 14px"></form:errors>
+                        </div>
+                    </spring:bind>
                 </div>
-            </spring:bind>
-        </div>
 
-        <div class="col-1">
-            <spring:bind path="stops">
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-                    <form:input type="number" path="stops" class="form-control"
-                                min="5" max="180" step="5" placeholder=""></form:input>
-                    <form:errors path="stops" cssStyle="color: red; font-size: 14px"></form:errors>
+                <div class="col-3">
+                    <spring:bind path="stops">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label for="stopD">Stop duration, min:</label>
+                            <form:input type="number" path="stops" class="form-control"
+                                        min="5" max="180" step="5" placeholder="" id="stopD"></form:input>
+                            <form:errors path="stops" cssStyle="color: red; font-size: 14px"></form:errors>
+                        </div>
+                    </spring:bind>
                 </div>
-            </spring:bind>
+            </div>
+
+            <div style="margin-top: 10px"><button type="submit" class="btn btn-success" style="width: 140px;"> Add station</button>
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal13" style="width: 140px;">
+                    Delete change
+                </button>
+            </div>
+            <div style="margin-top: 10px"><button type="button" class="btn btn-danger ui-button ui-corner-all ui-widget openModal" id="myBut" style="width: 280px;"  onclick="mainFunction()"> Create
+                trip
+            </button></div>
         </div>
     </div>
-    <button type="submit" class="btn btn-success"> Add station</button>
+    <div class="col-2"></div>
 </form:form>
-
-
-
-<button class="btn btn-danger" onclick="mainFunction()"> Create trip</button>
 
 
 
@@ -131,14 +216,12 @@ ${resultRouteDTO}
 
 
 <!-- Modal -->
-<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal13">
-    Reset last change
-</button>
+
 <div class="modal fade" id="exampleModal13" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel13" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel13">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel13">Delete last change</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -147,7 +230,7 @@ ${resultRouteDTO}
                 Are you sure?
             </div>
             <div class="modal-footer">
-                <a class="btn btn-secondary" href="/admin/deleteLast">Reset Change</a>
+                <a class="btn btn-secondary" href="/admin/deleteLast">Delete</a>
             </div>
         </div>
     </div>
@@ -159,15 +242,18 @@ ${resultRouteDTO}
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Сейчас время прибытия маршрута не совпадает с введенным вами ранее!
-                Но вы все равно можете добавить такой маршрут или удалите последнее изменение
-                и вбейте правильную дату.
+                <javatime:parseLocalDateTime value="${resultRouteDTO.declaredArrivalDate}" pattern="yyyy-MM-dd'T'HH:mm" var="decArDate"/>
+                <p>Declared arrival datetime of the trip:
+                   <strong> <javatime:format pattern="HH:mm dd.MM.yyyy" value="${decArDate}" style="MS" /></strong>
+                </p>
+                The last entered arrival datetime now does not match the declared end time you entered earlier,
+                but you can still create such a trip, or delete the last change and enter the correct date.
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -178,7 +264,7 @@ ${resultRouteDTO}
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="CR" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-show="">
+<div class="modal fade" id="CT" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-show="">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -192,7 +278,6 @@ ${resultRouteDTO}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <%-- <button type="button" class="btn btn-primary">Save changes</button>--%>
                 <a class="btn btn-danger" href="<c:url value="/admin/createtrip"/>">Create trip</a>
             </div>
         </div>

@@ -1,6 +1,8 @@
 package com.tsystems.javaschool.SBB.controller;
 
 import com.tsystems.javaschool.SBB.dto.RouteDTO;
+import com.tsystems.javaschool.SBB.dto.RouteDTOContainer;
+import com.tsystems.javaschool.SBB.service.impl.RouteDTOContainerService;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.StationService;
 import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
@@ -30,12 +32,15 @@ public class SetRouteController{
     StationService stationService;
     @Autowired
     ScheduleService scheduleService;
-
-    private RouteDTO resultRouteDTO;
+    @Autowired
+    RouteDTOContainer routeDTOContainer;
+    @Autowired
+    RouteDTOContainerService containerService;
 
     @GetMapping("/trainselect")
     public ModelAndView selectTrain() {
         ModelAndView modelAndView = new ModelAndView();
+        containerService.truncate();
         modelAndView.addObject("trainsList", trainService.getAllTrainsDTO());
         modelAndView.addObject("stationList", stationService.getAllStationsDTO());
         modelAndView.addObject("routeDTO", new RouteDTO());
@@ -54,7 +59,7 @@ public class SetRouteController{
             modelAndView.setViewName("StartSetRoutePage");
             return modelAndView;
         }
-        resultRouteDTO = routeDTO;
+        containerService.setFields(routeDTO, true);
         modelAndView.setViewName("redirect:/admin/setRoute");
         return modelAndView;
     }
@@ -64,7 +69,7 @@ public class SetRouteController{
     public ModelAndView setRoute() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("stationList", stationService.getAllStationsDTO());
-        modelAndView.addObject("resultRouteDTO", resultRouteDTO);
+        modelAndView.addObject("resultRouteDTO", routeDTOContainer);
         modelAndView.addObject("routeDTO", new RouteDTO());
         modelAndView.setViewName("SetRoutePage");
         return modelAndView;
@@ -73,29 +78,18 @@ public class SetRouteController{
 
     @PostMapping("/setRoute")
     public ModelAndView setRoute(@ModelAttribute("routeDTO") RouteDTO routeDTO, BindingResult bindingResult) {
-
         ModelAndView modelAndView = new ModelAndView();
-
-        routeDTO.setTrainName(resultRouteDTO.getTrainName());
-        routeDTO.setDepartureStationName(resultRouteDTO.getDepartureStationName());
-        routeDTO.setDepartureDate(resultRouteDTO.getDepartureDate());
-        routeDTO.setDeclaredArrivalDate(resultRouteDTO.getDeclaredArrivalDate());
-
-        routeValidator.setResultRouteDTO(resultRouteDTO);
         routeValidator.validate(routeDTO, bindingResult);
-
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("stationList", stationService.getAllStationsDTO());
-            modelAndView.addObject("resultRouteDTO", resultRouteDTO);
+            modelAndView.addObject("resultRouteDTO", routeDTOContainer);
             modelAndView.setViewName("SetRoutePage");
             return modelAndView;
         }
 
-        if(resultRouteDTO.getSideStations() != null){
-            resultRouteDTO.getSideStations().addAll(routeDTO.getSideStations());
-            resultRouteDTO.getSideArrivalTimes().addAll(routeDTO.getSideArrivalTimes());
-            resultRouteDTO.getStops().addAll(routeDTO.getStops());
-        } else resultRouteDTO = routeDTO;
+        if (routeDTOContainer.getSideStations() != null) {
+            containerService.updateListFields(routeDTO);
+        } else containerService.setFields(routeDTO, false);
 
         modelAndView.setViewName("redirect:/admin/setRoute");
         return modelAndView;
@@ -105,22 +99,21 @@ public class SetRouteController{
     @GetMapping(value = "/deleteLast")
     public ModelAndView deleteLastChange() {
         ModelAndView modelAndView = new ModelAndView();
-        System.out.println(resultRouteDTO.getSideArrivalTimes());
-        if (resultRouteDTO.getSideStations() != null && !resultRouteDTO.getSideStations().isEmpty()
-                && resultRouteDTO.getSideArrivalTimes() != null && !resultRouteDTO.getSideArrivalTimes().isEmpty()) {
-            resultRouteDTO.getSideStations().remove(resultRouteDTO.getSideStations().size() - 1);
-            resultRouteDTO.getSideArrivalTimes().remove(resultRouteDTO.getSideArrivalTimes().size() - 1);
-            resultRouteDTO.getStops().remove(resultRouteDTO.getStops().size() - 1);
+        if (routeDTOContainer.getSideStations() != null && !routeDTOContainer.getSideStations().isEmpty()
+                && routeDTOContainer.getSideArrivalTimes() != null && !routeDTOContainer.getSideArrivalTimes().isEmpty()) {
+            containerService.deleteLastChange();
             modelAndView.setViewName("redirect:/admin/setRoute");
             return modelAndView;
-        } else modelAndView.setViewName("redirect:/admin/trainselect");
+        }
+        modelAndView.setViewName("redirect:/admin/trainselect");
         return modelAndView;
     }
 
     @GetMapping("/createtrip")
     public ModelAndView createTrip() {
         ModelAndView modelAndView = new ModelAndView();
-        scheduleService.createTrip(resultRouteDTO);
+        scheduleService.createTrip();
+        containerService.truncate();
         modelAndView.setViewName("redirect:/admin");
         return modelAndView;
     }

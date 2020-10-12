@@ -61,7 +61,7 @@
 
     </div>
 </nav>
-<div class="container bg-light mt-4 p-md-4 col-6 rounded-container">
+<div class="container bg-light mt-6 p-md-4 col-6 rounded-container">
     <table class="table">
         <thead class="thead-light">
         <tr>

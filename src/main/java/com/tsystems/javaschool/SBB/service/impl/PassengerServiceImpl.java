@@ -2,6 +2,7 @@ package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
+import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.mapper.PassengerMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.PassengerRepository;
@@ -21,7 +22,8 @@ public class PassengerServiceImpl implements PassengerService {
     PassengerRepository passengerRepository;
     @Autowired
     PassengerMapper passengerMapper;
-
+    @Autowired
+    TicketDTOContainer ticketDTOContainer;
 
     @Override
     @Transactional
@@ -38,10 +40,10 @@ public class PassengerServiceImpl implements PassengerService {
         return passenger != null ? passengerMapper.toDTO(passenger) : null;
     }
 
-
+    /**/
     @Override
     @Transactional
-    public boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTO rawTicketDTO) {
+    public boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTOContainer ticketDTOContainer) {
 
         List<Object[]> list = passengerRepository.getPassengerWithTicketsByFields(firstName, lastName, birthDate);
 
@@ -50,8 +52,8 @@ public class PassengerServiceImpl implements PassengerService {
             int tripId = (int) objects[1];
             Timestamp departureTime = (Timestamp) objects[2];
             Timestamp arrivalTime = (Timestamp) objects[3];
-            if (trainId == rawTicketDTO.getTrainDTO().getId() && tripId == rawTicketDTO.getTripId()
-                    && departureTime.equals(rawTicketDTO.getDepartureTime()) && arrivalTime.equals(rawTicketDTO.getArrivalTime())) {
+            if (trainId == ticketDTOContainer.getTrainDTO().getId() && tripId == ticketDTOContainer.getTripId()
+                    && departureTime.equals(ticketDTOContainer.getDepartureTime()) && arrivalTime.equals(ticketDTOContainer.getArrivalTime())) {
                 return true;
             }
         }

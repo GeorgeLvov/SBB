@@ -1,13 +1,10 @@
 package com.tsystems.javaschool.SBB.service.interfaces;
 
-import com.tsystems.javaschool.SBB.dto.RouteDTO;
 import com.tsystems.javaschool.SBB.dto.ScheduleDTO;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.dto.TripInfoDTO;
-import com.tsystems.javaschool.SBB.entities.Station;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ScheduleService {
@@ -20,8 +17,9 @@ public interface ScheduleService {
 
     List<TripInfoDTO> getInfoOfAllTripsByTrainIdAndTripId(int trainId, int tripId);
 
-    void createTrip(RouteDTO routeDTO);
+    void createTrip();
 
     boolean isTrainAvailableForNewTrip(String trainName, String departureTimeStr, String arrivalTimeStr);
+
 
 }

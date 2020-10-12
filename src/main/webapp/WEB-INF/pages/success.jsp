@@ -39,11 +39,9 @@
                 </li>
             </security:authorize>
 
-            <security:authorize access="hasRole('USER')">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">My tickets</a>
+                    <a class="nav-link" href="/alltickets">My tickets</a>
                 </li>
-            </security:authorize>
 
         </ul>
 

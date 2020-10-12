@@ -58,8 +58,6 @@ public class TicketRepositoryImpl implements TicketRepository {
     }
 
 
-
-
     @Override
     public List<Object[]> getAllTicketsByUserId(int userId) {
         Session session = sessionFactory.getCurrentSession();
@@ -71,32 +69,6 @@ public class TicketRepositoryImpl implements TicketRepository {
                         "inner join stations st2 on st2.id=t.station_to_id " +
                         "where t.user_id=?;");
         query.setParameter(1, userId);
-
-     /*   List<Object[]> list = query.list();
-
-        for (Object[] objects : list) {
-            String firstName = (String) objects[0];
-            String lastName = (String) objects[1];
-            Date birthDate = (Date) objects[2];
-            String statFromTitle = (String) objects[3];
-            String statToTitle = (String) objects[4];
-            Timestamp departureTime = (Timestamp) objects[5];
-            Timestamp arrivalTime = (Timestamp) objects[6];
-            boolean valid = (boolean) objects[7];
-
-            System.out.println("--------------------------------------------------------------");
-            System.out.println("firstName: " + firstName);
-            System.out.println("lastName: " + lastName);
-            System.out.println("birthDate: " + birthDate);
-            System.out.println("statFromTitle: " + statFromTitle);
-            System.out.println("statToTitle: " + statToTitle);
-            System.out.println("departureTime: " + departureTime);
-            System.out.println("arrivalTime: " + arrivalTime);
-            System.out.println("valid: " + valid);
-            System.out.println("--------------------------------------------------------------");
-
-        }*/
-
         return query.list();
     }
 

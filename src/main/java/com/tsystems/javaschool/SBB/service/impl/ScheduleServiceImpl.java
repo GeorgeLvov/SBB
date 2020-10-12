@@ -1,9 +1,6 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
-import com.tsystems.javaschool.SBB.dto.RouteDTO;
-import com.tsystems.javaschool.SBB.dto.ScheduleDTO;
-import com.tsystems.javaschool.SBB.dto.StationDTO;
-import com.tsystems.javaschool.SBB.dto.TripInfoDTO;
+import com.tsystems.javaschool.SBB.dto.*;
 import com.tsystems.javaschool.SBB.entities.Schedule;
 import com.tsystems.javaschool.SBB.entities.Station;
 import com.tsystems.javaschool.SBB.entities.Train;
@@ -38,6 +35,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private TrainRepository trainRepository;
     @Autowired
     private StationRepository stationRepository;
+    @Autowired
+    private RouteDTOContainer routeDTOContainer;
 
 
     @Override
@@ -49,36 +48,37 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public void createTrip(RouteDTO routeDTO) {
-        Train train = trainRepository.findTrainByTrainName(routeDTO.getTrainName());
+    public void createTrip() {
+        Train train = trainRepository.findTrainByTrainName(routeDTOContainer.getTrainName());
 
         int tripId = scheduleRepository.getMaxTripId() + 1;
 
-        int stationIndex = 0;
+        Station departureStation = stationRepository.findByStationTitle(routeDTOContainer.getDepartureStationName());
 
-        Station departureStation = stationRepository.findByStationTitle(routeDTO.getDepartureStationName());
-        Timestamp departureTime = Timestamp.valueOf(LocalDateTime.parse(routeDTO.getDepartureDate()));
+        Timestamp departureTime = Timestamp.valueOf(LocalDateTime.parse(routeDTOContainer.getDepartureDate()));
+
+        int stationIndex = 0;
 
         List<Station> stations = new ArrayList<>();
         stations.add(departureStation);
-        stations.addAll(routeDTO.getSideStations()
+        stations.addAll(routeDTOContainer.getSideStations()
                 .stream()
                 .map(s -> stationRepository.findByStationTitle(s))
                 .collect(Collectors.toList()));
 
 
-        List<LocalDateTime> arrivalDates = routeDTO.getSideArrivalTimes()
+        List<LocalDateTime> arrivalDates = routeDTOContainer.getSideArrivalTimes()
                 .stream()
                 .map(LocalDateTime::parse)
                 .collect(Collectors.toList());
 
-        List<Integer> stops = routeDTO.getStops()
+        List<Integer> stops = routeDTOContainer.getStops()
                 .stream()
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
 
-        for (int i = 0; i < routeDTO.getSideArrivalTimes().size(); i++) {
+        for (int i = 0; i < routeDTOContainer.getSideArrivalTimes().size(); i++) {
             Schedule schedule = new Schedule();
             schedule.setTrain(train);
             schedule.setTripId(tripId);

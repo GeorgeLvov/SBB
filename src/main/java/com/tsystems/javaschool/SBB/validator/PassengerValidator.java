@@ -3,6 +3,7 @@ package com.tsystems.javaschool.SBB.validator;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
+import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.service.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,12 +19,8 @@ public class PassengerValidator implements Validator {
 
     @Autowired
     PassengerService passengerService;
-
-    TicketDTO rawTicketDTO;
-
-    public void setTicketDTO(TicketDTO ticketDTO) {
-        this.rawTicketDTO = ticketDTO;
-    }
+    @Autowired
+    TicketDTOContainer ticketDTOContainer;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -61,7 +58,7 @@ public class PassengerValidator implements Validator {
             }
         }
 
-        if (passengerService.isPassengerAlreadyCheckedIn(passengerDTO.getFirstName(), passengerDTO.getLastName(), passengerDTO.getBirthDate(), rawTicketDTO)) {
+        if (passengerService.isPassengerAlreadyCheckedIn(passengerDTO.getFirstName(), passengerDTO.getLastName(), passengerDTO.getBirthDate(), ticketDTOContainer)) {
             errors.rejectValue("firstName", "Duplicate.passenger");
             errors.rejectValue("lastName", "Duplicate.passenger");
             errors.rejectValue("birthDate", "Duplicate.passenger");

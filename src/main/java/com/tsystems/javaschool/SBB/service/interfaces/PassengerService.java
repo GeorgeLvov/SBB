@@ -3,6 +3,8 @@ package com.tsystems.javaschool.SBB.service.interfaces;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
+import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.sql.Date;
 
@@ -13,7 +15,7 @@ public interface PassengerService {
 
     PassengerDTO findPassengerByPersonalData(String firstName, String lastName, Date birthDate);
 
-    boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTO rawTicketDTO);
+    boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTOContainer ticketDTOContainer);
 
     void add(PassengerDTO passengerDTO);
 

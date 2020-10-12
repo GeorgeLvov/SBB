@@ -1,16 +1,15 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
+import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
 import com.tsystems.javaschool.SBB.entities.Ticket;
 import com.tsystems.javaschool.SBB.entities.User;
 import com.tsystems.javaschool.SBB.mapper.TicketMapper;
-import com.tsystems.javaschool.SBB.mapper.UserMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.TicketRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.UserRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.TicketService;
-import com.tsystems.javaschool.SBB.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,9 +34,8 @@ public class TicketServiceImpl implements TicketService {
     private UserRepository userRepository;
 
     @Override
-    @Transactional
-    public boolean isTimeValid(String departureTimeStr) {
-        long departureTime = Timestamp.valueOf(departureTimeStr).getTime();
+    public boolean isTimeValid(Timestamp departureTimeIn) {
+        long departureTime = departureTimeIn.getTime();
         long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
         return (departureTime - currentTime) >= 600000;
     }
@@ -50,9 +48,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     @Transactional
-    public boolean isTrainFull(String departureTimeStr, String arrivalTimeStr, int trainId, int tripId) {
-        Timestamp departureTime = Timestamp.valueOf(departureTimeStr);
-        Timestamp arrivalTime = Timestamp.valueOf(arrivalTimeStr);
+    public boolean isTrainFull(Timestamp departureTime, Timestamp arrivalTime, int trainId, int tripId) {
         setValidityOfTickets();
         BigInteger bigInteger = ticketRepository.getTakenSeatsCount(trainId, tripId, departureTime, arrivalTime);
         return trainRepository.getTrainById(trainId).getCapacity() <= bigInteger.longValue();
@@ -93,10 +89,19 @@ public class TicketServiceImpl implements TicketService {
         return ticketInfos;
     }
 
-
     @Override
     @Transactional
-    public void add(TicketDTO ticketDTO) {
+    public void add(TicketDTOContainer ticketDTOContainer) {
+        TicketDTO ticketDTO = new TicketDTO();
+        ticketDTO.setTrainDTO(ticketDTOContainer.getTrainDTO());
+        ticketDTO.setTripId(ticketDTOContainer.getTripId());
+        ticketDTO.setStationFromDTO(ticketDTOContainer.getStationFromDTO());
+        ticketDTO.setStationToDTO(ticketDTOContainer.getStationToDTO());
+        ticketDTO.setDepartureTime(ticketDTOContainer.getDepartureTime());
+        ticketDTO.setArrivalTime(ticketDTOContainer.getArrivalTime());
+        ticketDTO.setPassengerDTO(ticketDTOContainer.getPassengerDTO());
+        ticketDTO.setUserDTO(ticketDTOContainer.getUserDTO());
+        ticketDTO.setValid(ticketDTOContainer.isValid());
         Ticket ticket = ticketMapper.toEntity(ticketDTO);
         ticketRepository.add(ticket);
     }

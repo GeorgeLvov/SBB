@@ -8,6 +8,7 @@
     <title>SBB: SetRoute</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 
 </head>
@@ -63,66 +64,75 @@
 
 
 <div class="container-fluid">
-    <div class="row" style="height: 80px"></div>
-    <div class="col-md-12 bg-light" style="border-radius: 2%">
-
-        <form:form method="POST" modelAttribute="routeDTO" class="form-signin">
-
-            <div class="row" style="height: 40px">
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <spring:bind path="trainName">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <label for="trainselect">Train:</label>
-                            <form:select class="form-control" path="trainName" varStatus="tagStatus" multiple="0" id="trainselect">
-                                <form:option value="" label="Select"/>
-                                <form:options items="${trainsList}" itemValue="trainName" itemLabel="trainName"/>
-                            </form:select>
-                            <form:errors path="trainName" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
+    <div class="row" style="height: 60px"></div>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-md-8 bg-light" style="border-radius: 2%">
+            <form:form method="POST" modelAttribute="routeDTO" class="form-signin">
+                <div class="row" style="height: 40px">
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <spring:bind path="departureStationName">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:select class="form-control" path="departureStationName" varStatus="tagStatus"
-                                         multiple="0">
-                                <form:option value="" label="From"/>
-                                <form:options items="${stationList}" itemValue="title" itemLabel="title"/>
-                            </form:select>
-                            <form:errors path="departureStationName" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
+                <div class="row">
+                    <div class="col-5">
+                        <spring:bind path="trainName">
+                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label for="trainselect">Train:</label>
+                                <form:select class="form-control" path="trainName" varStatus="tagStatus" multiple="0"
+                                             id="trainselect">
+                                    <form:option value="" label="Select"/>
+                                    <form:options items="${trainsList}" itemValue="trainName" itemLabel="trainName"/>
+                                </form:select>
+                                <form:errors path="trainName" cssStyle="color: red; font-size: 14px"></form:errors>
+                            </div>
+                        </spring:bind>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3">
-                    <spring:bind path="departureDate">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:input type="datetime-local" path="departureDate" class="form-control"
-                                        placeholder="" ></form:input>
-                            <form:errors path="departureDate" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
+                <div class="row">
+                    <div class="col-5">
+                        <spring:bind path="departureStationName">
+                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label for="depStation">Departure station:</label>
+                                <form:select class="form-control" path="departureStationName" varStatus="tagStatus"
+                                             multiple="0" id="depStation">
+                                    <form:option value="" label="From"/>
+                                    <form:options items="${stationList}" itemValue="title" itemLabel="title"/>
+                                </form:select>
+                                <form:errors path="departureStationName"
+                                             cssStyle="color: red; font-size: 14px"></form:errors>
+                            </div>
+                        </spring:bind>
+                    </div>
                 </div>
-                <div class="col-3">
-                    <spring:bind path="declaredArrivalDate">
-                        <div class="form-group ${status.error ? 'has-error' : ''}">
-                            <form:input type="datetime-local" path="declaredArrivalDate" class="form-control"
-                                        placeholder="" ></form:input>
-                            <form:errors path="declaredArrivalDate" cssStyle="color: red; font-size: 14px"></form:errors>
-                        </div>
-                    </spring:bind>
+                <div class="row">
+                    <div class="col-4">
+                        <spring:bind path="departureDate">
+                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label for="depTime">Departure time:</label>
+                                <form:input type="datetime-local" path="departureDate" class="form-control"
+                                            placeholder="" id="depTime"></form:input>
+                                <form:errors path="departureDate" cssStyle="color: red; font-size: 14px"></form:errors>
+                            </div>
+                        </spring:bind>
+                    </div>
+                    <div class="col-4">
+                        <spring:bind path="declaredArrivalDate">
+                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                <label for="arrTime">End time of the route:</label>
+                                <form:input type="datetime-local" path="declaredArrivalDate" class="form-control"
+                                            placeholder="" id="arrTime"></form:input>
+                                <form:errors path="declaredArrivalDate"
+                                             cssStyle="color: red; font-size: 14px"></form:errors>
+                            </div>
+                        </spring:bind>
+                    </div>
                 </div>
-            </div>
-            <button type="submit" class="btn btn-danger">Create route</button>
-        </form:form>
+                <button type="submit" class="btn btn-danger" style="margin-top: 40px;">Create route</button>
+            </form:form>
+        </div>
     </div>
 </div>
-
+<%--<footer style="text-align: center; margin-top: 120px;">
+    Swiss Federal Railways, 2020
+</footer>--%>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
