@@ -37,6 +37,8 @@ public class SetRouteController{
     @Autowired
     RouteDTOContainerService containerService;
 
+
+
     @GetMapping("/trainselect")
     public ModelAndView selectTrain() {
         ModelAndView modelAndView = new ModelAndView();
@@ -51,7 +53,6 @@ public class SetRouteController{
     @PostMapping("/trainselect")
     public ModelAndView selectTrain(@Valid @ModelAttribute("routeDTO") RouteDTO routeDTO, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
-
         startRouteValidator.validate(routeDTO, bindingResult);
         if(bindingResult.hasErrors()){
             modelAndView.addObject("trainsList", trainService.getAllTrainsDTO());

@@ -85,6 +85,7 @@
             <th scope="col">Departure</th>
             <th scope="col">Arrival</th>
             <th scope="col">Trip Info</th>
+            <th scope="col">Tickets left</th>
             <th scope="col"></th>
         </tr>
 
@@ -117,7 +118,7 @@
                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header" style="border-bottom: 0 none;">
                                     <h5 class="modal-title" id="exampleModalLabel">
                                         Trip info
                                     </h5>
@@ -130,10 +131,10 @@
                                         <table class="table">
                                             <thead class="thead-success">
                                             <tr>
-                                                <th scope="col">from</th>
-                                                <th scope="col">to</th>
-                                                <th scope="col">departure</th>
-                                                <th scope="col">arrival</th>
+                                                <th scope="col">From</th>
+                                                <th scope="col">To</th>
+                                                <th scope="col">Departure</th>
+                                                <th scope="col">Arrival</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -141,15 +142,15 @@
                                                 <tr>
                                                     <td>${tripInfo.stationFrom.title}</td>
                                                     <td>${tripInfo.stationTo.title}</td>
-                                                    <td>${tripInfo.departureTime}</td>
-                                                    <td>${tripInfo.arrivalTime}</td>
+                                                    <td><fmt:formatDate value="${tripInfo.departureTime}" pattern="HH:mm dd.MM.yy"/></td>
+                                                    <td><fmt:formatDate value="${tripInfo.arrivalTime}" pattern="HH:mm dd.MM.yy"/></td>
                                                 </tr>
                                             </c1:forEach>
                                             </tbody>
                                         </table>
 
                                 </div>
-                                <div class="modal-footer">
+                                <div class="modal-footer" style="border-top: 0 none;">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
                                     </button>
                                 </div>
@@ -157,11 +158,23 @@
                         </div>
                     </div>
                 </td>
+                <td>${scheduleDTO.freePlacesCount}</td>
                 <td>
-                    <a class="btn btn-danger"
-                       href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripId}&stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
+                    <c1:choose>
+
+                    <c1:when test="${scheduleDTO.freePlacesCount != 0}">
+
+                        <a class="btn btn-danger"
+                           href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripId}&stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
                     &departureTime=${scheduleDTO.departureTime}&arrivalTime=${scheduleDTO.arrivalTime}"
-                       role="button" target="_blank">Buy ticket</a>
+                           role="button" target="_blank">Buy ticket</a>
+                    </c1:when>
+
+                    <c1:otherwise>
+                        <button type="button" class="btn btn-secondary btn" disabled>Buy ticket</button>
+                    </c1:otherwise>
+                    </c1:choose>
+
                 </td>
             </tr>
         </c:forEach>

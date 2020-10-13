@@ -1,9 +1,7 @@
 package com.tsystems.javaschool.SBB.validator;
 
-
 import com.tsystems.javaschool.SBB.dto.RouteDTO;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
-import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

@@ -72,8 +72,9 @@
         </div>
 
 
-        <div class="container mt-4 p-md-4 col-12 rounded-container">
+        <div class="container mt-4 p-md-4 col-12 rounded-container" id="myDIV" style="display: block">
             <h2 style="margin-bottom: 30px">Departure</h2>
+        </div>
             <table class="table" style="text-align: center">
                 <tr>
                     <th scope="col">Train</th>

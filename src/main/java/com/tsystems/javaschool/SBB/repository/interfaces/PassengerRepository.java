@@ -16,6 +16,8 @@ public interface PassengerRepository {
 
     Passenger findPassengerByPersonalData(String firstName, String lastName, Date birthDate);
 
+    List<Object[]> getAllPassengersByTrainIdAndTripId(int trainId, int tripId);
+
     void add(Passenger passenger);
 
     void update(Passenger passenger);

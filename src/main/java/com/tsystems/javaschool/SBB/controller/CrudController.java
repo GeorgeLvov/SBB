@@ -1,7 +1,12 @@
 package com.tsystems.javaschool.SBB.controller;
 
+import com.tsystems.javaschool.SBB.dto.PassengerInfoDTO;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.dto.TrainDTO;
+import com.tsystems.javaschool.SBB.dto.TripInfoDTO;
+import com.tsystems.javaschool.SBB.entities.Passenger;
+import com.tsystems.javaschool.SBB.service.interfaces.PassengerService;
+import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.StationService;
 import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
 import com.tsystems.javaschool.SBB.validator.StationValidator;
@@ -11,23 +16,32 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
+import java.sql.Timestamp;
 import java.util.List;
+
 
 @Controller
 public class CrudController {
 
     @Autowired
-    private StationService stationService;
+    PassengerService passengerService;
     @Autowired
-    private StationValidator stationValidator;
+    ScheduleService scheduleService;
+    @Autowired
+    private StationService stationService;
     @Autowired
     private TrainService trainService;
     @Autowired
+    private StationValidator stationValidator;
+    @Autowired
     private TrainValidator trainValidator;
+
+
 
     @GetMapping(value = "/admin/crud")
     public ModelAndView addTrainOrStation() {
@@ -71,7 +85,7 @@ public class CrudController {
         return modelAndView;
     }
 
-    @GetMapping(value = "admin/trains")
+    @GetMapping(value = "/admin/trains")
     public ModelAndView getAllTrains() {
         ModelAndView modelAndView = new ModelAndView();
         List<TrainDTO> trains = trainService.getAllTrainsDTO();
@@ -88,4 +102,34 @@ public class CrudController {
         modelAndView.setViewName("AllStationsPage");
         return modelAndView;
     }
+
+   @GetMapping(value = "/admin/trainsAndRoutes")
+   public ModelAndView getAllTrainsAndRoutes() {
+       ModelAndView modelAndView = new ModelAndView();
+       List<List<TripInfoDTO>> tripsList = scheduleService.getAllTrips();
+       modelAndView.addObject("allTrips", tripsList);
+       modelAndView.setViewName("AllTripsPage");
+       return modelAndView;
+   }
+
+
+    @GetMapping(value = "/passengers/{trainId}/{tripId}/{stationFrom}/{stationTo}/{departureTime}/{arrivalTime}")
+    public ModelAndView getAllPassengersOnTrip(@PathVariable int trainId,
+                                               @PathVariable int tripId,
+                                               @PathVariable String stationFrom,
+                                               @PathVariable String stationTo,
+                                               @PathVariable Timestamp departureTime,
+                                               @PathVariable Timestamp arrivalTime) {
+        ModelAndView modelAndView = new ModelAndView();
+        List<PassengerInfoDTO> passengers = passengerService.getAllPassengersByTrainIdAndTripId(trainId,tripId);
+        modelAndView.addObject("passengers", passengers);
+        modelAndView.addObject("stationFrom", stationFrom);
+        modelAndView.addObject("stationTo", stationTo);
+        modelAndView.addObject("departureTime", departureTime);
+        modelAndView.addObject("arrivalTime", arrivalTime);
+        modelAndView.setViewName("Passengers");
+        return modelAndView;
+    }
+
+
 }

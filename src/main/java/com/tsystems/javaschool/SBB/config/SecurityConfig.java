@@ -43,12 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/","/timetable").permitAll()
                 .antMatchers("/success","/checkin").authenticated()
-                .antMatchers("/addStation","/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
-                /*.defaultSuccessUrl("/success", true)*/
                 .and()
                 .rememberMe()
                 .key("rem-me-key")

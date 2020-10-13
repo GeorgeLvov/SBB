@@ -8,7 +8,7 @@ import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import java.util.regex.Pattern;
-//typeMismatch.capacity=*Invalid capacity
+
 @Component
 public class TrainValidator implements Validator {
     

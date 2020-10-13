@@ -28,7 +28,7 @@ public class TicketDTOContainerService {
     UserService userService;
 
 
-    public boolean setTicketDTOContainerFields(Map<String, String> allRequestParams) {
+    public boolean checkTrip(Map<String, String> allRequestParams) {
 
         int trainId = Integer.parseInt(allRequestParams.get("trainId").trim());
         int tripId = Integer.parseInt(allRequestParams.get("tripId").trim());

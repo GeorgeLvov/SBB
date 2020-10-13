@@ -57,12 +57,13 @@
 
     </div>
 </nav>
+<h2 style="text-align: center; margin-top: 20px;">Trains</h2>
 <div class="container bg-light mt-4 p-md-4 col-6 rounded-container">
-    <table class="table">
+    <table class="table" style="text-align: center">
         <thead class="thead-light">
         <tr>
-            <th scope="col">#TrainID</th>
-            <th scope="col">Name</th>
+            <th scope="col" width="33%">№</th>
+            <th scope="col" width="33%">Name</th>
             <th scope="col">Capacity</th>
         </tr>
         </thead>

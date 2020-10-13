@@ -21,7 +21,7 @@ public class WebConfig implements WebMvcConfigurer {
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
         messageSource.setBasenames("validation");
-        return messageSource; // _ru_RU
+        return messageSource;
     }
 
     @Override

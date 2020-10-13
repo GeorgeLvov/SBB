@@ -8,10 +8,8 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.hibernate.query.Query;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigInteger;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -71,6 +69,7 @@ public class TicketRepositoryImpl implements TicketRepository {
         query.setParameter(1, userId);
         return query.list();
     }
+
 
 
     @Override

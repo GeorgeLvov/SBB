@@ -1,5 +1,6 @@
 package com.tsystems.javaschool.SBB.dto;
 
+import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.entities.Schedule;
 import lombok.*;
 
@@ -36,7 +37,11 @@ public class ScheduleDTO {
 
     private Timestamp arrivalTime;
 
+    private int freePlacesCount;
+
     private List<TripInfoDTO> tripInfoDTOList;
+
+    private List<PassengerDTO> passengerDTOList;
 
     public ScheduleDTO(int id, TrainDTO trainDTO, Integer tripId, int stationIndex, StationDTO stationFromDTO, StationDTO stationToDTO, Timestamp departureTime, Timestamp arrivalTime) {
         this.id = id;

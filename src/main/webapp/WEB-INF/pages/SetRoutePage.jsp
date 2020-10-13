@@ -11,7 +11,6 @@
     <title>SBB: Set trip</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <%--<link rel="stylesheet" href="<c:url value="/res/css/setRoute.css"/>" />--%>
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 
 
@@ -19,9 +18,6 @@
         function mainFunction() {
             if (${resultRouteDTO.sideArrivalTimes == null || empty resultRouteDTO.sideArrivalTimes}) {
               alert("You haven't added any arrival stations!");
-              /*  $("#myBut").click(function(){
-                    $("#aleT").addClass('show');
-                })*/
             } else {
                 var x = Date.parse("${resultRouteDTO.declaredArrivalDate}");
                 var y = Date.parse("${(resultRouteDTO.sideArrivalTimes != null && !empty resultRouteDTO.sideArrivalTimes) ? resultRouteDTO.sideArrivalTimes.get(resultRouteDTO.sideArrivalTimes.size()-1) : "0"}");

@@ -21,5 +21,5 @@ public interface ScheduleService {
 
     boolean isTrainAvailableForNewTrip(String trainName, String departureTimeStr, String arrivalTimeStr);
 
-
+    List<List<TripInfoDTO>> getAllTrips();
 }

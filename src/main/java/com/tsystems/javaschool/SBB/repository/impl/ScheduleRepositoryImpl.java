@@ -2,6 +2,7 @@ package com.tsystems.javaschool.SBB.repository.impl;
 
 import com.tsystems.javaschool.SBB.entities.Schedule;
 import com.tsystems.javaschool.SBB.entities.Station;
+import com.tsystems.javaschool.SBB.entities.Train;
 import com.tsystems.javaschool.SBB.repository.interfaces.ScheduleRepository;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -55,10 +58,12 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
-    public List<Schedule> getSchedulesByStationTo(Station stationTo) {
+    public List<Schedule> getSchedulesByTrainIdTripIdStationTo(int trainId, int tripId, Station stationTo) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session
-                .createQuery("from Schedule s where s.stationTo = :stationTo")
+                .createQuery("from Schedule s where s.train.id =:trainId and s.tripId =:tripId and s.stationTo = :stationTo")
+                .setParameter("trainId", trainId)
+                .setParameter("tripId", tripId)
                 .setParameter("stationTo", stationTo);
         return query.list();
     }
@@ -110,5 +115,15 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
         return (List<Timestamp>) query.list();
     }
+
+    @Override
+    public List<Object[]> getAllTrainsTrips(){
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createNativeQuery("select train_id, trip_id from schedule\n" +
+                "group by train_id,trip_id order by departure_time");
+        return query.list();
+    }
+
+
 
 }

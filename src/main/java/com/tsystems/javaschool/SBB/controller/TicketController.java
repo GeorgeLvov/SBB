@@ -9,7 +9,6 @@ import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
 import com.tsystems.javaschool.SBB.validator.PassengerValidator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -45,7 +43,7 @@ public class TicketController {
     public ModelAndView checkIn(@RequestParam Map<String, String> allRequestParams) {
         ModelAndView modelAndView = new ModelAndView();
 
-        if (containerService.setTicketDTOContainerFields(allRequestParams)) {
+        if (containerService.checkTrip(allRequestParams)) {
             modelAndView.addObject("passForm", new PassengerDTO());
             modelAndView.setViewName("passengerCheckIn");
             return modelAndView;
@@ -71,20 +69,20 @@ public class TicketController {
             String firstName = passengerDTO.getFirstName();
             String lastName = passengerDTO.getLastName();
             Date birthDate = passengerDTO.getBirthDate();
-            PassengerDTO existingPassenger = passengerService
-                    .findPassengerByPersonalData(firstName, lastName, birthDate);
-            if (existingPassenger == null) {
+            PassengerDTO existingPassenger = passengerService.findPassengerByPersonalData(firstName, lastName, birthDate);
+            if (existingPassenger != null) {
+                ticketDTOContainer.setPassengerDTO(existingPassenger);
+            } else {
                 passengerService.add(passengerDTO);
-                PassengerDTO newPassenger = passengerService.findPassengerByPersonalData(firstName, lastName, birthDate);
-                ticketDTOContainer.setPassengerDTO(newPassenger);
-            } else ticketDTOContainer.setPassengerDTO(existingPassenger);
+                ticketDTOContainer.setPassengerDTO(passengerService.findPassengerByPersonalData(firstName, lastName, birthDate));
+            }
             ticketService.add(ticketDTOContainer);
         } else {
-            modelAndView.setViewName("redirect:/alltickets");
+            modelAndView.setViewName("redirect:/");
             return modelAndView;
         }
 
-        modelAndView.setViewName("redirect:/");
+        modelAndView.setViewName("redirect:/alltickets");
         return modelAndView;
     }
 
@@ -98,6 +96,7 @@ public class TicketController {
         modelAndView.setViewName("UserTicketsPage");
         return modelAndView;
     }
+
 
 
     @GetMapping(value = "/export/{id}")

@@ -1,9 +1,7 @@
 package com.tsystems.javaschool.SBB.controller;
 
-
 import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
-import com.tsystems.javaschool.SBB.service.interfaces.SecurityService;
 import com.tsystems.javaschool.SBB.service.interfaces.UserService;
 import com.tsystems.javaschool.SBB.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +35,7 @@ public class AdminController {
 
 
     @GetMapping("/admin/addemployee")
-    public ModelAndView registryG(){
+    public ModelAndView registry(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("registrationPage");
         modelAndView.addObject("userForm", new UserDTO());
@@ -61,5 +59,6 @@ public class AdminController {
         modelAndView.setViewName("adminMainPage");
         return modelAndView;
     }
+
 
 }

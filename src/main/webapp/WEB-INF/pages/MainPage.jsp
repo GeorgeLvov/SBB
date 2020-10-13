@@ -63,7 +63,6 @@
     </div>
 </nav>
 
-
 <%--Timetable --%>
 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -106,7 +105,6 @@
 
             <c:url value="/schedule" var="varT"/>
             <form action="${varT}" method="GET" style="padding-top: 40px">
-                <security:csrfInput/>
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">

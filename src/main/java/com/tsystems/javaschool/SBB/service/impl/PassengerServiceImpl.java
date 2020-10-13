@@ -1,7 +1,7 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
-import com.tsystems.javaschool.SBB.dto.TicketDTO;
+import com.tsystems.javaschool.SBB.dto.PassengerInfoDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.mapper.PassengerMapper;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -40,7 +41,7 @@ public class PassengerServiceImpl implements PassengerService {
         return passenger != null ? passengerMapper.toDTO(passenger) : null;
     }
 
-    /**/
+
     @Override
     @Transactional
     public boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTOContainer ticketDTOContainer) {
@@ -60,6 +61,19 @@ public class PassengerServiceImpl implements PassengerService {
         return false;
     }
 
+    @Override
+    @Transactional
+    public List<PassengerInfoDTO> getAllPassengersByTrainIdAndTripId(int trainId, int tripId) {
+        List<PassengerInfoDTO> passengers = new ArrayList<>();
+        List<Object[]> objects = passengerRepository.getAllPassengersByTrainIdAndTripId(trainId, tripId);
+        for (Object[] object : objects) {
+            PassengerInfoDTO passengerInfoDTO = new PassengerInfoDTO((String) object[0], (String) object[1], (String) object[2], (Date) object[3],
+                    (String) object[4], (String) object[5], (Timestamp) object[6], (Timestamp) object[7]);
+            passengers.add(passengerInfoDTO);
+        }
+
+        return passengers;
+    }
 
     @Override
     @Transactional

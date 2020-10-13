@@ -1,6 +1,8 @@
 package com.tsystems.javaschool.SBB.controller;
 
 import com.tsystems.javaschool.SBB.dto.*;
+import com.tsystems.javaschool.SBB.repository.interfaces.ScheduleRepository;
+import com.tsystems.javaschool.SBB.service.impl.ScheduleServiceImpl;
 import com.tsystems.javaschool.SBB.service.impl.TicketDTOContainerService;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,7 @@ public class SBBController {
     @Autowired
     private StationService stationService;
     @Autowired
-    TicketDTOContainerService containerService;
-
+    PassengerService passengerService;
 
     @GetMapping(value = "/")
     public ModelAndView mainPage() {
@@ -31,7 +32,6 @@ public class SBBController {
         modelAndView.setViewName("MainPage");
         return modelAndView;
     }
-
 
     @GetMapping("/login")
     public ModelAndView login() {

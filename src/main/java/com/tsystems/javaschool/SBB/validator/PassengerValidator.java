@@ -2,7 +2,6 @@ package com.tsystems.javaschool.SBB.validator;
 
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
-import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.service.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;

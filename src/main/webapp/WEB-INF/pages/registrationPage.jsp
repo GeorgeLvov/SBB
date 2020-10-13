@@ -58,8 +58,10 @@
 
             <form:form method="POST" modelAttribute="userForm" class="form-signin">
                 <security:authorize access="isAnonymous()">
-                    <h2 class="form-signin-heading" style="text-align:center; padding-top: 15px; padding-bottom: 15px">
-                        Create your account</h2>
+                    <h2 class="form-signin-heading" style="text-align:center; padding-top: 15px; padding-bottom: 5px">
+                        Register</h2>
+                    <p style="text-align: center; color: darkgray; padding-bottom: 10px;">It only takes a minute and then
+                        you will be able to view purchased tickets and download them in pdf.</p>
                 </security:authorize>
 
                 <security:authorize access="hasRole('ADMIN')">
@@ -70,7 +72,7 @@
                 <spring:bind path="username">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
                         <form:input type="text" path="username" class="form-control" placeholder="Username"
-                                    autofocus="true"></form:input>
+                                    autofocus="true" id="usr"></form:input>
                         <form:errors path="username" cssStyle="color: red; font-size: 14px"></form:errors>
                     </div>
                 </spring:bind>

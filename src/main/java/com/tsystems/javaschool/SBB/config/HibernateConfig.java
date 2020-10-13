@@ -1,6 +1,5 @@
 package com.tsystems.javaschool.SBB.config;
 
-import com.tsystems.javaschool.SBB.dto.RouteDTO;
 import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
@@ -8,7 +7,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.context.WebApplicationContext;
+
 
 import javax.sql.DataSource;
 import java.util.Properties;

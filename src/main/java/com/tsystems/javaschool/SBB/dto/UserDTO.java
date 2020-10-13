@@ -1,6 +1,5 @@
 package com.tsystems.javaschool.SBB.dto;
 
-
 import com.tsystems.javaschool.SBB.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

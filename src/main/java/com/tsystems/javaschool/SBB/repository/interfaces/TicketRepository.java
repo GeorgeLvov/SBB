@@ -28,6 +28,5 @@ public interface TicketRepository {
     BigInteger getTakenSeatsCount(int trainId, int tripId, Timestamp departureTime, Timestamp arrivalTime);
 
 
-
     List<Object[]> getAllTicketsByUserId(int userId);
 }

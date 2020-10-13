@@ -33,15 +33,17 @@
                 <a class="nav-link" href="#exampleModalCenter" data-toggle="modal" data-target="#exampleModalCenter"> Timetable </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" href="/alltickets">My tickets</a>
+            </li>
+
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
                     <a class="nav-link" href="/admin">Management</a>
                 </li>
             </security:authorize>
 
-                <li class="nav-item">
-                    <a class="nav-link" href="/alltickets">My tickets</a>
-                </li>
+
 
         </ul>
 
@@ -111,7 +113,6 @@
             </div>
             <c:url value="/schedule" var="varT"/>
             <form action="${varT}" method="GET" style="padding-top: 40px">
-                <security:csrfInput/>
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">

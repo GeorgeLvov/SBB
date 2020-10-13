@@ -61,18 +61,19 @@
 
     </div>
 </nav>
-<div class="container bg-light mt-6 p-md-4 col-6 rounded-container">
-    <table class="table">
+<h2 style="text-align: center; margin-top: 20px;">Stations</h2>
+<div class="container bg-light mt-6 p-md-4 col-4 rounded-container">
+    <table class="table" style="text-align: center">
         <thead class="thead-light">
         <tr>
-            <th scope="col">#StationID</th>
+            <th scope="col" width="50%">№</th>
             <th scope="col">Title</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="stdto" items="${stationsList}">
+        <c:forEach var="stdto" items="${stationsList}" varStatus="vs">
             <tr>
-                <th scope="row">${stdto.id}</th>
+                <th scope="row">${vs.count}</th>
                 <td>${stdto.title}</td>
             </tr>
         </c:forEach>

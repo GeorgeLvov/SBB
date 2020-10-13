@@ -12,8 +12,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ScheduleController {
@@ -23,15 +23,6 @@ public class ScheduleController {
     @Autowired
     private StationService stationService;
 
-/*
-
-    @GetMapping(value = "/schedule")
-    public ModelAndView schedule(){
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("schedulePage");
-        return modelAndView;
-    }
-*/
 
     @GetMapping(value = "/schedule")
     public ModelAndView searchTrips(@RequestParam(name = "stationFrom", required = false) Integer stationFromId,
@@ -52,6 +43,7 @@ public class ScheduleController {
         Timestamp tmp2 = Timestamp.valueOf(LocalDateTime.parse(dateTo));
 
         List<ScheduleDTO> list = scheduleService.getSchedulesByStationsAndDate(stationDTOFrom, stationDTOTo, tmp1, tmp2);
+
         modelAndView.addObject("scheduleDTOList", list);
 
         modelAndView.setViewName("schedulePage");
@@ -60,8 +52,10 @@ public class ScheduleController {
 
 
     @GetMapping(value = "/timetable")
-    public ModelAndView getTimetable(@RequestParam(name = "timeTable", required = false) Integer stationId) {
+    public ModelAndView getTimetable(@RequestParam(name = "timeTable", required = false) Integer stationId,
+                                     @RequestParam Map<String, String> allRequestParams) {
         ModelAndView modelAndView = new ModelAndView();
+        allRequestParams.forEach((k, v) -> System.out.println(k + "--------------->" + v));
         if (stationId == null) {
             modelAndView.setViewName("redirect:/");
             return modelAndView;
@@ -71,4 +65,9 @@ public class ScheduleController {
         modelAndView.setViewName("TimeTable");
         return modelAndView;
     }
+
+
+
+
+
 }

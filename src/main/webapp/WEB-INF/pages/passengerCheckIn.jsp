@@ -44,22 +44,25 @@
 
                 <spring:bind path="firstName">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <form:input type="text" path="firstName" class="form-control" placeholder="Enter your first name"
-                                    autofocus="true"></form:input>
+                        <label for="firstN">Passenger name:</label>
+                        <form:input type="text" path="firstName" class="form-control" placeholder="Enter name"
+                                    autofocus="true" id="firstN"></form:input>
                         <form:errors path="firstName" cssStyle="color: red; font-size: 14px"></form:errors>
                     </div>
                 </spring:bind>
 
                 <spring:bind path="lastName">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label for="firstN">Passenger surname:</label>
                         <form:input type="text" path="lastName" class="form-control"
-                                    placeholder="Enter your last name"></form:input>
+                                    placeholder="Enter surname"></form:input>
                         <form:errors path="lastName" cssStyle="color: red; font-size: 14px"></form:errors>
                     </div>
                 </spring:bind>
 
                 <spring:bind path="birthDate">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label for="firstN">Date of birth:</label>
                         <form:input type="date" path="birthDate" class="form-control"
                                     placeholder="Birthdate"></form:input>
                         <form:errors path="birthDate" cssStyle="color: red; font-size: 14px"></form:errors>

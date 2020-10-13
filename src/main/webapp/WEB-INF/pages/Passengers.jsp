@@ -1,20 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <html>
 <head>
-    <title>SBB CFF FFS</title>
+    <title>SBB: Passengers</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="<c:url value="/res/css/forMainPages.css"/>"/>
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 </head>
-
 <body>
-
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
 
-    <a class="navbar-brand" href="<c:url value="/"/>" style="color: white">
+    <a class="navbar-brand" href="<c:url value="/admin"/>" style="color: white">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         SBB CFF FFS
     </a>
@@ -55,20 +54,75 @@
             </li>
         </ul>
 
-        <a class="nav-link" href="/logout" style="color: white"><i class="fa fa-user" aria-hidden="true"></i> Log
-            out</a>
+        <a class="nav-link" href="<c:url value="/logout"/>" style="color: white">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            Log out
+        </a>
+
     </div>
 </nav>
 
-<c:if test="${message != null}">
-    <div class="alert alert-success alert-dismissible fade show col-sm-4 offset-sm-4" style="text-align: center">
-        <strong>Success!</strong>
-        <p>${message}</p>
-        <p><strong>username</strong>: ${usrname}</p>
-        <p><strong>password</strong>: ${passw}</p>
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
-    </div>
-</c:if>
+<c:choose>
+    <c:when test="${empty passengers}">
+        <div class="container-fluid">
+            <div class="row" style="height: 100px">
+                <div class="col-2"></div>
+                <div class="col-8"  style="text-align:center;" >
+                    <h1 style="font-size: 50px; margin-top: 100px">No passengers registered for the trip!</h1>
+                </div>
+                <div class="col-2"></div>
+            </div>
+        </div>
+    </c:when>
+    <c:otherwise>
+        <div class="container mt-4 p-md-4 col-12 rounded-container">
+            <fmt:setLocale value="en_US" scope="session"/>
+            <h3>
+            ${stationFrom}-${stationTo}
+                   <h5><fmt:formatDate value="${departureTime}" pattern="HH:mm dd.MM.yy"/> - <fmt:formatDate value="${arrivalTime}" pattern="HH:mm dd.MM.yy"/></h5>
+            </h3>
+
+            <table class="table" style="text-align: center">
+                <tr>
+                    <th scope="col">Train</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Surname</th>
+                    <th scope="col">Date of birth</th>
+                    <th scope="col">From</th>
+                    <th scope="col">To</th>
+                    <th scope="col">Departure</th>
+                    <th scope="col">Arrival</th>
+                </tr>
+
+                <tbody>
+
+                <c:forEach var="passenger" items="${passengers}" varStatus="vs">
+
+                    <tr>
+                        <th scope="row">${passenger.trainName}</th>
+                        <td>${passenger.firstName}</td>
+                        <td>${passenger.lastName}</td>
+                        <td> <fmt:formatDate value="${passenger.birthDate}" pattern="dd-MM-yyyy"/></td>
+                        <td>${passenger.stationFrom}</td>
+                        <td>${passenger.stationTo}</td>
+                        <td>
+                            <strong><fmt:formatDate value="${passenger.departureTime}" pattern="HH:mm"/></strong>
+                            <br>
+                            <fmt:formatDate value="${passenger.departureTime}" pattern="E, dd.MM.yyyy"/>
+                        </td>
+                        <td>
+                            <strong><fmt:formatDate value="${passenger.arrivalTime}" pattern="HH:mm"/></strong>
+                            <br>
+                            <fmt:formatDate value="${passenger.arrivalTime}" pattern="E, dd.MM.yyyy"/>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </c:otherwise>
+</c:choose>
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -79,6 +133,5 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
 </body>
 </html>
