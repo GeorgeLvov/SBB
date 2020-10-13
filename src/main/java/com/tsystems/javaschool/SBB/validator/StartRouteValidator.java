@@ -9,6 +9,7 @@ import org.springframework.validation.Validator;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 
 @Component
 public class StartRouteValidator implements Validator {
@@ -36,18 +37,25 @@ public class StartRouteValidator implements Validator {
 
         if (!routeDTO.getDepartureDate().equals("") && !routeDTO.getDeclaredArrivalDate().equals("") && !routeDTO.getTrainName().equals("")) {
 
-            if(LocalDateTime.parse(routeDTO.getDepartureDate()).compareTo(LocalDateTime.now().plusMinutes(30)) <= 0){
-                errors.rejectValue("departureDate", "Invalid.time.current");
-            }
+            try {
+                if (LocalDateTime.parse(routeDTO.getDepartureDate()).compareTo(LocalDateTime.now().plusMinutes(30)) <= 0) {
+                    errors.rejectValue("departureDate", "Invalid.time.current");
+                }
 
-            if (LocalDateTime.parse(routeDTO.getDeclaredArrivalDate()).compareTo(LocalDateTime.parse(routeDTO.getDepartureDate())) < 0) {
-                errors.rejectValue("declaredArrivalDate", "Invalid.time.BeginDTO.2");
-            } else if ((Timestamp.valueOf(LocalDateTime.parse(routeDTO.getDeclaredArrivalDate())).getTime() - Timestamp.valueOf(LocalDateTime.parse(routeDTO.getDepartureDate())).getTime()) < 900_000) {
 
-                errors.rejectValue("declaredArrivalDate", "Invalid.time.BeginDTO");
-            }
-            if(!scheduleService.isTrainAvailableForNewTrip(routeDTO.getTrainName(), routeDTO.getDepartureDate(), routeDTO.getDeclaredArrivalDate())){
-                errors.rejectValue("trainName", "Train.is.unavailable");
+                if (LocalDateTime.parse(routeDTO.getDeclaredArrivalDate()).compareTo(LocalDateTime.parse(routeDTO.getDepartureDate())) < 0) {
+                    errors.rejectValue("declaredArrivalDate", "Invalid.time.BeginDTO.2");
+                } else if ((Timestamp.valueOf(LocalDateTime.parse(routeDTO.getDeclaredArrivalDate())).getTime() - Timestamp.valueOf(LocalDateTime.parse(routeDTO.getDepartureDate())).getTime()) < 900_000) {
+                    errors.rejectValue("declaredArrivalDate", "Invalid.time.BeginDTO");
+                }
+
+
+                if (!scheduleService.isTrainAvailableForNewTrip(routeDTO.getTrainName(), routeDTO.getDepartureDate(), routeDTO.getDeclaredArrivalDate())) {
+                    errors.rejectValue("trainName", "Train.is.unavailable");
+                }
+            } catch (DateTimeParseException dpe) {
+                errors.rejectValue("departureDate", "Invalid.dateTime");
+                errors.rejectValue("declaredArrivalDate", "Invalid.dateTime");
             }
 
         }

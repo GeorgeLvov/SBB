@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -66,23 +64,14 @@ public class TicketController {
         if(ticketService.isTimeValid(ticketDTOContainer.getDepartureTime())
                 && !ticketService.isTrainFull(ticketDTOContainer.getDepartureTime(), ticketDTOContainer.getArrivalTime(),
                 ticketDTOContainer.getTrainDTO().getId(), ticketDTOContainer.getTripId())){
-            String firstName = passengerDTO.getFirstName();
-            String lastName = passengerDTO.getLastName();
-            Date birthDate = passengerDTO.getBirthDate();
-            PassengerDTO existingPassenger = passengerService.findPassengerByPersonalData(firstName, lastName, birthDate);
-            if (existingPassenger != null) {
-                ticketDTOContainer.setPassengerDTO(existingPassenger);
-            } else {
-                passengerService.add(passengerDTO);
-                ticketDTOContainer.setPassengerDTO(passengerService.findPassengerByPersonalData(firstName, lastName, birthDate));
-            }
-            ticketService.add(ticketDTOContainer);
+
+            ticketService.setPassengerToTicket(passengerDTO);
+            ticketService.createTicket(ticketDTOContainer);
+            modelAndView.setViewName("redirect:/alltickets");
+
         } else {
             modelAndView.setViewName("redirect:/");
-            return modelAndView;
         }
-
-        modelAndView.setViewName("redirect:/alltickets");
         return modelAndView;
     }
 
@@ -97,10 +86,8 @@ public class TicketController {
         return modelAndView;
     }
 
-
-
     @GetMapping(value = "/export/{id}")
-    public void exportToPDF(@PathVariable("id")int ticketId, HttpServletResponse response) throws IOException {
+    public void exportToPDF(@PathVariable("id")int ticketId, HttpServletResponse response) {
         response.setContentType("application/pdf");
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=eTicket_SBB.pdf";

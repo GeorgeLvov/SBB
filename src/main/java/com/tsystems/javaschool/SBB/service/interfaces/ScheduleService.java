@@ -13,6 +13,8 @@ public interface ScheduleService {
 
     List<ScheduleDTO> getSchedulesByStationFrom(StationDTO stationDTOFrom);
 
+    List<ScheduleDTO> getSchedulesByStationTo(StationDTO stationDTOTo);
+
     List<ScheduleDTO> getSchedulesByStationsAndDate(StationDTO stationFromDTO, StationDTO stationTo, Timestamp tmp1, Timestamp tmp2);
 
     List<TripInfoDTO> getInfoOfAllTripsByTrainIdAndTripId(int trainId, int tripId);

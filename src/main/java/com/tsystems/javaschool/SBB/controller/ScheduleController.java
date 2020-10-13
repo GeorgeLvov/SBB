@@ -52,16 +52,17 @@ public class ScheduleController {
 
 
     @GetMapping(value = "/timetable")
-    public ModelAndView getTimetable(@RequestParam(name = "timeTable", required = false) Integer stationId,
-                                     @RequestParam Map<String, String> allRequestParams) {
+    public ModelAndView getTimetable(@RequestParam(name = "timeTable", required = false) Integer stationId) {
         ModelAndView modelAndView = new ModelAndView();
-        allRequestParams.forEach((k, v) -> System.out.println(k + "--------------->" + v));
         if (stationId == null) {
             modelAndView.setViewName("redirect:/");
             return modelAndView;
         }
-        List<ScheduleDTO> scheduleDTOs = scheduleService.getSchedulesByStationFrom(stationService.getStationDTOById(stationId));
-        modelAndView.addObject("scheduleDTOList", scheduleDTOs);
+        List<ScheduleDTO> scheduleDTOsFrom = scheduleService.getSchedulesByStationFrom(stationService.getStationDTOById(stationId));
+        List<ScheduleDTO> scheduleDTOsTo = scheduleService.getSchedulesByStationTo(stationService.getStationDTOById(stationId));
+        modelAndView.addObject("scheduleDTOListFrom", scheduleDTOsFrom);
+        modelAndView.addObject("scheduleDTOListTo", scheduleDTOsTo);
+        System.out.println(scheduleDTOsTo);
         modelAndView.setViewName("TimeTable");
         return modelAndView;
     }

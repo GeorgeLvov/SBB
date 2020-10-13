@@ -136,7 +136,8 @@
                                             </tr>
                                             <tr>
                                                 <td><strong>Date of Birth</strong></td>
-                                                <td>${ticketInfo.birthDate}</td>
+
+                                                <td> <fmt:formatDate value="${ticketInfo.birthDate}" pattern="dd.MM.yyyy"/></td>
                                             </tr>
                                             </tbody>
                                         </table>

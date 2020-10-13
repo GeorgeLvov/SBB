@@ -31,7 +31,7 @@ public class UserController {
 
 
     @GetMapping("/registration")
-    public ModelAndView registry() {
+    public ModelAndView register() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("registrationPage");
         modelAndView.addObject("userForm", new UserDTO());
@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping(value = "/registration")
-    public ModelAndView registry(@ModelAttribute("userForm") UserDTO userDTO, BindingResult bindingResult) {
+    public ModelAndView register(@ModelAttribute("userForm") UserDTO userDTO, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         userValidator.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {

@@ -39,6 +39,8 @@ public class ScheduleDTO {
 
     private int freePlacesCount;
 
+    private boolean availableOnTime;
+
     private List<TripInfoDTO> tripInfoDTOList;
 
     private List<PassengerDTO> passengerDTOList;

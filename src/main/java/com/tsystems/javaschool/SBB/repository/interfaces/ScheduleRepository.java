@@ -41,6 +41,14 @@ public interface ScheduleRepository {
 
 
     /**
+     * Provides all schedules with specified param
+     *
+     * @param stationTo chosen station for timetable
+     */
+    List<Schedule> getSchedulesByStationTo(Station stationTo);
+
+
+    /**
      * Returns all schedules with specified params
      *
      * @param trainId id of train

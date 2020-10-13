@@ -1,5 +1,6 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
+import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
@@ -9,6 +10,7 @@ import com.tsystems.javaschool.SBB.mapper.TicketMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.TicketRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.UserRepository;
+import com.tsystems.javaschool.SBB.service.interfaces.PassengerService;
 import com.tsystems.javaschool.SBB.service.interfaces.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,10 @@ public class TicketServiceImpl implements TicketService {
     private TicketMapper ticketMapper;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    TicketDTOContainer ticketDTOContainer;
+    @Autowired
+    PassengerService passengerService;
 
     @Override
     public boolean isTimeValid(Timestamp departureTimeIn) {
@@ -83,15 +89,31 @@ public class TicketServiceImpl implements TicketService {
             boolean valid = (boolean) objects[9];
 
             ticketInfos
-                    .add(new TicketInfoDTO(ticketId, trainName, firstName, lastName, birthDate, statFromTitle, statToTitle, departureTime, arrivalTime, valid));
+                    .add(new TicketInfoDTO(ticketId, trainName, firstName, lastName, birthDate, statFromTitle,
+                            statToTitle, departureTime, arrivalTime, valid));
         }
 
         return ticketInfos;
     }
 
     @Override
+    public void setPassengerToTicket(PassengerDTO passengerDTO){
+        String firstName = passengerDTO.getFirstName();
+        String lastName = passengerDTO.getLastName();
+        Date birthDate = passengerDTO.getBirthDate();
+        PassengerDTO existingPassenger = passengerService.findPassengerByPersonalData(firstName, lastName, birthDate);
+        if (existingPassenger != null) {
+            ticketDTOContainer.setPassengerDTO(existingPassenger);
+        } else {
+            passengerService.add(passengerDTO);
+            ticketDTOContainer.setPassengerDTO(passengerService.findPassengerByPersonalData(firstName, lastName, birthDate));
+        }
+    }
+
+
+    @Override
     @Transactional
-    public void add(TicketDTOContainer ticketDTOContainer) {
+    public void createTicket(TicketDTOContainer ticketDTOContainer) {
         TicketDTO ticketDTO = new TicketDTO();
         ticketDTO.setTrainDTO(ticketDTOContainer.getTrainDTO());
         ticketDTO.setTripId(ticketDTOContainer.getTripId());

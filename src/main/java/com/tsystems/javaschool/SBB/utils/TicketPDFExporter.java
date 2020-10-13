@@ -48,10 +48,15 @@ public class TicketPDFExporter {
         birthdate = sdf1.format(ticketDTO.getPassengerDTO().getBirthDate());
     }
 
-    public void export(HttpServletResponse response) throws IOException {
+    public void export(HttpServletResponse response)  {
 
         Document document = new Document(PageSize.A4);
-        PdfWriter writer = PdfWriter.getInstance(document, response.getOutputStream());
+        PdfWriter writer = null;
+        try {
+            writer = PdfWriter.getInstance(document, response.getOutputStream());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         document.open();
 
         PdfPTable table1 = new PdfPTable(6);
@@ -59,7 +64,12 @@ public class TicketPDFExporter {
 
         java.util.List<PdfPCell> cells = new ArrayList<>();
         PdfPCell cellFirst = new PdfPCell();
-        Image jpg = Image.getInstance("C:\\Users\\User\\IdeaProjects\\SBB\\src\\main\\webapp\\res\\img\\sbbBadge.png");
+        Image jpg = null;
+        try {
+            jpg = Image.getInstance("C:\\Users\\User\\IdeaProjects\\SBB\\src\\main\\webapp\\res\\img\\sbbBadge.png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         jpg.scalePercent(25f);
         cellFirst.addElement(jpg);
         cells.add(cellFirst);

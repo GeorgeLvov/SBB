@@ -142,8 +142,10 @@
                                                 <tr>
                                                     <td>${tripInfo.stationFrom.title}</td>
                                                     <td>${tripInfo.stationTo.title}</td>
-                                                    <td><fmt:formatDate value="${tripInfo.departureTime}" pattern="HH:mm dd.MM.yy"/></td>
-                                                    <td><fmt:formatDate value="${tripInfo.arrivalTime}" pattern="HH:mm dd.MM.yy"/></td>
+                                                    <td><fmt:formatDate value="${tripInfo.departureTime}"
+                                                                        pattern="HH:mm dd.MM.yy"/></td>
+                                                    <td><fmt:formatDate value="${tripInfo.arrivalTime}"
+                                                                        pattern="HH:mm dd.MM.yy"/></td>
                                                 </tr>
                                             </c1:forEach>
                                             </tbody>
@@ -158,21 +160,27 @@
                         </div>
                     </div>
                 </td>
-                <td>${scheduleDTO.freePlacesCount}</td>
                 <td>
                     <c1:choose>
-
-                    <c1:when test="${scheduleDTO.freePlacesCount != 0}">
-
-                        <a class="btn btn-danger"
-                           href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripId}&stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
+                        <c1:when test="${scheduleDTO.availableOnTime}">
+                            ${scheduleDTO.freePlacesCount}
+                        </c1:when>
+                        <c1:otherwise>
+                            -
+                        </c1:otherwise>
+                    </c1:choose>
+                </td>
+                <td>
+                    <c1:choose>
+                        <c1:when test="${(scheduleDTO.freePlacesCount == 0) || (!scheduleDTO.availableOnTime)}">
+                            <button type="button" class="btn btn-secondary btn" disabled>Buy ticket</button>
+                        </c1:when>
+                        <c1:otherwise>
+                            <a class="btn btn-danger"
+                               href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripId}&stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
                     &departureTime=${scheduleDTO.departureTime}&arrivalTime=${scheduleDTO.arrivalTime}"
-                           role="button" target="_blank">Buy ticket</a>
-                    </c1:when>
-
-                    <c1:otherwise>
-                        <button type="button" class="btn btn-secondary btn" disabled>Buy ticket</button>
-                    </c1:otherwise>
+                               role="button" target="_blank">Buy ticket</a>
+                        </c1:otherwise>
                     </c1:choose>
 
                 </td>
