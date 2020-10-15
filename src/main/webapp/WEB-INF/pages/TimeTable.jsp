@@ -103,7 +103,7 @@
         </c:when>
         <c:otherwise>
             <div class="container mt-4 p-md-4 col-12 rounded-container">
-                <h2 style="margin-bottom: 30px; text-align: center">Departure</h2>
+                <h2 style="margin-bottom: 30px; text-align: center">Departure(${station.title})</h2>
                 <table class="table" style="text-align: center">
                     <tr>
                         <th scope="col">Train</th>
@@ -231,7 +231,7 @@
         </c:when>
         <c:otherwise>
             <div class="container mt-4 p-md-4 col-12 rounded-container">
-                <h2 style="margin-bottom: 30px; text-align: center">Arrival</h2>
+                <h2 style="margin-bottom: 30px; text-align: center">Arrival(${station.title})</h2>
                 <table class="table" style="text-align: center">
                     <tr>
                         <th scope="col">Train</th>
@@ -320,10 +320,7 @@
                                                                                         pattern="HH:mm dd.MM"/></td>
                                                                 </c:otherwise>
                                                             </c:choose>
-
-
                                                         </tr>
-
                                                     </c1:forEach>
                                                     </tbody>
                                                 </table>

@@ -30,7 +30,7 @@ public class TrainRepositoryImpl implements TrainRepository {
     }
 
     @Override
-    public Train findTrainByTrainName(String trainName) {
+    public Train findTrainByName(String trainName) {
         Session session = sessionFactory.getCurrentSession();
         return session.byNaturalId(Train.class)
                 .using("trainName", trainName)

@@ -11,11 +11,10 @@ public interface StationService {
 
     StationDTO getStationDTOById(int id);
 
-    StationDTO findByStationDTOTitle(String title);
+    StationDTO findStationDTOByTitle(String title);
 
-    void add(StationDTO stationDTO);
+    void addStation(StationDTO stationDTO);
 
-    void update(StationDTO stationDTO);
+    void updateStation(StationDTO stationDTO);
 
-    void delete(StationDTO stationDTO);
 }

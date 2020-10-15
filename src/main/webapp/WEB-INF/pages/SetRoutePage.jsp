@@ -37,12 +37,7 @@
 </head>
 
 <body>
-<%--<div class="alert alert-warning alert-dismissible fade hide" role="alert" id="aleT">
-    <strong>Holy guacamole!</strong> You should check in on some of those fields below.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-</div>--%>
+
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
 
     <a class="navbar-brand" href="<c:url value="/admin"/>" style="color: white">
@@ -163,7 +158,7 @@
                             <label for="stat">Station:</label>
                             <form:select class="form-control" path="sideStations" varStatus="tagStatus" multiple="0" id="stat">
                                 <form:option value="" label="Select"/>
-                                <form:options items="${stationList}" itemValue="title" itemLabel="title"/>
+                                <form:options items="${stationsList}" itemValue="title" itemLabel="title"/>
                             </form:select>
                             <form:errors path="sideStations" cssStyle="color: red; font-size: 14px"></form:errors>
                         </div>
@@ -264,13 +259,13 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel2">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel2">SBB</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                Создать маршрут??
+                Create the trip?
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -279,11 +274,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
 
 
 

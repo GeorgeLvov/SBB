@@ -29,13 +29,13 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void add(User user) {
+    public void addUser(User user) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(user);
     }
 
     @Override
-    public User findByUsername(String username) {
+    public User findUserByName(String username) {
         Session session = sessionFactory.getCurrentSession();
         return session.byNaturalId(User.class)
                 .using("username", username)

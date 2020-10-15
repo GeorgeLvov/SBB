@@ -125,10 +125,10 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     }
 
     @Override
-    public List<Object[]> getAllTrainsTrips(){
+    public List<Object[]> getAllTrainsAndTrips(){
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createNativeQuery("select train_id, trip_id from schedule\n" +
-                "group by train_id,trip_id order by departure_time");
+                "group by trip_id order by departure_time");
         return query.list();
     }
 

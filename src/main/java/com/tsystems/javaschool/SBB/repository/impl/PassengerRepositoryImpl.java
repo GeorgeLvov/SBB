@@ -19,12 +19,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     @Autowired
     private SessionFactory sessionFactory;
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<Passenger> getAllPassengers() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Passenger").list();
-    }
 
     @Override
     public Passenger getPassengerById(int id) {
@@ -33,7 +27,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     }
 
     @Override
-    public List<Object[]> getPassengerWithTicketsByFields(String firstName, String lastName, Date birthDate) {
+    public List<Object[]> getPassengerWithTicketsByPersonalData(String firstName, String lastName, Date birthDate) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createNativeQuery("select train_id, trip_id, departure_time, arrival_time from passenger inner join ticket on passenger.id = passenger_id " +
                 "where firstname=? and lastname=? and birthdate=? and valid = 1")
@@ -44,7 +38,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     }
 
     @Override
-    public Passenger findPassengerByPersonalData(String firstName, String lastName, Date birthDate) {
+    public Passenger getPassengerByPersonalData(String firstName, String lastName, Date birthDate) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("from Passenger p where p.firstName = :firstName and p.lastName = :lastName" +
                 " and p.birthDate = :birthDate")
@@ -62,11 +56,11 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     @Override
     public List<Object[]> getAllPassengersByTrainIdAndTripId(int trainId, int tripId){
 
-        Query query = sessionFactory.getCurrentSession().createNativeQuery("select trains.name as trname, firstname, lastname, birthdate, st1.name as st1name, st2.name as st2name, departure_time, arrival_time from passenger\n" +
+        Query query = sessionFactory.getCurrentSession().createNativeQuery("select train.name as trname, firstname, lastname, birthdate, st1.name as st1name, st2.name as st2name, departure_time, arrival_time from passenger\n" +
                 "inner join ticket on passenger.id = ticket.passenger_id\n" +
-                "inner join trains on train_id=trains.id\n" +
-                "inner join stations st1 on station_from_id = st1.id\n" +
-                "inner join stations st2 on station_to_id = st2.id\n" +
+                "inner join train on train_id=train.id\n" +
+                "inner join station st1 on station_from_id = st1.id\n" +
+                "inner join station st2 on station_to_id = st2.id\n" +
                 "where train_id = ? and trip_id = ?");
         query.setParameter(1, trainId);
         query.setParameter(2, tripId);
@@ -80,17 +74,6 @@ public class PassengerRepositoryImpl implements PassengerRepository {
         session.persist(passenger);
     }
 
-    @Override
-    public void update(Passenger passenger) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(passenger);
-    }
-
-    @Override
-    public void delete(Passenger passenger) {
-        Session session = sessionFactory.getCurrentSession();
-        session.delete(passenger);
-    }
 
 }
 

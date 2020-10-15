@@ -1,10 +1,9 @@
-package com.tsystems.javaschool.SBB.controller;
+package com.tsystems.javaschool.SBB.controller.controllers;
 
 import com.tsystems.javaschool.SBB.dto.PassengerInfoDTO;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.dto.TrainDTO;
 import com.tsystems.javaschool.SBB.dto.TripInfoDTO;
-import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.service.interfaces.PassengerService;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.StationService;
@@ -29,9 +28,9 @@ import java.util.List;
 public class CrudController {
 
     @Autowired
-    PassengerService passengerService;
+    private PassengerService passengerService;
     @Autowired
-    ScheduleService scheduleService;
+    private ScheduleService scheduleService;
     @Autowired
     private StationService stationService;
     @Autowired
@@ -48,7 +47,7 @@ public class CrudController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("stationDTO", new StationDTO());
         modelAndView.addObject("trainDTO", new TrainDTO());
-        modelAndView.setViewName("crudPage");
+        modelAndView.setViewName("CrudPage");
         return modelAndView;
     }
 
@@ -60,11 +59,11 @@ public class CrudController {
         ModelAndView modelAndView = new ModelAndView();
         stationValidator.validate(stationDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("crudPage");
+            modelAndView.setViewName("CrudPage");
             return modelAndView;
         }
 
-        stationService.add(stationDTO);
+        stationService.addStation(stationDTO);
         modelAndView.setViewName("redirect:/admin/crud");
         return modelAndView;
     }
@@ -77,10 +76,10 @@ public class CrudController {
         ModelAndView modelAndView = new ModelAndView();
         trainValidator.validate(trainDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("crudPage");
+            modelAndView.setViewName("CrudPage");
             return modelAndView;
         }
-        trainService.add(trainDTO);
+        trainService.addTrain(trainDTO);
         modelAndView.setViewName("redirect:/admin/crud");
         return modelAndView;
     }
@@ -104,7 +103,7 @@ public class CrudController {
     }
 
    @GetMapping(value = "/admin/trainsAndRoutes")
-   public ModelAndView getAllTrainsAndRoutes() {
+   public ModelAndView getAllTrips() {
        ModelAndView modelAndView = new ModelAndView();
        List<List<TripInfoDTO>> tripsList = scheduleService.getAllTrips();
        modelAndView.addObject("allTrips", tripsList);

@@ -1,4 +1,4 @@
-package com.tsystems.javaschool.SBB.controller;
+package com.tsystems.javaschool.SBB.controller.controllers;
 
 import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
@@ -28,7 +28,7 @@ public class AdminController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView adminMainPage() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("adminMainPage");
+        modelAndView.setViewName("Management");
         return modelAndView;
     }
 
@@ -37,7 +37,7 @@ public class AdminController {
     @GetMapping("/admin/addemployee")
     public ModelAndView registry(){
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("registrationPage");
+        modelAndView.setViewName("RegistrationPage");
         modelAndView.addObject("userForm", new UserDTO());
         return modelAndView;
     }
@@ -48,15 +48,15 @@ public class AdminController {
         ModelAndView modelAndView = new ModelAndView();
         userValidator.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("registrationPage");
+            modelAndView.setViewName("RegistrationPage");
             return modelAndView;
         }
         userDTO.setRoleDTO(roleService.getRoleDTOById(2));
-        userService.add(userDTO);
+        userService.registry(userDTO);
         modelAndView.addObject("message", "New employee account created!");
-        modelAndView.addObject("usrname", userDTO.getUsername());
-        modelAndView.addObject("passw", userDTO.getPassword());
-        modelAndView.setViewName("adminMainPage");
+        modelAndView.addObject("username", userDTO.getUsername());
+        modelAndView.addObject("password", userDTO.getPassword());
+        modelAndView.setViewName("Management");
         return modelAndView;
     }
 

@@ -38,23 +38,23 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDTO findUserById(int id) {
+    public UserDTO findUserDTOById(int id) {
         User user = userRepository.getUserById(id);
         return userMapper.toDTO(user);
     }
 
     @Override
     @Transactional
-    public void add(UserDTO userDTO) {
+    public void registry(UserDTO userDTO) {
         User user = userMapper.toEntity(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.add(user);
+        userRepository.addUser(user);
     }
 
     @Override
     @Transactional
-    public UserDTO findByUsername(String username) {
-        User user = userRepository.findByUsername(username);
+    public UserDTO findUserDTOByName(String username) {
+        User user = userRepository.findUserByName(username);
         return userMapper.toDTO(user);
     }
 

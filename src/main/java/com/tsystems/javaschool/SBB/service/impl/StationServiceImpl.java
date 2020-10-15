@@ -15,9 +15,9 @@ import java.util.List;
 public class StationServiceImpl implements StationService {
 
     @Autowired
-    StationRepository stationRepository;
+    private StationRepository stationRepository;
     @Autowired
-    StationMapper stationMapper;
+    private StationMapper stationMapper;
 
     @Transactional
     @Override
@@ -34,29 +34,23 @@ public class StationServiceImpl implements StationService {
 
     @Transactional
     @Override
-    public StationDTO findByStationDTOTitle(String title) {
-        Station station = stationRepository.findByStationTitle(title);
+    public StationDTO findStationDTOByTitle(String title) {
+        Station station = stationRepository.findStationByTitle(title);
         return stationMapper.toDTO(station);
     }
 
     @Transactional
     @Override
-    public void add(StationDTO stationDTO) {
+    public void addStation(StationDTO stationDTO) {
         Station station = stationMapper.toEntity(stationDTO);
-        stationRepository.add(station);
+        stationRepository.addStation(station);
     }
 
     @Transactional
     @Override
-    public void update(StationDTO stationDTO) {
+    public void updateStation(StationDTO stationDTO) {
         Station station = stationMapper.toEntity(stationDTO);
-        stationRepository.update(station);
+        stationRepository.updateStation(station);
     }
 
-    @Transactional
-    @Override
-    public void delete(StationDTO stationDTO) {
-        Station station = stationMapper.toEntity(stationDTO);
-        stationRepository.delete(station);
-    }
 }

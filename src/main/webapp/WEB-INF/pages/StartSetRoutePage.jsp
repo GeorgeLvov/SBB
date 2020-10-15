@@ -94,7 +94,7 @@
                                 <form:select class="form-control" path="departureStationName" varStatus="tagStatus"
                                              multiple="0" id="depStation">
                                     <form:option value="" label="From"/>
-                                    <form:options items="${stationList}" itemValue="title" itemLabel="title"/>
+                                    <form:options items="${stationsList}" itemValue="title" itemLabel="title"/>
                                 </form:select>
                                 <form:errors path="departureStationName"
                                              cssStyle="color: red; font-size: 14px"></form:errors>

@@ -31,7 +31,7 @@ public class TrainValidator implements Validator {
             errors.rejectValue("trainName", "Size.trainName");
         }
 
-        if (trainService.findTrainByTrainName(trainDTO.getTrainName()) != null) {
+        if (trainService.findTrainByName(trainDTO.getTrainName()) != null) {
             errors.rejectValue("trainName", "Duplicate.trainName");
         }
 

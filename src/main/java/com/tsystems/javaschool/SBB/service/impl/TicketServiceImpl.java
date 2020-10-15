@@ -6,13 +6,15 @@ import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
 import com.tsystems.javaschool.SBB.entities.Ticket;
 import com.tsystems.javaschool.SBB.entities.User;
+import com.tsystems.javaschool.SBB.exception.NoTicketsException;
 import com.tsystems.javaschool.SBB.mapper.TicketMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.TicketRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.UserRepository;
-import com.tsystems.javaschool.SBB.service.interfaces.PassengerService;
-import com.tsystems.javaschool.SBB.service.interfaces.TicketService;
+import com.tsystems.javaschool.SBB.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +24,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -35,9 +38,23 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    TicketDTOContainer ticketDTOContainer;
+    private TicketDTOContainer ticketDTOContainer;
     @Autowired
-    PassengerService passengerService;
+    private PassengerService passengerService;
+    @Autowired
+    private StationService stationService;
+    @Autowired
+    private TrainService trainService;
+    @Autowired
+    private UserService userService;
+
+
+    @Override
+    @Transactional
+    public TicketDTO getTicketDTOById(int id) {
+        Ticket ticket = ticketRepository.getTicketById(id);
+        return ticketMapper.toDTO(ticket);
+    }
 
     @Override
     public boolean isTimeValid(Timestamp departureTimeIn) {
@@ -60,22 +77,83 @@ public class TicketServiceImpl implements TicketService {
         return trainRepository.getTrainById(trainId).getCapacity() <= bigInteger.longValue();
     }
 
+
     @Override
     @Transactional
-    public TicketDTO getTicketDTOById(int id) {
-        Ticket ticket = ticketRepository.getTicketById(id);
-        return ticketMapper.toDTO(ticket);
+    public void prepareTicketForPassenger(Map<String, String> allRequestParams) throws NoTicketsException{
+
+        int trainId = Integer.parseInt(allRequestParams.get("trainId").trim());
+        int tripId = Integer.parseInt(allRequestParams.get("tripId").trim());
+        int stationFromId = Integer.parseInt(allRequestParams.get("stF").trim());
+        int stationToId = Integer.parseInt(allRequestParams.get("stT").trim());
+        Timestamp departureTime = Timestamp.valueOf(allRequestParams.get("departureTime"));
+        Timestamp arrivalTime = Timestamp.valueOf(allRequestParams.get("arrivalTime"));
+
+        if (isTimeValid(departureTime)
+                && !isTrainFull(departureTime, arrivalTime, trainId, tripId)) {
+
+            ticketDTOContainer.setTrainDTO(trainService.getTrainDTOById(trainId));
+            ticketDTOContainer.setTripId(tripId);
+            ticketDTOContainer.setStationFromDTO(stationService.getStationDTOById(stationFromId));
+            ticketDTOContainer.setStationToDTO(stationService.getStationDTOById(stationToId));
+            ticketDTOContainer.setDepartureTime(departureTime);
+            ticketDTOContainer.setArrivalTime(arrivalTime);
+            ticketDTOContainer.setValid(true);
+
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String username = auth.getName();
+
+            if (!username.equals("anonymousUser")) {
+                ticketDTOContainer.setUserDTO(userService.findUserDTOByName(auth.getName()));
+            }
+
+        } else throw new NoTicketsException();
     }
 
+
+    @Override
+    public void setPassengerToTicket(PassengerDTO passengerDTO){
+        String firstName = passengerDTO.getFirstName();
+        String lastName = passengerDTO.getLastName();
+        Date birthDate = passengerDTO.getBirthDate();
+        PassengerDTO existingPassenger = passengerService.findPassengerByPersonalData(firstName, lastName, birthDate);
+        if (existingPassenger != null) {
+            ticketDTOContainer.setPassengerDTO(existingPassenger);
+        } else {
+            passengerService.addPassenger(passengerDTO);
+            ticketDTOContainer.setPassengerDTO(passengerService.findPassengerByPersonalData(firstName, lastName, birthDate));
+        }
+    }
+
+
     @Override
     @Transactional
-    public List<TicketInfoDTO> getAllTicketInfosByUsername(String username) {
+    public void createTicket(TicketDTOContainer ticketDTOContainer) throws NoTicketsException {
 
-        User user = userRepository.findByUsername(username);
+        if(isTimeValid(ticketDTOContainer.getDepartureTime())
+                && !isTrainFull(ticketDTOContainer.getDepartureTime(), ticketDTOContainer.getArrivalTime(),
+                ticketDTOContainer.getTrainDTO().getId(), ticketDTOContainer.getTripId())){
+
+            TicketDTO ticketDTO = new TicketDTO(ticketDTOContainer);
+            Ticket ticket = ticketMapper.toEntity(ticketDTO);
+            ticketRepository.add(ticket);
+
+        }
+
+        else throw new NoTicketsException();
+
+    }
+
+
+    @Override
+    @Transactional
+    public List<TicketInfoDTO> getAllUserTickets(String username) {
+
+        User user = userRepository.findUserByName(username);
 
         List<Object[]> tickets = ticketRepository.getAllTicketsByUserId(user.getId());
 
-        List<TicketInfoDTO> ticketInfos = new ArrayList<>();
+        List<TicketInfoDTO> userTickets = new ArrayList<>();
         for (Object[] objects : tickets) {
             int ticketId = (int) objects[0];
             String trainName = (String) objects[1];
@@ -88,45 +166,12 @@ public class TicketServiceImpl implements TicketService {
             Timestamp arrivalTime = (Timestamp) objects[8];
             boolean valid = (boolean) objects[9];
 
-            ticketInfos
+            userTickets
                     .add(new TicketInfoDTO(ticketId, trainName, firstName, lastName, birthDate, statFromTitle,
                             statToTitle, departureTime, arrivalTime, valid));
         }
 
-        return ticketInfos;
+        return userTickets;
     }
-
-    @Override
-    public void setPassengerToTicket(PassengerDTO passengerDTO){
-        String firstName = passengerDTO.getFirstName();
-        String lastName = passengerDTO.getLastName();
-        Date birthDate = passengerDTO.getBirthDate();
-        PassengerDTO existingPassenger = passengerService.findPassengerByPersonalData(firstName, lastName, birthDate);
-        if (existingPassenger != null) {
-            ticketDTOContainer.setPassengerDTO(existingPassenger);
-        } else {
-            passengerService.add(passengerDTO);
-            ticketDTOContainer.setPassengerDTO(passengerService.findPassengerByPersonalData(firstName, lastName, birthDate));
-        }
-    }
-
-
-    @Override
-    @Transactional
-    public void createTicket(TicketDTOContainer ticketDTOContainer) {
-        TicketDTO ticketDTO = new TicketDTO();
-        ticketDTO.setTrainDTO(ticketDTOContainer.getTrainDTO());
-        ticketDTO.setTripId(ticketDTOContainer.getTripId());
-        ticketDTO.setStationFromDTO(ticketDTOContainer.getStationFromDTO());
-        ticketDTO.setStationToDTO(ticketDTOContainer.getStationToDTO());
-        ticketDTO.setDepartureTime(ticketDTOContainer.getDepartureTime());
-        ticketDTO.setArrivalTime(ticketDTOContainer.getArrivalTime());
-        ticketDTO.setPassengerDTO(ticketDTOContainer.getPassengerDTO());
-        ticketDTO.setUserDTO(ticketDTOContainer.getUserDTO());
-        ticketDTO.setValid(ticketDTOContainer.isValid());
-        Ticket ticket = ticketMapper.toEntity(ticketDTO);
-        ticketRepository.add(ticket);
-    }
-
 
 }

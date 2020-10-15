@@ -15,9 +15,9 @@ import java.util.List;
 public class TrainServiceImpl implements TrainService {
 
     @Autowired
-    TrainRepository trainRepository;
+    private TrainRepository trainRepository;
     @Autowired
-    TrainMapper trainMapper;
+    private TrainMapper trainMapper;
 
 
     @Override
@@ -36,29 +36,23 @@ public class TrainServiceImpl implements TrainService {
 
     @Override
     @Transactional
-    public TrainDTO findTrainByTrainName(String trainName) {
-        Train train = trainRepository.findTrainByTrainName(trainName);
+    public TrainDTO findTrainByName(String trainName) {
+        Train train = trainRepository.findTrainByName(trainName);
         return trainMapper.toDTO(train);
     }
 
     @Override
     @Transactional
-    public void add(TrainDTO trainDTO) {
+    public void addTrain(TrainDTO trainDTO) {
         Train train = trainMapper.toEntity(trainDTO);
         trainRepository.add(train);
     }
 
     @Override
     @Transactional
-    public void update(TrainDTO trainDTO) {
+    public void updateTrain(TrainDTO trainDTO) {
         Train train = trainMapper.toEntity(trainDTO);
         trainRepository.update(train);
     }
 
-    @Override
-    @Transactional
-    public void delete(TrainDTO trainDTO) {
-        Train train = trainMapper.toEntity(trainDTO);
-        trainRepository.delete(train);
-    }
 }

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="c1" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -139,14 +140,55 @@
                                             </thead>
                                             <tbody>
                                             <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoDTOList}">
-                                                <tr>
-                                                    <td>${tripInfo.stationFrom.title}</td>
-                                                    <td>${tripInfo.stationTo.title}</td>
-                                                    <td><fmt:formatDate value="${tripInfo.departureTime}"
-                                                                        pattern="HH:mm dd.MM.yy"/></td>
-                                                    <td><fmt:formatDate value="${tripInfo.arrivalTime}"
-                                                                        pattern="HH:mm dd.MM.yy"/></td>
-                                                </tr>
+                                                <c:choose>
+                                                    <c:when test="${(tripInfo.departureTime.equals(scheduleDTO.departureTime)) && (tripInfo.arrivalTime.equals(scheduleDTO.arrivalTime))}">
+                                                        <tr>
+                                                            <td><strong>${tripInfo.stationFrom.title}</strong>
+                                                            </td>
+                                                            <td><strong>${tripInfo.stationTo.title}</strong></td>
+                                                            <td><strong><fmt:formatDate
+                                                                    value="${tripInfo.departureTime}"
+                                                                    pattern="HH:mm dd.MM"/></strong></td>
+                                                            <td><strong><fmt:formatDate value="${tripInfo.arrivalTime}"
+                                                                                pattern="HH:mm dd.MM"/></strong></td>
+                                                        </tr>
+
+                                                    </c:when>
+                                                    <c:when test="${tripInfo.departureTime.equals(scheduleDTO.departureTime)}">
+                                                        <tr>
+                                                            <td><strong>${tripInfo.stationFrom.title}</strong>
+                                                            </td>
+                                                            <td>${tripInfo.stationTo.title}</td>
+                                                            <td><strong><fmt:formatDate
+                                                                    value="${tripInfo.departureTime}"
+                                                                    pattern="HH:mm dd.MM"/></strong></td>
+                                                            <td><fmt:formatDate value="${tripInfo.arrivalTime}"
+                                                                                pattern="HH:mm dd.MM"/></td>
+                                                        </tr>
+                                                    </c:when>
+                                                    <c:when test="${tripInfo.arrivalTime.equals(scheduleDTO.arrivalTime)}">
+                                                        <tr>
+                                                            <td>${tripInfo.stationFrom.title}</td>
+                                                            <td><strong>${tripInfo.stationTo.title}</strong></td>
+                                                            <td><fmt:formatDate value="${tripInfo.departureTime}"
+                                                                    pattern="HH:mm dd.MM"/></td>
+                                                            <td><strong><fmt:formatDate value="${tripInfo.arrivalTime}"
+                                                                                pattern="HH:mm dd.MM"/></strong></td>
+                                                        </tr>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <tr>
+                                                            <td>${tripInfo.stationFrom.title}</td>
+                                                            <td>${tripInfo.stationTo.title}</td>
+                                                            <td><fmt:formatDate
+                                                                    value="${tripInfo.departureTime}"
+                                                                    pattern="HH:mm dd.MM"/></td>
+                                                            <td><fmt:formatDate value="${tripInfo.arrivalTime}"
+                                                                                pattern="HH:mm dd.MM"/></td>
+                                                        </tr>
+                                                    </c:otherwise>
+                                                </c:choose>
+
                                             </c1:forEach>
                                             </tbody>
                                         </table>

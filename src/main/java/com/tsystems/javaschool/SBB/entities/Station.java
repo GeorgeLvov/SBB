@@ -17,7 +17,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "stations")
+@Table(name = "station")
 @Data
 @Builder
 @NoArgsConstructor

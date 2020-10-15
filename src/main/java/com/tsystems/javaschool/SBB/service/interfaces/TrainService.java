@@ -10,11 +10,10 @@ public interface TrainService {
 
     TrainDTO getTrainDTOById(int id);
 
-    TrainDTO findTrainByTrainName(String trainName);
+    TrainDTO findTrainByName(String trainName);
 
-    void add(TrainDTO trainDTO);
+    void addTrain(TrainDTO trainDTO);
 
-    void update(TrainDTO trainDTO);
+    void updateTrain(TrainDTO trainDTO);
 
-    void delete(TrainDTO trainDTO);
 }

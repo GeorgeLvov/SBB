@@ -10,8 +10,8 @@ public interface UserRepository {
 
     User getUserById(int id);
 
-    User findByUsername(String username);
+    User findUserByName(String username);
 
-    void add(User user);
+    void addUser(User user);
 
 }

@@ -57,7 +57,8 @@ public class PassengerValidator implements Validator {
             }
         }
 
-        if (passengerService.isPassengerAlreadyCheckedIn(passengerDTO.getFirstName(), passengerDTO.getLastName(), passengerDTO.getBirthDate(), ticketDTOContainer)) {
+        if (passengerService.isPassengerAlreadyCheckedIn(passengerDTO.getFirstName(), passengerDTO.getLastName(),
+                passengerDTO.getBirthDate(), ticketDTOContainer)) {
             errors.rejectValue("firstName", "Duplicate.passenger");
             errors.rejectValue("lastName", "Duplicate.passenger");
             errors.rejectValue("birthDate", "Duplicate.passenger");

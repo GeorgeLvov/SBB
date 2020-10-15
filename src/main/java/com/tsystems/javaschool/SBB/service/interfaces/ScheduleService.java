@@ -9,13 +9,13 @@ import java.util.List;
 
 public interface ScheduleService {
 
-    void add(ScheduleDTO scheduleDTO);
+    void addScheduleDTO(ScheduleDTO scheduleDTO);
 
     List<ScheduleDTO> getSchedulesByStationFrom(StationDTO stationDTOFrom);
 
     List<ScheduleDTO> getSchedulesByStationTo(StationDTO stationDTOTo);
 
-    List<ScheduleDTO> getSchedulesByStationsAndDate(StationDTO stationFromDTO, StationDTO stationTo, Timestamp tmp1, Timestamp tmp2);
+    List<ScheduleDTO> getSchedulesByStationsAndDate(StationDTO stationFromDTO, StationDTO stationTo, Timestamp from, Timestamp to);
 
     List<TripInfoDTO> getInfoOfAllTripsByTrainIdAndTripId(int trainId, int tripId);
 

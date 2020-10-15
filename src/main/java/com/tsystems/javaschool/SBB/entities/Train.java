@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
  */
 
 @Entity
-@Table(name = "trains")
+@Table(name = "train")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

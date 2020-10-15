@@ -19,10 +19,7 @@ public interface PassengerService {
 
     List<PassengerInfoDTO> getAllPassengersByTrainIdAndTripId(int trainId, int tripId);
 
-    void add(PassengerDTO passengerDTO);
+    void addPassenger(PassengerDTO passengerDTO);
 
-    void update(PassengerDTO passengerDTO);
-
-    void delete(PassengerDTO passengerDTO);
 
 }

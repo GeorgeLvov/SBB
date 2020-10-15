@@ -30,7 +30,7 @@ public class StationRepositoryImpl implements StationRepository {
     }
 
     @Override
-    public Station findByStationTitle(String title) {
+    public Station findStationByTitle(String title) {
         Session session = sessionFactory.getCurrentSession();
         return session.byNaturalId(Station.class)
                 .using("title", title)
@@ -38,19 +38,19 @@ public class StationRepositoryImpl implements StationRepository {
     }
 
     @Override
-    public void add(Station station) {
+    public void addStation(Station station) {
         Session session = sessionFactory.getCurrentSession();
         session.persist(station);
     }
 
     @Override
-    public void update(Station station) {
+    public void updateStation(Station station) {
         Session session = sessionFactory.getCurrentSession();
         session.update(station);
     }
 
     @Override
-    public void delete(Station station) {
+    public void deleteStation(Station station) {
         Session session = sessionFactory.getCurrentSession();
         session.delete(station);
     }

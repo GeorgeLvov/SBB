@@ -4,15 +4,14 @@
 <head>
     <title>SBB CFF FFS</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/res/css/forMainPages.css"/>"/>
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
     <a class="navbar-brand" href="<c:url value="/"/>" style="color: white">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -28,16 +27,16 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/crud"/>" style="color: white"> Add train | station </a>
+                <a class="nav-link" href="<c:url value="/admin/crud"/>"> Add train | station </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/trainselect"/>" style="color: white"> Set trip for train </a>
+                <a class="nav-link" href="<c:url value="/admin/trainselect"/>"> Set trip for train </a>
             </li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false" style="color: white">
+                   aria-haspopup="true" aria-expanded="false">
                     Show
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -50,7 +49,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/addemployee"/>" style="color: white"> Add new
+                <a class="nav-link" href="<c:url value="/admin/addemployee"/>"> Add new
                     employee </a>
             </li>
         </ul>
@@ -61,14 +60,24 @@
 </nav>
 
 <c:if test="${message != null}">
-    <div class="alert alert-success alert-dismissible fade show col-sm-4 offset-sm-4" style="text-align: center">
+    <div class="alert alert-success alert-dismissible fade show col-sm-4 offset-sm-4" style="text-align: center; margin-top: 70px">
         <strong>Success!</strong>
         <p>${message}</p>
-        <p><strong>username</strong>: ${usrname}</p>
-        <p><strong>password</strong>: ${passw}</p>
+        <p><strong>username</strong>: ${username}</p>
+        <p><strong>password</strong>: ${password}</p>
         <button type="button" class="close" data-dismiss="alert">&times;</button>
     </div>
 </c:if>
+
+<c:if test="${successMessage != null}">
+    <div class="alert alert-success alert-dismissible fade show col-sm-6 offset-sm-3" style="text-align: center; margin-top: 70px">
+        <strong>Success!</strong>
+        <p>Trip was created! <br> Show it in dropdown tab "Show" - "Show all trips"</p>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+</c:if>
+
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

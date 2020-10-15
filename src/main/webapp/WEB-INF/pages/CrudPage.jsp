@@ -64,50 +64,29 @@
     <div class="row" style="height: 100px">
     </div>
     <div class="row">
-
         <div class="col-md-1">
         </div>
-
         <div class="col-md-4 bg-light" style="border-radius: 2%">
-
             <h2 style="padding-top: 25px;  padding-bottom: 10px">Create new station</h2>
             <form:form method="POST" action="/admin/addStation" modelAttribute="stationDTO" class="form-signin">
 
-                <spring:bind path="title">
-
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <form:errors path="title" >
-
-
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-
-                                <c:if test="${status.errorMessage eq 'This field cant be empty.'}">
-                                    ${status.errorMessage}
-                                </c:if>
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-
-                        </form:errors>
-                        <label for="stationTitleId">Station Title:</label>
-                        <form:input type="text" path="title" class="form-control" placeholder="Enter station title"
-                                    autofocus="true" id="stationTitleId"></form:input>
-                        <p style="color: red; font-size: 14px">${status.errorMessage}</p>
-                    </div>
-                </spring:bind>
-
-
-                <button type="submit" class="btn btn-success" style="width: 100px; margin-top:15px">Create</button>
-            </form:form>
-
+            <spring:bind path="title">
+                <div class="form-group ${status.error ? 'has-error' : ''}">
+            <label for="stationTitleId">Station Title:</label>
+            <form:input type="text" path="title" class="form-control" placeholder="Enter station title"
+                        autofocus="true" id="stationTitleId"></form:input>
+                    <form:errors path="title" cssStyle="color: red; font-size: 14px"></form:errors>
         </div>
+        </spring:bind>
+        <button type="submit" class="btn btn-success" style="width: 100px; margin-top:15px">Create</button>
+        </form:form>
+    </div>
 
 
-        <div class="col-md-1">
-        </div>
-        <div class="col-md-4 bg-light " style="border-radius: 2%">
-            <h2 style="padding-top: 25px; padding-bottom: 10px">Create new train</h2>
+    <div class="col-md-1">
+    </div>
+    <div class="col-md-4 bg-light " style="border-radius: 2%">
+        <h2 style="padding-top: 25px; padding-bottom: 10px">Create new train</h2>
 
             <form:form method="POST" action="/admin/addTrain" modelAttribute="trainDTO" class="form-signin">
                 <spring:bind path="trainName">

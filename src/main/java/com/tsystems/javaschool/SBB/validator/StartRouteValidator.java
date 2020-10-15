@@ -28,37 +28,46 @@ public class StartRouteValidator implements Validator {
         RouteDTO routeDTO = (RouteDTO) o;
 
         if (routeDTO.getDepartureDate().equals("")) {
-            errors.rejectValue("departureDate", "BlankDept.time.BeginDTO");
+            errors.rejectValue("departureDate", "Blank.departureTime");
         }
 
         if (routeDTO.getDeclaredArrivalDate().equals("")) {
-            errors.rejectValue("declaredArrivalDate", "BlankArr.time.BeginDTO");
+            errors.rejectValue("declaredArrivalDate", "Blank.arrivalTime");
         }
 
-        if (!routeDTO.getDepartureDate().equals("") && !routeDTO.getDeclaredArrivalDate().equals("") && !routeDTO.getTrainName().equals("")) {
+        if (!routeDTO.getDepartureDate().equals("") && !routeDTO.getDeclaredArrivalDate().equals("")
+                && !routeDTO.getTrainName().equals("")) {
 
             try {
-                if (LocalDateTime.parse(routeDTO.getDepartureDate()).compareTo(LocalDateTime.now().plusMinutes(30)) <= 0) {
+
+                if (LocalDateTime.parse(routeDTO.getDepartureDate()).compareTo(LocalDateTime.now().plusMinutes(5)) <= 0) {
                     errors.rejectValue("departureDate", "Invalid.time.current");
                 }
 
+                if (LocalDateTime.parse(routeDTO.getDepartureDate())
+                        .compareTo(LocalDateTime.parse(routeDTO.getDeclaredArrivalDate())) >= 0) {
+                    errors.rejectValue("declaredArrivalDate", "Invalid.arrivalTime");
 
-                if (LocalDateTime.parse(routeDTO.getDeclaredArrivalDate()).compareTo(LocalDateTime.parse(routeDTO.getDepartureDate())) < 0) {
-                    errors.rejectValue("declaredArrivalDate", "Invalid.time.BeginDTO.2");
-                } else if ((Timestamp.valueOf(LocalDateTime.parse(routeDTO.getDeclaredArrivalDate())).getTime() - Timestamp.valueOf(LocalDateTime.parse(routeDTO.getDepartureDate())).getTime()) < 900_000) {
-                    errors.rejectValue("declaredArrivalDate", "Invalid.time.BeginDTO");
+                } else if (!isRouteDurationValid(routeDTO.getDepartureDate(),routeDTO.getDeclaredArrivalDate())) {
+                    errors.rejectValue("declaredArrivalDate", "Invalid.route.duration");
                 }
 
-
-                if (!scheduleService.isTrainAvailableForNewTrip(routeDTO.getTrainName(), routeDTO.getDepartureDate(), routeDTO.getDeclaredArrivalDate())) {
+                if (!scheduleService.isTrainAvailableForNewTrip(routeDTO.getTrainName(), routeDTO.getDepartureDate(),
+                        routeDTO.getDeclaredArrivalDate())) {
                     errors.rejectValue("trainName", "Train.is.unavailable");
                 }
-            } catch (DateTimeParseException dpe) {
+            }
+
+            catch (DateTimeParseException dpe) {
                 errors.rejectValue("departureDate", "Invalid.dateTime");
                 errors.rejectValue("declaredArrivalDate", "Invalid.dateTime");
             }
 
         }
+    }
 
+    private boolean isRouteDurationValid(String departureTime, String arrivalTime){
+        return (Timestamp.valueOf(LocalDateTime.parse(arrivalTime)).getTime()
+                - Timestamp.valueOf(LocalDateTime.parse(departureTime)).getTime()) >= 900_000;
     }
 }

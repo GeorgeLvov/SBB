@@ -229,7 +229,7 @@ public class TicketPDFExporter {
 
             table3.addCell(cell);
         }
-        table3.setSpacingAfter(150);
+        table3.setSpacingAfter(140);
         document.add(table3);
 
         document.add(Chunk.NEWLINE);

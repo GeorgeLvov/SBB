@@ -1,9 +1,8 @@
-package com.tsystems.javaschool.SBB.controller;
+package com.tsystems.javaschool.SBB.controller.controllers;
 
 import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
 import com.tsystems.javaschool.SBB.service.interfaces.SecurityService;
-import com.tsystems.javaschool.SBB.service.interfaces.TicketService;
 import com.tsystems.javaschool.SBB.service.interfaces.UserService;
 import com.tsystems.javaschool.SBB.validator.UserValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +25,12 @@ public class UserController {
     private UserService userService;
     @Autowired
     private RoleService roleService;
-    @Autowired
-    TicketService ticketService;
 
 
     @GetMapping("/registration")
     public ModelAndView register() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("registrationPage");
+        modelAndView.setViewName("RegistrationPage");
         modelAndView.addObject("userForm", new UserDTO());
         return modelAndView;
     }
@@ -43,15 +40,15 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView();
         userValidator.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("registrationPage");
+            modelAndView.setViewName("RegistrationPage");
             return modelAndView;
         }
         userDTO.setRoleDTO(roleService.getRoleDTOById(1));
-        userService.add(userDTO);
+        userService.registry(userDTO);
 
         securityService.autoLogin(userDTO.getUsername(), userDTO.getConfirmPassword());
 
-        modelAndView.setViewName("redirect:/success");
+        modelAndView.setViewName("Success");
 
         return modelAndView;
     }

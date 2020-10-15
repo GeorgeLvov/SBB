@@ -7,6 +7,7 @@ import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 public interface TicketService {
 
@@ -28,7 +29,9 @@ public interface TicketService {
      */
     boolean isTimeValid(Timestamp departureTime);
 
-    List<TicketInfoDTO> getAllTicketInfosByUsername(String username);
+    List<TicketInfoDTO> getAllUserTickets(String username);
 
     void setPassengerToTicket(PassengerDTO passengerDTO);
+
+    void prepareTicketForPassenger(Map<String, String> allRequestParams);
 }

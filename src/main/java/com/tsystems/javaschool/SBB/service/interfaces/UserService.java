@@ -16,9 +16,9 @@ public interface UserService {
 
     List<UserDTO> getAllUsers();
 
-    UserDTO findUserById(int id);
+    UserDTO findUserDTOById(int id);
 
-    UserDTO findByUsername(String username);
+    UserDTO findUserDTOByName(String username);
 
-    void add(UserDTO userDTO);
+    void registry(UserDTO userDTO);
 }

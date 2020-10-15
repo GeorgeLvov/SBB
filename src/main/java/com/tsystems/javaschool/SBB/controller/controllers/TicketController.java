@@ -1,10 +1,9 @@
-package com.tsystems.javaschool.SBB.controller;
+package com.tsystems.javaschool.SBB.controller.controllers;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
-import com.tsystems.javaschool.SBB.service.impl.TicketDTOContainerService;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
 import com.tsystems.javaschool.SBB.validator.PassengerValidator;
@@ -24,29 +23,20 @@ import java.util.Map;
 public class TicketController {
 
     @Autowired
-    TicketService ticketService;
+    private TicketService ticketService;
     @Autowired
-    UserService userService;
+    private PassengerValidator passengerValidator;
     @Autowired
-    PassengerService passengerService;
-    @Autowired
-    PassengerValidator passengerValidator;
-    @Autowired
-    TicketDTOContainer ticketDTOContainer;
-    @Autowired
-    TicketDTOContainerService containerService;
+    private TicketDTOContainer ticketDTOContainer;
+
 
 
     @GetMapping(value = "/checkin")
     public ModelAndView checkIn(@RequestParam Map<String, String> allRequestParams) {
         ModelAndView modelAndView = new ModelAndView();
-
-        if (containerService.checkTrip(allRequestParams)) {
-            modelAndView.addObject("passForm", new PassengerDTO());
-            modelAndView.setViewName("passengerCheckIn");
-            return modelAndView;
-        }
-        modelAndView.setViewName("redirect:/");
+        ticketService.prepareTicketForPassenger(allRequestParams);
+        modelAndView.addObject("passForm", new PassengerDTO());
+        modelAndView.setViewName("PassengerCheckIn");
         return modelAndView;
     }
 
@@ -55,36 +45,29 @@ public class TicketController {
     public ModelAndView checkInPassenger(@ModelAttribute("passForm") PassengerDTO passengerDTO, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         passengerValidator.validate(passengerDTO, bindingResult);
-
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("passengerCheckIn");
+            modelAndView.setViewName("PassengerCheckIn");
             return modelAndView;
         }
+        ticketService.setPassengerToTicket(passengerDTO);
+        ticketService.createTicket(ticketDTOContainer);
 
-        if(ticketService.isTimeValid(ticketDTOContainer.getDepartureTime())
-                && !ticketService.isTrainFull(ticketDTOContainer.getDepartureTime(), ticketDTOContainer.getArrivalTime(),
-                ticketDTOContainer.getTrainDTO().getId(), ticketDTOContainer.getTripId())){
-
-            ticketService.setPassengerToTicket(passengerDTO);
-            ticketService.createTicket(ticketDTOContainer);
-            modelAndView.setViewName("redirect:/alltickets");
-
-        } else {
-            modelAndView.setViewName("redirect:/");
-        }
+        modelAndView.setViewName("redirect:/alltickets");
         return modelAndView;
     }
 
+
     @GetMapping(value = "/alltickets")
-    public ModelAndView showAllTickets() {
+    public ModelAndView getAllUserTickets() {
         ModelAndView modelAndView = new ModelAndView();
         ticketService.setValidityOfTickets();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<TicketInfoDTO> ticketInfos = ticketService.getAllTicketInfosByUsername(auth.getName());
+        List<TicketInfoDTO> ticketInfos = ticketService.getAllUserTickets(auth.getName());
         modelAndView.addObject("ticketInfos", ticketInfos);
         modelAndView.setViewName("UserTicketsPage");
         return modelAndView;
     }
+
 
     @GetMapping(value = "/export/{id}")
     public void exportToPDF(@PathVariable("id")int ticketId, HttpServletResponse response) {
@@ -99,4 +82,3 @@ public class TicketController {
     }
 
 }
-

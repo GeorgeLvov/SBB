@@ -11,12 +11,12 @@ public interface StationRepository {
 
     Station getStationById(int id);
 
-    Station findByStationTitle(String title);
+    Station findStationByTitle(String title);
 
-    void add(Station station);
+    void addStation(Station station);
 
-    void update(Station station);
+    void updateStation(Station station);
 
-    void delete(Station station);
+    void deleteStation(Station station);
 
 }

@@ -25,7 +25,7 @@ public class StationValidator implements Validator {
 
         StationDTO stationDTO = (StationDTO) o;
 
-        if (stationService.findByStationDTOTitle(stationDTO.getTitle()) != null) {
+        if (stationService.findStationDTOByTitle(stationDTO.getTitle()) != null) {
             errors.rejectValue("title", "Duplicate.stationTitle");
         }
 

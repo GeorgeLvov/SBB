@@ -10,7 +10,7 @@ public interface TrainRepository {
 
     Train getTrainById(int id);
 
-    Train findTrainByTrainName(String trainName);
+    Train findTrainByName(String trainName);
 
     void add(Train train);
 

@@ -38,15 +38,31 @@
         </security:authorize>
     </div>
 </nav>
-
+<c:if test="${errorMessage != null}">
+<div class="container" style="padding-top: 80px;">
+    <div class="row">
+        <div class="col-3"></div>
+        <div class="col-9">
+            <div class="alert alert-danger alert-dismissible fade show col-sm-6 offset-sm-1" style="text-align: center">
+                <strong >Failed!</strong>
+                <br>
+                    Perhaps there are no more seats available or the train is leaving soon.
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+</c:if>
 <c:choose>
     <c:when test="${empty ticketInfos}">
         <div class="container-fluid">
             <div class="row" style="height: 100px">
                 <div class="col-2"></div>
-                <div class="col-8"  style="text-align:center;" >
+                <div class="col-8" style="text-align:center;">
                     <h1 style="font-size: 50px; margin-top: 100px">You have no tickets!</h1>
-                    <p style="font-size: 20px; margin-top:20px;">You can buy them after choosing a trip on the main page.</p>
+                    <p style="font-size: 20px; margin-top:20px;">You can buy them after choosing a trip on the main
+                        page.</p>
                 </div>
                 <div class="col-2"></div>
 
@@ -54,14 +70,12 @@
         </div>
     </c:when>
     <c:otherwise>
-
-
         <div class="container mt-4 p-md-4 col-12 rounded-container">
             <div class="container-fluid">
                 <div class="row" style="height: 100px">
                     <div class="col-5"></div>
                     <div class="col-4">
-                        <h1 style="padding-top: 25px">Tickets</h1>
+                        <h1 style="padding-top: 10px">Tickets</h1>
                     </div>
                     <div class="col-5"></div>
 

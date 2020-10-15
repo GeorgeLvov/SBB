@@ -46,7 +46,8 @@ public class TicketRepositoryImpl implements TicketRepository {
     public BigInteger getTakenSeatsCount(int trainId, int tripId, Timestamp departureTime, Timestamp arrivalTime) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session
-                .createNativeQuery("select count(*) from ticket where train_id=? and trip_id=? and valid=1 and arrival_time >= ? and departure_time <= ?");
+                .createNativeQuery("select count(*) from ticket where train_id=? and trip_id=? " +
+                        "and valid=1 and arrival_time >= ? and departure_time <= ?");
         query.setParameter(1, trainId);
         query.setParameter(2, tripId);
         query.setParameter(3, departureTime);
@@ -60,16 +61,17 @@ public class TicketRepositoryImpl implements TicketRepository {
     public List<Object[]> getAllTicketsByUserId(int userId) {
         Session session = sessionFactory.getCurrentSession();
         Query query = session
-                .createNativeQuery("select t.id, tr.name as tname, p.firstname, p.lastname, p.birthdate, st1.name as stfname, st2.name as sttname, t.departure_time, t.arrival_time, t.valid FROM ticket t " +
-                        "inner join trains tr on tr.id = t.train_id " +
-                        "inner join passenger p on p.id = t.passenger_id " +
-                        "inner join stations st1 on st1.id=t.station_from_id " +
-                        "inner join stations st2 on st2.id=t.station_to_id " +
-                        "where t.user_id=?;");
+                .createNativeQuery("select ticket.id, tr.name as tname, p.firstname, p.lastname, p.birthdate, " +
+                        "st1.name as stfname, st2.name as sttname, ticket.departure_time, ticket.arrival_time, " +
+                        "ticket.valid FROM ticket " +
+                        "inner join train tr on tr.id = ticket.train_id " +
+                        "inner join passenger p on p.id = ticket.passenger_id " +
+                        "inner join station st1 on st1.id = ticket.station_from_id " +
+                        "inner join station st2 on st2.id = ticket.station_to_id " +
+                        "where ticket.user_id=?;");
         query.setParameter(1, userId);
         return query.list();
     }
-
 
 
     @Override

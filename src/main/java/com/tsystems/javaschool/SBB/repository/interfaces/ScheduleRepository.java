@@ -12,7 +12,8 @@ public interface ScheduleRepository {
 
     /**
      * Provides all schedules with specified params
-     * Helper method like {@link #getSchedulesByStationTo(int trainId, int tripId, Station stationTo) getSchedulesByStationTo}
+     * Helper method like {@link #getSchedulesByTrainIdTripIdStationTo(int trainId, int tripId, Station stationTo)}
+     *
      * for searching trips from station A to station B at a given time
      *
      * @param stationFrom starting station
@@ -62,5 +63,5 @@ public interface ScheduleRepository {
 
     List<Timestamp> getAllArrivalTimesByTrainId(int trainId);
 
-    List<Object[]> getAllTrainsTrips();
+    List<Object[]> getAllTrainsAndTrips();
 }

@@ -20,11 +20,10 @@ import java.util.List;
 public class PassengerServiceImpl implements PassengerService {
 
     @Autowired
-    PassengerRepository passengerRepository;
+    private PassengerRepository passengerRepository;
     @Autowired
-    PassengerMapper passengerMapper;
-    @Autowired
-    TicketDTOContainer ticketDTOContainer;
+    private PassengerMapper passengerMapper;
+
 
     @Override
     @Transactional
@@ -33,11 +32,10 @@ public class PassengerServiceImpl implements PassengerService {
         return passengerMapper.toDTO(passenger);
     }
 
-
     @Override
     @Transactional
     public PassengerDTO findPassengerByPersonalData(String firstName, String lastName, Date birthDate){
-        Passenger passenger = passengerRepository.findPassengerByPersonalData(firstName, lastName, birthDate);
+        Passenger passenger = passengerRepository.getPassengerByPersonalData(firstName, lastName, birthDate);
         return passenger != null ? passengerMapper.toDTO(passenger) : null;
     }
 
@@ -46,7 +44,7 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTOContainer ticketDTOContainer) {
 
-        List<Object[]> list = passengerRepository.getPassengerWithTicketsByFields(firstName, lastName, birthDate);
+        List<Object[]> list = passengerRepository.getPassengerWithTicketsByPersonalData(firstName, lastName, birthDate);
 
         for (Object[] objects : list) {
             int trainId = (int) objects[0];
@@ -77,22 +75,9 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public void add(PassengerDTO passengerDTO) {
+    public void addPassenger(PassengerDTO passengerDTO) {
         Passenger passenger = passengerMapper.toEntity(passengerDTO);
         passengerRepository.add(passenger);
     }
 
-    @Override
-    @Transactional
-    public void update(PassengerDTO passengerDTO) {
-        Passenger passenger = passengerMapper.toEntity(passengerDTO);
-        passengerRepository.update(passenger);
-    }
-
-    @Override
-    @Transactional
-    public void delete(PassengerDTO passengerDTO) {
-        Passenger passenger = passengerMapper.toEntity(passengerDTO);
-        passengerRepository.delete(passenger);
-    }
 }

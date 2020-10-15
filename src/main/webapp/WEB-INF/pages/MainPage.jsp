@@ -23,7 +23,6 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav mr-auto">
@@ -59,7 +58,6 @@
                 Log out
             </a>
         </security:authorize>
-
     </div>
 </nav>
 
@@ -75,8 +73,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <c:url value="/timetable" var="v"/>
-                <form action="${v}" method="GET">
+                <c:url value="/timetable" var="var"/>
+                <form action="${var}" method="GET">
                     <div class="form-group">
                         <select class="form-control" name="timeTable" id="exampleSelectSt" style="margin-top: 20px;">
                             <option value="" disabled selected>Select station</option>
@@ -100,6 +98,18 @@
     <div class="row" style="height: 80px">
     </div>
     <div class="row">
+        <div class="col-3"></div>
+        <div class="col-7">
+            <c:if test="${errorMessage != null}">
+                <div class="alert alert-danger alert-dismissible fade show col-sm-6 offset-sm-1">
+                    <strong style="text-align: center">${errorMessage}</strong>
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            </c:if>
+        </div>
+        <div class="col-3"></div>
+    </div>
+    <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
 
@@ -109,7 +119,7 @@
                     <div class="col-6">
                         <div class="form-group">
                             <select class="form-control" name="stationFrom" id="exampleSelect">
-                                <option value="" disabled selected>From</option>
+                            <option value="" disabled selected>From</option>
                                 <c:forEach var="station" items="${stationsList}">
                                     <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
@@ -119,7 +129,7 @@
                     <div class="col-6">
                         <div class="form-group">
                             <select class="form-control b" name="stationTo" id="examplSelect">
-                                <option value="" disabled selected>To</option>
+                                <option value="empty" disabled selected>To</option>
                                 <c:forEach var="station" items="${stationsList}">
                                     <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
