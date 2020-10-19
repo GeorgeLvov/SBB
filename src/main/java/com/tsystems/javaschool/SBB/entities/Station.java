@@ -28,7 +28,6 @@ public class Station {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NaturalId
     @Column(name = "name")
     private String title;
 

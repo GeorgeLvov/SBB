@@ -13,10 +13,7 @@ import com.tsystems.javaschool.SBB.validator.TrainValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
@@ -25,6 +22,7 @@ import java.util.List;
 
 
 @Controller
+@RequestMapping("/admin")
 public class CrudController {
 
     @Autowired
@@ -41,8 +39,7 @@ public class CrudController {
     private TrainValidator trainValidator;
 
 
-
-    @GetMapping(value = "/admin/crud")
+    @GetMapping(value = "/crud")
     public ModelAndView addTrainOrStation() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("stationDTO", new StationDTO());
@@ -51,7 +48,7 @@ public class CrudController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/admin/addStation")
+    @PostMapping(value = "/addStation")
     public ModelAndView addStation(@ModelAttribute("stationDTO")@Valid StationDTO stationDTO,
                                    BindingResult bindingResult,
                                    @ModelAttribute("trainDTO") TrainDTO trainDTO
@@ -68,11 +65,10 @@ public class CrudController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/admin/addTrain")
+    @PostMapping(value = "/addTrain")
     public ModelAndView addTrain(@ModelAttribute("trainDTO") TrainDTO trainDTO,
                                  BindingResult bindingResult,
-                                 @ModelAttribute("stationDTO") StationDTO stationDTO
-    ) {
+                                 @ModelAttribute("stationDTO") StationDTO stationDTO) {
         ModelAndView modelAndView = new ModelAndView();
         trainValidator.validate(trainDTO, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -84,7 +80,7 @@ public class CrudController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/admin/trains")
+    @GetMapping(value = "/trains")
     public ModelAndView getAllTrains() {
         ModelAndView modelAndView = new ModelAndView();
         List<TrainDTO> trains = trainService.getAllTrainsDTO();
@@ -93,7 +89,7 @@ public class CrudController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/admin/stations")
+    @GetMapping(value = "/stations")
     public ModelAndView getAllStations() {
         ModelAndView modelAndView = new ModelAndView();
         List<StationDTO> stations = stationService.getAllStationsDTO();
@@ -102,7 +98,7 @@ public class CrudController {
         return modelAndView;
     }
 
-   @GetMapping(value = "/admin/trainsAndRoutes")
+   @GetMapping(value = "/trainsAndRoutes")
    public ModelAndView getAllTrips() {
        ModelAndView modelAndView = new ModelAndView();
        List<List<TripInfoDTO>> tripsList = scheduleService.getAllTrips();
@@ -111,24 +107,14 @@ public class CrudController {
        return modelAndView;
    }
 
-
-    @GetMapping(value = "/passengers/{trainId}/{tripId}/{stationFrom}/{stationTo}/{departureTime}/{arrivalTime}")
+    @GetMapping(value = "/passengers/{trainId}/{tripId}")
     public ModelAndView getAllPassengersOnTrip(@PathVariable int trainId,
-                                               @PathVariable int tripId,
-                                               @PathVariable String stationFrom,
-                                               @PathVariable String stationTo,
-                                               @PathVariable Timestamp departureTime,
-                                               @PathVariable Timestamp arrivalTime) {
+                                               @PathVariable int tripId) {
         ModelAndView modelAndView = new ModelAndView();
-        List<PassengerInfoDTO> passengers = passengerService.getAllPassengersByTrainIdAndTripId(trainId,tripId);
+        List<PassengerInfoDTO> passengers = passengerService.getAllPassengersByTrainIdAndTripId(trainId, tripId);
         modelAndView.addObject("passengers", passengers);
-        modelAndView.addObject("stationFrom", stationFrom);
-        modelAndView.addObject("stationTo", stationTo);
-        modelAndView.addObject("departureTime", departureTime);
-        modelAndView.addObject("arrivalTime", arrivalTime);
         modelAndView.setViewName("Passengers");
         return modelAndView;
     }
-
 
 }

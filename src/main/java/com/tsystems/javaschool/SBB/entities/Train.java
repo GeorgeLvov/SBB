@@ -31,9 +31,6 @@ public class Train {
     private int id;
 
     @NaturalId
-    @NotNull(message = "Name can't be empty")
-    @Size(min = 3, max = 20, message = "Min name length is 3, max is 20")
-    @Pattern(regexp = "^[a-zA-Z0-9\\-]+$", message = "Latin letters, digits and hyphens are allowed")
     @Column(name = "name")
     private String trainName;
 

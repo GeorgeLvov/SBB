@@ -156,7 +156,7 @@
                     <spring:bind path="sideStations">
                         <div class="form-group ${status.error ? 'has-error' : ''}">
                             <label for="stat">Station:</label>
-                            <form:select class="form-control" path="sideStations" varStatus="tagStatus" multiple="0" id="stat">
+                            <form:select class="form-control" path="sideStations" multiple="0" id="stat">
                                 <form:option value="" label="Select"/>
                                 <form:options items="${stationsList}" itemValue="title" itemLabel="title"/>
                             </form:select>

@@ -96,6 +96,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 schedule.setDepartureTime(departureTime);
             } else schedule.setDepartureTime(Timestamp.valueOf(arrivalDates.get(i - 1).plusMinutes(stops.get(i - 1))));
             schedule.setArrivalTime(Timestamp.valueOf(arrivalDates.get(i)));
+            System.out.println(schedule);
             scheduleRepository.add(schedule);
         }
     }
@@ -128,13 +129,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public List<ScheduleDTO> getSchedulesByStationsAndDate(StationDTO stationDTOFrom, StationDTO stationDTOTo, Timestamp tmp1, Timestamp tmp2) {
+    public List<ScheduleDTO> getSchedulesByStationsAndDate(StationDTO stationDTOFrom, StationDTO stationDTOTo,
+                                                           Timestamp dateFrom, Timestamp dateTo) {
 
         Station stationFrom = stationMapper.toEntity(stationDTOFrom);
         Station stationTo = stationMapper.toEntity(stationDTOTo);
 
         List<ScheduleDTO> schedulesByStationFromAndDate = scheduleMapper
-                .toDTOList(scheduleRepository.getSchedulesByDepartureStationAndTime(stationFrom, tmp1, tmp2));
+                .toDTOList(scheduleRepository.getSchedulesByDepartureStationAndTime(stationFrom, dateFrom, dateTo));
 
         List<ScheduleDTO> resultSchedules = new ArrayList<>();
 
@@ -149,36 +151,37 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             for (ScheduleDTO scheduleTo : schedulesByStationToAndTrip) {
                 if (scheduleFrom.getId() == scheduleTo.getId()) {
-                    scheduleFrom.setTripInfoDTOList(getInfoOfAllTripsByTrainIdAndTripId(scheduleFrom.getTrainDTO().getId(),
-                            scheduleFrom.getTripId()));
-                    scheduleFrom
-                            .setFreePlacesCount(scheduleFrom.getTrainDTO().getCapacity() - ticketRepository
-                                    .getTakenSeatsCount(scheduleFrom.getTrainDTO().getId(), scheduleFrom.getTripId(),
-                                            scheduleFrom.getDepartureTime(), scheduleFrom.getArrivalTime()).intValue());
-                    scheduleFrom.setAvailableOnTime(ticketService.isTimeValid(scheduleFrom.getDepartureTime()));
+                    setTripInfo(scheduleTo);
+                    resultSchedules.add(scheduleTo);
 
+                } else if (scheduleFrom.getStationIndex() < scheduleTo.getStationIndex()) {
+                    scheduleFrom.setStationToDTO(scheduleTo.getStationToDTO());
+                    scheduleFrom.setArrivalTime(scheduleTo.getArrivalTime());
+                    setTripInfo(scheduleFrom);
                     resultSchedules.add(scheduleFrom);
-
-                } else if (scheduleFrom.getStationIndex() < scheduleTo.getStationIndex()
-                        && !scheduleFrom.getStationFromDTO().equals(scheduleTo.getStationFromDTO())) {
-
-                    ScheduleDTO scheduleDTO = new ScheduleDTO(scheduleFrom.getId(), scheduleFrom.getTrainDTO(), scheduleFrom.getTripId(),
-                            scheduleTo.getStationIndex(), scheduleFrom.getStationFromDTO(), scheduleTo.getStationToDTO(),
-                            scheduleFrom.getDepartureTime(), scheduleTo.getArrivalTime());
-
-                    scheduleDTO.setTripInfoDTOList(getInfoOfAllTripsByTrainIdAndTripId(scheduleDTO.getTrainDTO().getId(),
-                            scheduleDTO.getTripId()));
-                    scheduleDTO.setFreePlacesCount(scheduleDTO.getTrainDTO().getCapacity() - ticketRepository
-                            .getTakenSeatsCount(scheduleFrom.getTrainDTO().getId(), scheduleFrom.getTripId(), scheduleFrom.getDepartureTime(),
-                                    scheduleFrom.getArrivalTime()).intValue());
-                    scheduleDTO.setAvailableOnTime(ticketService.isTimeValid(scheduleDTO.getDepartureTime()));
-
-                    resultSchedules.add(scheduleDTO);
                 }
             }
         }
+
         return resultSchedules.stream().distinct().collect(Collectors.toList());
     }
+
+
+
+    private void setTripInfo(ScheduleDTO scheduleDTO){
+        scheduleDTO
+                .setTripInfoDTOList(getInfoOfAllTripsByTrainIdAndTripId(scheduleDTO.getTrainDTO().getId(),
+                        scheduleDTO.getTripId()));
+
+        int freePlaces = scheduleDTO.getTrainDTO().getCapacity() - ticketRepository
+                .getTakenSeatsCount(scheduleDTO.getTrainDTO().getId(), scheduleDTO.getTripId(), scheduleDTO.getDepartureTime(),
+                        scheduleDTO.getArrivalTime()).intValue();
+        scheduleDTO
+                .setFreePlacesCount(Math.max(freePlaces, 0));
+
+        scheduleDTO.setAvailableOnTime(ticketService.isTimeValid(scheduleDTO.getDepartureTime()));
+    }
+
 
 
     @Override

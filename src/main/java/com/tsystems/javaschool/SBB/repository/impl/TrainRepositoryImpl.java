@@ -2,56 +2,57 @@ package com.tsystems.javaschool.SBB.repository.impl;
 
 import com.tsystems.javaschool.SBB.entities.Train;
 import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
 public class TrainRepositoryImpl implements TrainRepository {
-    
+
     @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
     @Override
     public List<Train> getAllTrains() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Train").list();
+        return entityManager.createQuery("select t from Train t").getResultList();
     }
 
 
     @Override
     public Train getTrainById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Train.class, id);
+        return entityManager.find(Train.class, id);
     }
 
     @Override
     public Train findTrainByName(String trainName) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.byNaturalId(Train.class)
-                .using("trainName", trainName)
-                .load();
+        try {
+            Query query = entityManager.createQuery("select t from Train t where t.trainName = :trainName");
+            query.setParameter("trainName", trainName);
+            return (Train) query.getSingleResult();
+        } catch (NoResultException noResultException) {
+            return null;
+        }
     }
 
     @Override
     public void add(Train train) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(train);
+        entityManager.persist(train);
     }
 
     @Override
     public void update(Train train) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(train);
+     entityManager.merge(train);
     }
 
     @Override
     public void delete(Train train) {
-        Session session = sessionFactory.getCurrentSession();
-        session.delete(train);
+        entityManager.remove(entityManager.merge(train));
     }
 }

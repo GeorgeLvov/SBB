@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.format.DateTimeParseException;
 
 
@@ -23,17 +22,6 @@ public class AppExceptionHandler {
         return redirectView;
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public RedirectView illegalArgumentException(HttpServletRequest req, RedirectAttributes redirAttr){
-        RedirectView redirectView = new RedirectView("/", true);
-        String errorMessage = "";
-        if(req.getServletPath().equals("/timetable")){
-            errorMessage = "You must select station to see timetable!";
-        } else errorMessage = "You must select both stations!";
-
-        redirAttr.addFlashAttribute("errorMessage", errorMessage);
-        return redirectView;
-    }
 
     @ExceptionHandler(NoTicketsException.class)
     public RedirectView noTicketsException(RedirectAttributes redirectAttr){

@@ -3,12 +3,14 @@ package com.tsystems.javaschool.SBB.repository.impl;
 import com.tsystems.javaschool.SBB.entities.Ticket;
 import com.tsystems.javaschool.SBB.repository.interfaces.TicketRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.hibernate.query.Query;
 
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
@@ -25,27 +27,25 @@ import java.util.List;
 public class TicketRepositoryImpl implements TicketRepository {
 
     @Autowired
-    SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
     @Autowired
-    TrainRepository trainRepository;
+    private TrainRepository trainRepository;
 
     @Override
     public Ticket getTicketById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Ticket.class, id);
+        return entityManager.find(Ticket.class, id);
     }
 
 
     @Override
     public void setValidityOfTickets() {
-        Session session = sessionFactory.getCurrentSession();
-        session.createNativeQuery("update ticket set valid = 0 where arrival_time < now()").executeUpdate();
+        entityManager.createNativeQuery("update ticket set valid = 0 where arrival_time < now()").executeUpdate();
     }
 
     @Override
     public BigInteger getTakenSeatsCount(int trainId, int tripId, Timestamp departureTime, Timestamp arrivalTime) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session
+        Query query = entityManager
                 .createNativeQuery("select count(*) from ticket where train_id=? and trip_id=? " +
                         "and valid=1 and arrival_time >= ? and departure_time <= ?");
         query.setParameter(1, trainId);
@@ -59,8 +59,7 @@ public class TicketRepositoryImpl implements TicketRepository {
 
     @Override
     public List<Object[]> getAllTicketsByUserId(int userId) {
-        Session session = sessionFactory.getCurrentSession();
-        Query query = session
+        Query query = entityManager
                 .createNativeQuery("select ticket.id, tr.name as tname, p.firstname, p.lastname, p.birthdate, " +
                         "st1.name as stfname, st2.name as sttname, ticket.departure_time, ticket.arrival_time, " +
                         "ticket.valid FROM ticket " +
@@ -70,13 +69,12 @@ public class TicketRepositoryImpl implements TicketRepository {
                         "inner join station st2 on st2.id = ticket.station_to_id " +
                         "where ticket.user_id=?;");
         query.setParameter(1, userId);
-        return query.list();
+        return query.getResultList();
     }
 
 
     @Override
     public void add(Ticket ticket) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(ticket);
+        entityManager.persist(ticket);
     }
 }

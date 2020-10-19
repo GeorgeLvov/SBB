@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/res/css/forMainPages.css"/>" />
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
-
+    
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
 
     <a class="navbar-brand" href="<c:url value="/"/>">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -39,7 +39,7 @@
 
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="<c:url value="/admin"/>" >Management</a>
+                    <a class="nav-link" href="<c:url value="/admin/management"/>" >Management</a>
                 </li>
             </security:authorize>
 
@@ -76,9 +76,9 @@
                 <c:url value="/timetable" var="var"/>
                 <form action="${var}" method="GET">
                     <div class="form-group">
-                        <select class="form-control" name="timeTable" id="exampleSelectSt" style="margin-top: 20px;">
+                        <select class="form-control" name="timeTable" id="exampleSelectSt" required style="margin-top: 20px;">
                             <option value="" disabled selected>Select station</option>
-                            <c:forEach var="station" items="${stationsList}">
+                            <c:forEach var="station" items="${stations}">
                                 <option value="${station.id}">${station.title}</option>
                             </c:forEach>
                         </select>
@@ -98,18 +98,6 @@
     <div class="row" style="height: 80px">
     </div>
     <div class="row">
-        <div class="col-3"></div>
-        <div class="col-7">
-            <c:if test="${errorMessage != null}">
-                <div class="alert alert-danger alert-dismissible fade show col-sm-6 offset-sm-1">
-                    <strong style="text-align: center">${errorMessage}</strong>
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                </div>
-            </c:if>
-        </div>
-        <div class="col-3"></div>
-    </div>
-    <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
 
@@ -118,9 +106,9 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="form-group">
-                            <select class="form-control" name="stationFrom" id="exampleSelect">
+                            <select class="form-control" name="stationFrom" id="exampleSelect" required>
                             <option value="" disabled selected>From</option>
-                                <c:forEach var="station" items="${stationsList}">
+                                <c:forEach var="station" items="${stations}">
                                     <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
                             </select>
@@ -128,9 +116,9 @@
                     </div>
                     <div class="col-6">
                         <div class="form-group">
-                            <select class="form-control b" name="stationTo" id="examplSelect">
-                                <option value="empty" disabled selected>To</option>
-                                <c:forEach var="station" items="${stationsList}">
+                            <select class="form-control" name="stationTo" id="examplSelect" required>
+                                <option value="" disabled selected>To</option>
+                                <c:forEach var="station" items="${stations}">
                                     <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
                             </select>
@@ -142,10 +130,8 @@
                 <div class="row">
                     <div class="col-3">
                         <div class="form-group">
-                            <span lang="en">
                             <input class="form-control" name="dateFrom" type="datetime-local" value="${currentDateTime}"
                                    id="exdatetimelo">
-                            </span>
                         </div>
                     </div>
 

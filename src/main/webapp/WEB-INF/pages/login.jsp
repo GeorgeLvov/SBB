@@ -82,7 +82,7 @@
                 <button type="submit" class="btn btn-lg btn-success btn-block" style="margin-top: 15px">Sign In</button>
             </form>
             <security:authorize access="isAnonymous()">
-            <h5 style=" padding-top: 35px; padding-bottom: 10px">Dont' have an account?</h5>
+            <h5 style=" padding-top: 35px; padding-bottom: 10px">Don't have an account?</h5>
             <a class="btn btn-primary" href="/registration" role="button"
                style="padding-bottom: 10px; margin-bottom: 10px;">Create it here!</a>
         </div>

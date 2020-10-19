@@ -15,7 +15,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
 
-    <a class="navbar-brand" href="<c:url value="/admin"/>" style="color: white">
+    <a class="navbar-brand" href="<c:url value="/admin/management"/>" style="color: white">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         SBB CFF FFS
     </a>
@@ -155,8 +155,7 @@
                             </div>
                         </td>
                         <td>
-                            <a class="btn btn-danger" href="/passengers/${tripInfoList[0].trainDTO.id}/${tripInfoList[0].tripId}/${tripInfoList[0].stationFrom.title}/${tripInfoList[tripInfoList.size() - 1].stationTo.title}
-/${tripInfoList[0].departureTime}/${tripInfoList[tripInfoList.size() - 1].arrivalTime}" role="button">Show Info</a>
+                            <a class="btn btn-danger" href="/admin/passengers/${tripInfoList[0].trainDTO.id}/${tripInfoList[0].tripId}/" role="button">Show Info</a>
                         </td>
                     </tr>
                 </c:forEach>

@@ -14,7 +14,6 @@ import java.util.List;
 
 
 @Controller
-@SessionAttributes({"stationList","currentDateTime"})
 public class SBBController {
 
     @Autowired
@@ -22,7 +21,8 @@ public class SBBController {
     @Autowired
     private ScheduleService scheduleService;
 
-    @ModelAttribute("stationsList")
+
+    @ModelAttribute("stations")
     public List<StationDTO> getAllStations(){
         return stationService.getAllStationsDTO();
     }
@@ -32,11 +32,11 @@ public class SBBController {
         return LocalDateTime.now().withSecond(0).withNano(0);
     }
 
+
+
     @GetMapping(value = "/")
     public ModelAndView getMainPage() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("stationsList");
-        modelAndView.addObject("currentDateTime");
         modelAndView.setViewName("MainPage");
         return modelAndView;
     }
@@ -52,23 +52,17 @@ public class SBBController {
     @GetMapping(value = "/success")
     public ModelAndView getUserPage() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("stationsList");
-        modelAndView.addObject("currentDateTime");
         modelAndView.setViewName("Success");
         return modelAndView;
     }
 
     @GetMapping(value = "/schedule")
-    public ModelAndView searchTrips(@RequestParam(name = "stationFrom", required = false) Integer stationFromId,
-                                    @RequestParam(name = "stationTo", required = false) Integer stationToId,
+    public ModelAndView searchTrips(@RequestParam("stationFrom") Integer stationFromId,
+                                    @RequestParam("stationTo") Integer stationToId,
                                     @RequestParam("dateFrom") String dateFrom,
                                     @RequestParam("dateTo") String dateTo) {
 
         ModelAndView modelAndView = new ModelAndView();
-
-        if (stationFromId == null || stationToId == null) {
-            throw new IllegalArgumentException();
-        }
 
         StationDTO stationDTOFrom = stationService.getStationDTOById(stationFromId);
         StationDTO stationDTOTo = stationService.getStationDTOById(stationToId);
@@ -85,17 +79,13 @@ public class SBBController {
 
 
     @GetMapping(value = "/timetable")
-    public ModelAndView getTimetable(@RequestParam(name = "timeTable", required = false) Integer stationId) {
+    public ModelAndView getTimetable(@RequestParam(name = "timeTable") Integer stationId) {
         ModelAndView modelAndView = new ModelAndView();
-        if (stationId == null) {
-            throw new IllegalArgumentException();
-        }
         List<ScheduleDTO> scheduleDTOsFrom = scheduleService.getSchedulesByStationFrom(stationService.getStationDTOById(stationId));
         List<ScheduleDTO> scheduleDTOsTo = scheduleService.getSchedulesByStationTo(stationService.getStationDTOById(stationId));
         modelAndView.addObject("station", stationService.getStationDTOById(stationId));
         modelAndView.addObject("scheduleDTOListFrom", scheduleDTOsFrom);
         modelAndView.addObject("scheduleDTOListTo", scheduleDTOsTo);
-        System.out.println(scheduleDTOsTo);
         modelAndView.setViewName("TimeTable");
         return modelAndView;
     }

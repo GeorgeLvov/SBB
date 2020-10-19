@@ -25,7 +25,6 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin")
-@SessionAttributes({"stationsList","trainsList"})
 public class SetRouteController{
 
     @Autowired
@@ -48,17 +47,16 @@ public class SetRouteController{
     public List<StationDTO> getAllStations(){
         return stationService.getAllStationsDTO();
     }
+
     @ModelAttribute("trainsList")
     public List<TrainDTO> getAllTrains(){
-        return  trainService.getAllTrainsDTO();
+        return trainService.getAllTrainsDTO();
     }
 
     @GetMapping("/trainselect")
     public ModelAndView selectTrain() {
         ModelAndView modelAndView = new ModelAndView();
         containerService.truncate();
-        modelAndView.addObject("trainsList");
-        modelAndView.addObject("stationsList");
         modelAndView.addObject("routeDTO", new RouteDTO());
         modelAndView.setViewName("StartSetRoutePage");
         return modelAndView;
@@ -69,8 +67,6 @@ public class SetRouteController{
         ModelAndView modelAndView = new ModelAndView();
         startRouteValidator.validate(routeDTO, bindingResult);
         if(bindingResult.hasErrors()){
-            modelAndView.addObject("trainsList");
-            modelAndView.addObject("stationsList");
             modelAndView.setViewName("StartSetRoutePage");
             return modelAndView;
         }
@@ -83,7 +79,6 @@ public class SetRouteController{
     @GetMapping("/setRoute")
     public ModelAndView setRoute() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("stationsList");
         modelAndView.addObject("resultRouteDTO", routeDTOContainer);
         modelAndView.addObject("routeDTO", new RouteDTO());
         modelAndView.setViewName("SetRoutePage");
@@ -96,7 +91,6 @@ public class SetRouteController{
         ModelAndView modelAndView = new ModelAndView();
         routeValidator.validate(routeDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("stationsList");
             modelAndView.addObject("resultRouteDTO", routeDTOContainer);
             modelAndView.setViewName("SetRoutePage");
             return modelAndView;
@@ -128,8 +122,9 @@ public class SetRouteController{
     public RedirectView createTrip(RedirectAttributes redirectAttributes) {
         RedirectView redirectView = new RedirectView("/admin",true);
         scheduleService.createTrip();
+        redirectAttributes.addFlashAttribute("successMessage",
+                "Trip was created!" + "Show it in dropdown tab \"Show\" -> \"Show all trips\" ");
         containerService.truncate();
-        redirectAttributes.addFlashAttribute("successMessage", "Trip was created! Show it in dropdown tab \"Show\" -> \"Show all trips\" ");
         return redirectView;
     }
 

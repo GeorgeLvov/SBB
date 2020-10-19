@@ -2,56 +2,57 @@ package com.tsystems.javaschool.SBB.repository.impl;
 
 import com.tsystems.javaschool.SBB.entities.Station;
 import com.tsystems.javaschool.SBB.repository.interfaces.StationRepository;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
 public class StationRepositoryImpl implements StationRepository {
 
     @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @SuppressWarnings("unchecked")
     @Override
     public List<Station> getAllStations() {
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("from Station s order by s.title").list();
+        return entityManager.createQuery("select s from Station s order by s.title").getResultList();
     }
 
 
     @Override
     public Station getStationById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Station.class, id);
+        return entityManager.find(Station.class, id);
     }
 
     @Override
     public Station findStationByTitle(String title) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.byNaturalId(Station.class)
-                .using("title", title)
-                .load();
+        try {
+            Query query = entityManager.createQuery("select s from Station s where s.title = :title");
+            query.setParameter("title", title);
+            return (Station) query.getSingleResult();
+        } catch (NoResultException noResultException) {
+            return null;
+        }
     }
 
     @Override
     public void addStation(Station station) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(station);
+        entityManager.persist(station);
     }
 
     @Override
     public void updateStation(Station station) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(station);
+        entityManager.merge(station);
     }
 
     @Override
     public void deleteStation(Station station) {
-        Session session = sessionFactory.getCurrentSession();
-        session.delete(station);
+        entityManager.remove(entityManager.merge(station));
     }
 }

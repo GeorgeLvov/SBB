@@ -76,11 +76,15 @@
     </c:when>
     <c:otherwise>
         <div class="container mt-4 p-md-4 col-12 rounded-container">
-            <fmt:setLocale value="en_US" scope="session"/>
-            <h3>
-            ${stationFrom}-${stationTo}
-                   <h5><fmt:formatDate value="${departureTime}" pattern="HH:mm dd.MM.yy"/> - <fmt:formatDate value="${arrivalTime}" pattern="HH:mm dd.MM.yy"/></h5>
-            </h3>
+            <c:forEach items="${allTrips}">
+                <fmt:setLocale value="en_US" scope="session"/>
+                <h3>
+                        ${stationFrom}-${stationTo}
+                    <h5><fmt:formatDate value="${departureTime}" pattern="HH:mm dd.MM.yy"/> - <fmt:formatDate value="${arrivalTime}" pattern="HH:mm dd.MM.yy"/></h5>
+                </h3>
+
+            </c:forEach>
+
 
             <table class="table" style="text-align: center">
                 <tr>

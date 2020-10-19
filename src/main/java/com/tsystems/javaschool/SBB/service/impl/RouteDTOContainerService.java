@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class RouteDTOContainerService {
 
     @Autowired
-    RouteDTOContainer routeDTOContainer;
+    private RouteDTOContainer routeDTOContainer;
 
 
     public void updateListFields(RouteDTO routeDTO){

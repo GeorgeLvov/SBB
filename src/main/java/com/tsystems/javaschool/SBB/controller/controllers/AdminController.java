@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
 
     @Autowired
@@ -24,7 +25,7 @@ public class AdminController {
     private RoleService roleService;
 
 
-    @GetMapping(value = "/admin")
+    @GetMapping(value = "/management")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ModelAndView adminMainPage() {
         ModelAndView modelAndView = new ModelAndView();
@@ -33,8 +34,7 @@ public class AdminController {
     }
 
 
-
-    @GetMapping("/admin/addemployee")
+    @GetMapping("/addemployee")
     public ModelAndView registry(){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("RegistrationPage");
@@ -43,7 +43,7 @@ public class AdminController {
     }
 
 
-    @PostMapping(value = "/admin/addemployee")
+    @PostMapping(value = "/addemployee")
     public ModelAndView registry(@ModelAttribute("userForm") UserDTO userDTO, BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         userValidator.validate(userDTO, bindingResult);
@@ -53,6 +53,7 @@ public class AdminController {
         }
         userDTO.setRoleDTO(roleService.getRoleDTOById(2));
         userService.registry(userDTO);
+
         modelAndView.addObject("message", "New employee account created!");
         modelAndView.addObject("username", userDTO.getUsername());
         modelAndView.addObject("password", userDTO.getPassword());

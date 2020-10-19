@@ -7,15 +7,18 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 @Repository
 public class RoleRepositoryImpl implements RoleRepository {
 
     @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public Role getRoleById(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        return session.get(Role.class, id);
+        return entityManager.find(Role.class, id);
     }
 }

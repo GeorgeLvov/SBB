@@ -39,7 +39,7 @@
 
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">Management</a>
+                    <a class="nav-link" href="/admin/management">Management</a>
                 </li>
             </security:authorize>
 
@@ -118,7 +118,7 @@
                         <div class="form-group">
                             <select class="form-control" name="stationFrom" id="exampleSelect">
                                 <option value="" disabled selected>From</option>
-                                <c:forEach var="station" items="${stationsList}">
+                                <c:forEach var="station" items="${stations}">
                                     <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
                             </select>
@@ -128,7 +128,7 @@
                         <div class="form-group">
                             <select class="form-control b" name="stationTo" id="examplSelect">
                                 <option value="" disabled selected>To</option>
-                                <c:forEach var="station" items="${stationsList}">
+                                <c:forEach var="station" items="${stations}">
                                     <option value="${station.id}">${station.title}</option>
                                 </c:forEach>
                             </select>

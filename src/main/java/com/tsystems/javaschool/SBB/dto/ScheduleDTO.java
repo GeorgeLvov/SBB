@@ -45,15 +45,5 @@ public class ScheduleDTO {
 
     private List<PassengerDTO> passengerDTOList;
 
-    public ScheduleDTO(int id, TrainDTO trainDTO, Integer tripId, int stationIndex, StationDTO stationFromDTO, StationDTO stationToDTO, Timestamp departureTime, Timestamp arrivalTime) {
-        this.id = id;
-        this.trainDTO = trainDTO;
-        this.tripId = tripId;
-        this.stationIndex = stationIndex;
-        this.stationFromDTO = stationFromDTO;
-        this.stationToDTO = stationToDTO;
-        this.departureTime = departureTime;
-        this.arrivalTime = arrivalTime;
-    }
 }
 
