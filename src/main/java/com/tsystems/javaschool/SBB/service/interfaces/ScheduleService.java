@@ -15,7 +15,7 @@ public interface ScheduleService {
 
     List<ScheduleDTO> getSchedulesByStationTo(StationDTO stationDTOTo);
 
-    List<ScheduleDTO> getSchedulesByStationsAndDate(StationDTO stationFromDTO, StationDTO stationTo, Timestamp from, Timestamp to);
+    List<ScheduleDTO> getSchedulesByStationsAndDate(Integer stationFromId, Integer stationToTitle, String dateTimeFrom, String dateTimeTo);
 
     List<TripInfoDTO> getInfoOfAllTripsByTrainIdAndTripId(int trainId, int tripId);
 
@@ -24,4 +24,6 @@ public interface ScheduleService {
     boolean isTrainAvailableForNewTrip(String trainName, String departureTimeStr, String arrivalTimeStr);
 
     List<List<TripInfoDTO>> getAllTrips();
+
+/*    void send();*/
 }

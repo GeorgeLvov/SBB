@@ -16,7 +16,6 @@ import java.util.List;
 @Repository
 public class PassengerRepositoryImpl implements PassengerRepository {
 
-    @Autowired
     @PersistenceContext
     private EntityManager entityManager;
 

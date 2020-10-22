@@ -35,6 +35,7 @@ public class TicketPDFExporter {
 
 
     public TicketPDFExporter(TicketDTO ticketDTO) {
+
         ticketId = ticketDTO.getId();
         valid = ticketDTO.isValid();
         trainName = ticketDTO.getTrainDTO().getTrainName();

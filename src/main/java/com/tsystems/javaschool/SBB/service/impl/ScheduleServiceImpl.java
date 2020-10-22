@@ -46,6 +46,14 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private RouteDTOContainer routeDTOContainer;
 
+  /*  @Autowired
+    private MessageSender messageSender;
+
+    @Override
+    public void send(){
+        messageSender.sendMessage("HelloFriends!");
+    }
+*/
 
     @Override
     @Transactional
@@ -99,6 +107,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             System.out.println(schedule);
             scheduleRepository.add(schedule);
         }
+
     }
 
     @Override
@@ -129,14 +138,17 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public List<ScheduleDTO> getSchedulesByStationsAndDate(StationDTO stationDTOFrom, StationDTO stationDTOTo,
-                                                           Timestamp dateFrom, Timestamp dateTo) {
+    public List<ScheduleDTO> getSchedulesByStationsAndDate(Integer stationFromId, Integer stationToTitle,
+                                                           String dateTimeFrom, String dateTimeTo) {
 
-        Station stationFrom = stationMapper.toEntity(stationDTOFrom);
-        Station stationTo = stationMapper.toEntity(stationDTOTo);
+        Station stationFrom = stationRepository.getStationById(stationFromId);
+        Station stationTo = stationRepository.getStationById(stationToTitle);
+        Timestamp dateFrom = Timestamp.valueOf(LocalDateTime.parse(dateTimeFrom));
+        Timestamp dateTo = Timestamp.valueOf(LocalDateTime.parse(dateTimeTo));
 
         List<ScheduleDTO> schedulesByStationFromAndDate = scheduleMapper
                 .toDTOList(scheduleRepository.getSchedulesByDepartureStationAndTime(stationFrom, dateFrom, dateTo));
+
 
         List<ScheduleDTO> resultSchedules = new ArrayList<>();
 
@@ -151,19 +163,19 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             for (ScheduleDTO scheduleTo : schedulesByStationToAndTrip) {
                 if (scheduleFrom.getId() == scheduleTo.getId()) {
-                    setTripInfo(scheduleTo);
-                    resultSchedules.add(scheduleTo);
-
-                } else if (scheduleFrom.getStationIndex() < scheduleTo.getStationIndex()) {
-                    scheduleFrom.setStationToDTO(scheduleTo.getStationToDTO());
-                    scheduleFrom.setArrivalTime(scheduleTo.getArrivalTime());
                     setTripInfo(scheduleFrom);
                     resultSchedules.add(scheduleFrom);
+
+                } else if (scheduleFrom.getStationIndex() < scheduleTo.getStationIndex()) {
+                    scheduleTo.setStationFromDTO(scheduleFrom.getStationFromDTO());
+                    scheduleTo.setDepartureTime(scheduleFrom.getDepartureTime());
+                    setTripInfo(scheduleTo);
+                    resultSchedules.add(scheduleTo);
                 }
             }
         }
 
-        return resultSchedules.stream().distinct().collect(Collectors.toList());
+        return resultSchedules;
     }
 
 
@@ -172,12 +184,11 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduleDTO
                 .setTripInfoDTOList(getInfoOfAllTripsByTrainIdAndTripId(scheduleDTO.getTrainDTO().getId(),
                         scheduleDTO.getTripId()));
+        int freePlaces = scheduleDTO.getTrainDTO().getCapacity() -
+                ticketRepository.getTakenSeatsCount(scheduleDTO.getTrainDTO().getId(), scheduleDTO.getTripId(),
+                        scheduleDTO.getDepartureTime(), scheduleDTO.getArrivalTime()).intValue();
 
-        int freePlaces = scheduleDTO.getTrainDTO().getCapacity() - ticketRepository
-                .getTakenSeatsCount(scheduleDTO.getTrainDTO().getId(), scheduleDTO.getTripId(), scheduleDTO.getDepartureTime(),
-                        scheduleDTO.getArrivalTime()).intValue();
-        scheduleDTO
-                .setFreePlacesCount(Math.max(freePlaces, 0));
+        scheduleDTO.setFreePlacesCount(Math.max(freePlaces, 0));
 
         scheduleDTO.setAvailableOnTime(ticketService.isTimeValid(scheduleDTO.getDepartureTime()));
     }
@@ -220,6 +231,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         LocalDateTime arrivalTime = LocalDateTime.parse(arrivalTimeStr);
 
         List<Timestamp> departureTimes = scheduleRepository.getAllDepartureTimesByTrainId(trainId);
+
         if (CollectionUtils.isEmpty(departureTimes)) {
             return true;
         }

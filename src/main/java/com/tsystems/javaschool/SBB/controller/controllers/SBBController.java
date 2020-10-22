@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -64,15 +63,10 @@ public class SBBController {
 
         ModelAndView modelAndView = new ModelAndView();
 
-        StationDTO stationDTOFrom = stationService.getStationDTOById(stationFromId);
-        StationDTO stationDTOTo = stationService.getStationDTOById(stationToId);
-        Timestamp timeFrom = Timestamp.valueOf(LocalDateTime.parse(dateFrom));
-        Timestamp timeTo = Timestamp.valueOf(LocalDateTime.parse(dateTo));
-
-        List<ScheduleDTO> list = scheduleService.getSchedulesByStationsAndDate(stationDTOFrom, stationDTOTo, timeFrom, timeTo);
+        List<ScheduleDTO> list = scheduleService
+                .getSchedulesByStationsAndDate(stationFromId, stationToId, dateFrom, dateTo);
 
         modelAndView.addObject("scheduleDTOList", list);
-
         modelAndView.setViewName("SchedulePage");
         return modelAndView;
     }
@@ -80,10 +74,15 @@ public class SBBController {
 
     @GetMapping(value = "/timetable")
     public ModelAndView getTimetable(@RequestParam(name = "timeTable") Integer stationId) {
+
         ModelAndView modelAndView = new ModelAndView();
-        List<ScheduleDTO> scheduleDTOsFrom = scheduleService.getSchedulesByStationFrom(stationService.getStationDTOById(stationId));
-        List<ScheduleDTO> scheduleDTOsTo = scheduleService.getSchedulesByStationTo(stationService.getStationDTOById(stationId));
-        modelAndView.addObject("station", stationService.getStationDTOById(stationId));
+
+        StationDTO stationDTO = stationService.getStationDTOById(stationId);
+
+        List<ScheduleDTO> scheduleDTOsFrom = scheduleService.getSchedulesByStationFrom(stationDTO);
+        List<ScheduleDTO> scheduleDTOsTo = scheduleService.getSchedulesByStationTo(stationDTO);
+
+        modelAndView.addObject("station", stationDTO);
         modelAndView.addObject("scheduleDTOListFrom", scheduleDTOsFrom);
         modelAndView.addObject("scheduleDTOListTo", scheduleDTOsTo);
         modelAndView.setViewName("TimeTable");

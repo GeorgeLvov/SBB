@@ -4,6 +4,7 @@ import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.entities.Schedule;
 import lombok.*;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 

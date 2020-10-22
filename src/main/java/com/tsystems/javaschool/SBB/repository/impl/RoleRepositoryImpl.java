@@ -13,7 +13,6 @@ import javax.persistence.PersistenceContext;
 @Repository
 public class RoleRepositoryImpl implements RoleRepository {
 
-    @Autowired
     @PersistenceContext
     private EntityManager entityManager;
 

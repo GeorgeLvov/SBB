@@ -26,7 +26,6 @@ import java.util.List;
 @Repository
 public class TicketRepositoryImpl implements TicketRepository {
 
-    @Autowired
     @PersistenceContext
     private EntityManager entityManager;
     @Autowired

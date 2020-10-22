@@ -2,7 +2,6 @@ package com.tsystems.javaschool.SBB.service.interfaces;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
-import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
 
 import java.sql.Timestamp;
@@ -14,7 +13,7 @@ public interface TicketService {
 
     TicketDTO getTicketDTOById(int id);
 
-    void createTicket(TicketDTOContainer ticketDTOContainer);
+    void createTicket(TicketDTO ticketDTO);
 
     void setValidityOfTickets();
 

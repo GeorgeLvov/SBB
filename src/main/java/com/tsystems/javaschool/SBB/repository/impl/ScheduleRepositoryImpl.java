@@ -4,9 +4,8 @@ import com.tsystems.javaschool.SBB.entities.Schedule;
 import com.tsystems.javaschool.SBB.entities.Station;
 import com.tsystems.javaschool.SBB.repository.interfaces.ScheduleRepository;
 
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import javax.persistence.EntityManager;
@@ -26,7 +25,7 @@ import java.util.List;
 @Repository
 public class ScheduleRepositoryImpl implements ScheduleRepository {
 
-    @Autowired
+
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -36,6 +35,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         entityManager.persist(schedule);
     }
 
+    @Transactional
     @Override
     public List<Schedule> getSchedulesByDepartureStationAndTime(Station stationFrom, Timestamp dateFrom, Timestamp dateTo) {
         Query query = entityManager
@@ -47,6 +47,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         return query.getResultList();
     }
 
+    @Transactional
     @Override
     public List<Schedule> getSchedulesByTrainIdTripIdStationTo(int trainId, int tripId, Station stationTo) {
         Query query = entityManager

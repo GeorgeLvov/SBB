@@ -14,7 +14,6 @@ import java.util.List;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    @Autowired
     @PersistenceContext
     private EntityManager entityManager;
 

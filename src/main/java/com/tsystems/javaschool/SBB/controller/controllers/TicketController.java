@@ -2,7 +2,6 @@ package com.tsystems.javaschool.SBB.controller.controllers;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
-import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
@@ -27,7 +26,7 @@ public class TicketController {
     @Autowired
     private PassengerValidator passengerValidator;
     @Autowired
-    private TicketDTOContainer ticketDTOContainer;
+    private TicketDTO ticketDTO;
 
 
 
@@ -50,7 +49,7 @@ public class TicketController {
             return modelAndView;
         }
         ticketService.setPassengerToTicket(passengerDTO);
-        ticketService.createTicket(ticketDTOContainer);
+        ticketService.createTicket(ticketDTO);
 
         modelAndView.setViewName("redirect:/alltickets");
         return modelAndView;

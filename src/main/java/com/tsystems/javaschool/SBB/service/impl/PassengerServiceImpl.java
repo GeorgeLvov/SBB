@@ -2,7 +2,7 @@ package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.PassengerInfoDTO;
-import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
+import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.mapper.PassengerMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.PassengerRepository;
@@ -42,7 +42,7 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTOContainer ticketDTOContainer) {
+    public boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTO ticketDTO) {
 
         List<Object[]> list = passengerRepository.getPassengerWithTicketsByPersonalData(firstName, lastName, birthDate);
 
@@ -51,8 +51,8 @@ public class PassengerServiceImpl implements PassengerService {
             int tripId = (int) objects[1];
             Timestamp departureTime = (Timestamp) objects[2];
             Timestamp arrivalTime = (Timestamp) objects[3];
-            if (trainId == ticketDTOContainer.getTrainDTO().getId() && tripId == ticketDTOContainer.getTripId()
-                    && departureTime.equals(ticketDTOContainer.getDepartureTime()) && arrivalTime.equals(ticketDTOContainer.getArrivalTime())) {
+            if (trainId == ticketDTO.getTrainDTO().getId() && tripId == ticketDTO.getTripId()
+                    && departureTime.equals(ticketDTO.getDepartureTime()) && arrivalTime.equals(ticketDTO.getArrivalTime())) {
                 return true;
             }
         }

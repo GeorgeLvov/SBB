@@ -35,7 +35,7 @@ public class AdminController {
 
 
     @GetMapping("/addemployee")
-    public ModelAndView registry(){
+    public ModelAndView registry(@PathVariable int id){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("RegistrationPage");
         modelAndView.addObject("userForm", new UserDTO());

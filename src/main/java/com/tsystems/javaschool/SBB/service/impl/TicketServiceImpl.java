@@ -2,7 +2,6 @@ package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
-import com.tsystems.javaschool.SBB.dto.TicketDTOContainer;
 import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
 import com.tsystems.javaschool.SBB.entities.Ticket;
 import com.tsystems.javaschool.SBB.entities.User;
@@ -38,7 +37,7 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private TicketDTOContainer ticketDTOContainer;
+    private TicketDTO ticketDTO;
     @Autowired
     private PassengerService passengerService;
     @Autowired
@@ -92,19 +91,19 @@ public class TicketServiceImpl implements TicketService {
         if (isTimeValid(departureTime)
                 && !isTrainFull(departureTime, arrivalTime, trainId, tripId)) {
 
-            ticketDTOContainer.setTrainDTO(trainService.getTrainDTOById(trainId));
-            ticketDTOContainer.setTripId(tripId);
-            ticketDTOContainer.setStationFromDTO(stationService.getStationDTOById(stationFromId));
-            ticketDTOContainer.setStationToDTO(stationService.getStationDTOById(stationToId));
-            ticketDTOContainer.setDepartureTime(departureTime);
-            ticketDTOContainer.setArrivalTime(arrivalTime);
-            ticketDTOContainer.setValid(true);
+            ticketDTO.setTrainDTO(trainService.getTrainDTOById(trainId));
+            ticketDTO.setTripId(tripId);
+            ticketDTO.setStationFromDTO(stationService.getStationDTOById(stationFromId));
+            ticketDTO.setStationToDTO(stationService.getStationDTOById(stationToId));
+            ticketDTO.setDepartureTime(departureTime);
+            ticketDTO.setArrivalTime(arrivalTime);
+            ticketDTO.setValid(true);
 
             Authentication auth = SecurityContextHolder.getContext().getAuthentication();
             String username = auth.getName();
 
             if (!username.equals("anonymousUser")) {
-                ticketDTOContainer.setUserDTO(userService.findUserDTOByName(auth.getName()));
+                ticketDTO.setUserDTO(userService.findUserDTOByName(auth.getName()));
             }
 
         } else throw new NoTicketsException();
@@ -118,26 +117,24 @@ public class TicketServiceImpl implements TicketService {
         Date birthDate = passengerDTO.getBirthDate();
         PassengerDTO existingPassenger = passengerService.findPassengerByPersonalData(firstName, lastName, birthDate);
         if (existingPassenger != null) {
-            ticketDTOContainer.setPassengerDTO(existingPassenger);
+            ticketDTO.setPassengerDTO(existingPassenger);
         } else {
             passengerService.addPassenger(passengerDTO);
-            ticketDTOContainer.setPassengerDTO(passengerService.findPassengerByPersonalData(firstName, lastName, birthDate));
+            ticketDTO.setPassengerDTO(passengerService.findPassengerByPersonalData(firstName, lastName, birthDate));
         }
     }
 
 
     @Override
     @Transactional
-    public void createTicket(TicketDTOContainer ticketDTOContainer) throws NoTicketsException {
+    public void createTicket(TicketDTO ticketDTO) throws NoTicketsException {
 
-        if(isTimeValid(ticketDTOContainer.getDepartureTime())
-                && !isTrainFull(ticketDTOContainer.getDepartureTime(), ticketDTOContainer.getArrivalTime(),
-                ticketDTOContainer.getTrainDTO().getId(), ticketDTOContainer.getTripId())){
+        if(isTimeValid(ticketDTO.getDepartureTime())
+                && !isTrainFull(ticketDTO.getDepartureTime(), ticketDTO.getArrivalTime(),
+                ticketDTO.getTrainDTO().getId(), ticketDTO.getTripId())){
 
-            TicketDTO ticketDTO = new TicketDTO(ticketDTOContainer);
             Ticket ticket = ticketMapper.toEntity(ticketDTO);
             ticketRepository.add(ticket);
-
         }
 
         else throw new NoTicketsException();

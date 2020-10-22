@@ -14,7 +14,6 @@ import java.util.List;
 @Repository
 public class TrainRepositoryImpl implements TrainRepository {
 
-    @Autowired
     @PersistenceContext
     private EntityManager entityManager;
 

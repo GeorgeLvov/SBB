@@ -14,7 +14,7 @@ import java.util.List;
 @Repository
 public class StationRepositoryImpl implements StationRepository {
 
-    @Autowired
+
     @PersistenceContext
     private EntityManager entityManager;
 
