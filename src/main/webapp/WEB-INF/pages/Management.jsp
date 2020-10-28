@@ -44,7 +44,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/admin/trainsAndRoutes"/>">Show all trips</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/allTrips"/>">Show all trips</a>
 
                 </div>
             </li>

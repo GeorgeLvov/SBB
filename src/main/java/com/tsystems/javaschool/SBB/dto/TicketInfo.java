@@ -10,7 +10,7 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class TicketInfoDTO {
+public class TicketInfo {
 
     int ticketId;
 

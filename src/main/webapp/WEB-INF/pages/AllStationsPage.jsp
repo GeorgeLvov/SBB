@@ -13,7 +13,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
 
-    <a class="navbar-brand" href="<c:url value="/admin"/>" style="color: white">
+    <a class="navbar-brand" href="<c:url value="/admin/management"/>" style="color: white">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         SBB CFF FFS
     </a>
@@ -44,7 +44,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Show passengers</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/allTrips"/>">Show all trips</a>
 
                 </div>
             </li>

@@ -1,10 +1,8 @@
 package com.tsystems.javaschool.SBB.dto;
 
-import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.entities.Schedule;
 import lombok.*;
 
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -26,7 +24,7 @@ public class ScheduleDTO {
 
     private TrainDTO trainDTO;
 
-    private Integer tripId;
+    private TripDTO tripDTO;
 
     private int stationIndex;
 
@@ -42,9 +40,11 @@ public class ScheduleDTO {
 
     private boolean availableOnTime;
 
-    private List<TripInfoDTO> tripInfoDTOList;
+    private int delay;
 
-    private List<PassengerDTO> passengerDTOList;
+    private boolean canceled;
+
+    private List<TripInfo> tripInfoList;
 
 }
 

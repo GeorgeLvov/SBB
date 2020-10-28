@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RouteDTOContainer {
+public class RouteContainer {
 
     @NotBlank(message = "Train is not selected!")
     String trainName;

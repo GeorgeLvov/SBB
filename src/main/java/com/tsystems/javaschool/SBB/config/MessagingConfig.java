@@ -1,5 +1,6 @@
 package com.tsystems.javaschool.SBB.config;
 
+/*
 import java.util.Properties;
 
 
@@ -10,64 +11,45 @@ import org.springframework.jms.core.JmsTemplate;
 
 
 import javax.jms.Destination;
-import javax.jms.TopicConnectionFactory;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 
-
-
-/*
-* standalone.bat -c standalone-full.xml
-*/
-
-
 @Configuration
 public class MessagingConfig {
 
-    private final String CONNECTION_FACTORY = "jms/RemoteConnectionFactory";
-    private final String DESTINATION = "jms/queue/myQueue";
+    private final Properties PROPERTIES;
+
+    {
+        PROPERTIES = new Properties();
+        PROPERTIES.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
+        PROPERTIES.put(Context.PROVIDER_URL, "http-remoting://127.0.0.1:8081");
+        PROPERTIES.put(Context.SECURITY_PRINCIPAL, "wildfly");
+        PROPERTIES.put(Context.SECURITY_CREDENTIALS, "1234");
+    }
+
 
     @Bean
     public ConnectionFactory connectionFactory() throws NamingException {
 
-        final Properties props = new Properties();
+        Context namingContext = new InitialContext(PROPERTIES);
 
-        props.put(Context.INITIAL_CONTEXT_FACTORY,
-                "org.jboss.naming.remote.client.InitialContextFactory");
-        props.put(Context.PROVIDER_URL, "http-remoting://127.0.0.1:8081");
-        props.put(Context.SECURITY_PRINCIPAL, "wildfly");
-        props.put(Context.SECURITY_CREDENTIALS, "1234");
-        Context namingContext = new InitialContext(props);
-
-        ConnectionFactory connectionFactory = (ConnectionFactory) namingContext
-                .lookup(CONNECTION_FACTORY);
-
-        return connectionFactory;
+        return (ConnectionFactory) namingContext.lookup("jms/RemoteConnectionFactory");
     }
 
     @Bean
     public JmsTemplate jmsTemplate() throws NamingException {
 
+        Context namingContext = new InitialContext(PROPERTIES);
+
         JmsTemplate template = new JmsTemplate();
         template.setConnectionFactory(connectionFactory());
-
-        final Properties props = new Properties();
-        props.put(Context.INITIAL_CONTEXT_FACTORY,
-                "org.jboss.naming.remote.client.InitialContextFactory");
-        props.put(Context.PROVIDER_URL, "http-remoting://127.0.0.1:8081");
-        props.put(Context.SECURITY_PRINCIPAL, "wildfly");
-        props.put(Context.SECURITY_CREDENTIALS, "1234");
-
-        Context namingContext = new InitialContext(props);
-
-        Destination destination = (Destination) namingContext
-                .lookup(DESTINATION);
-
+        Destination destination = (Destination) namingContext.lookup( "jms/queue/myQueue");
         template.setDefaultDestination(destination);
 
         return template;
     }
 
 }
+*/

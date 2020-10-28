@@ -1,13 +1,7 @@
 package com.tsystems.javaschool.SBB.controller.controllers;
 
-import com.tsystems.javaschool.SBB.dto.PassengerInfoDTO;
-import com.tsystems.javaschool.SBB.dto.StationDTO;
-import com.tsystems.javaschool.SBB.dto.TrainDTO;
-import com.tsystems.javaschool.SBB.dto.TripInfoDTO;
-import com.tsystems.javaschool.SBB.service.interfaces.PassengerService;
-import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
-import com.tsystems.javaschool.SBB.service.interfaces.StationService;
-import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
+import com.tsystems.javaschool.SBB.dto.*;
+import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.validator.StationValidator;
 import com.tsystems.javaschool.SBB.validator.TrainValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.Valid;
-import java.sql.Timestamp;
 import java.util.List;
 
 
@@ -28,8 +21,6 @@ public class CrudController {
     @Autowired
     private PassengerService passengerService;
     @Autowired
-    private ScheduleService scheduleService;
-    @Autowired
     private StationService stationService;
     @Autowired
     private TrainService trainService;
@@ -37,6 +28,8 @@ public class CrudController {
     private StationValidator stationValidator;
     @Autowired
     private TrainValidator trainValidator;
+    @Autowired
+    private TripService tripService;
 
 
     @GetMapping(value = "/crud")
@@ -98,20 +91,32 @@ public class CrudController {
         return modelAndView;
     }
 
-   @GetMapping(value = "/trainsAndRoutes")
-   public ModelAndView getAllTrips() {
-       ModelAndView modelAndView = new ModelAndView();
-       List<List<TripInfoDTO>> tripsList = scheduleService.getAllTrips();
-       modelAndView.addObject("allTrips", tripsList);
-       modelAndView.setViewName("AllTripsPage");
-       return modelAndView;
-   }
+    @GetMapping(value = "/allTrips")
+    public ModelAndView getAllAllTrips() {
+        ModelAndView modelAndView = new ModelAndView();
+        List<TripDTO> allTrips = tripService.getAllTrips();
+        modelAndView.addObject("allTrips", allTrips);
+        modelAndView.setViewName("AllTripsPage");
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/cancelTrip/{tripId}")
+    public String cancelTrip(@PathVariable int tripId){
+        tripService.cancelTrip(tripId);
+        return "redirect:/admin/allTrips";
+    }
+
+    @PostMapping(value = "/delayTrip/{tripId}")
+    public String delayTrip(@PathVariable int tripId, @RequestParam int delay){
+        tripService.delayTrip(tripId, delay);
+        return "redirect:/admin/allTrips";
+    }
 
     @GetMapping(value = "/passengers/{trainId}/{tripId}")
     public ModelAndView getAllPassengersOnTrip(@PathVariable int trainId,
                                                @PathVariable int tripId) {
         ModelAndView modelAndView = new ModelAndView();
-        List<PassengerInfoDTO> passengers = passengerService.getAllPassengersByTrainIdAndTripId(trainId, tripId);
+        List<PassengerInfo> passengers = passengerService.getAllPassengersByTrainIdAndTripId(trainId, tripId);
         modelAndView.addObject("passengers", passengers);
         modelAndView.setViewName("Passengers");
         return modelAndView;

@@ -5,29 +5,31 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PassengerInfoDTO {
+public class TripDTO {
 
-    public String trainName;
+    private int id;
 
-    private String firstName;
+    TrainDTO trainDTO;
 
-    private String lastName;
+    private StationDTO departureStationDTO;
 
-    private Date birthDate;
-
-    private String stationFrom;
-
-    private String stationTo;
+    private StationDTO arrivalStationDTO;
 
     private Timestamp departureTime;
 
     private Timestamp arrivalTime;
+
+    private int delay;
+
+    private boolean canceled;
+
+    private List<TripInfo> tripInfoList;
 
 }

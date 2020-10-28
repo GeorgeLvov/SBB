@@ -120,7 +120,7 @@
                         <tr>
                             <td>${scheduleDTO.trainDTO.trainName}</td>
                             <th scope="row">${scheduleDTO.stationFromDTO.title}</th>
-                            <td>${scheduleDTO.tripInfoDTOList.get(scheduleDTO.tripInfoDTOList.size()-1).stationTo.title}</td>
+                            <td>${scheduleDTO.tripInfoList.get(scheduleDTO.tripInfoList.size()-1).stationTo.title}</td>
                             <fmt:setLocale value="en_US" scope="session"/>
                             <td>
                                 <strong><fmt:formatDate value="${scheduleDTO.departureTime}" pattern="HH:mm"/></strong>
@@ -129,11 +129,11 @@
                             </td>
                             <td>
                                 <fmt:formatDate
-                                        value="${scheduleDTO.tripInfoDTOList.get(scheduleDTO.tripInfoDTOList.size()-1).arrivalTime}"
+                                        value="${scheduleDTO.tripInfoList.get(scheduleDTO.tripInfoList.size()-1).arrivalTime}"
                                         pattern="HH:mm"/>
                                 <br>
                                 <fmt:formatDate
-                                        value="${scheduleDTO.tripInfoDTOList.get(scheduleDTO.tripInfoDTOList.size()-1).arrivalTime}"
+                                        value="${scheduleDTO.tripInfoList.get(scheduleDTO.tripInfoList.size()-1).arrivalTime}"
                                         pattern="E, dd.MM.yyyy"/>
                             </td>
 
@@ -169,7 +169,7 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoDTOList}">
+                                                    <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoList}">
 
                                                         <tr>
                                                             <c:choose>
@@ -245,14 +245,14 @@
                     <c:forEach var="scheduleDTO2" items="${scheduleDTOListTo}" varStatus="vs2">
                         <tr>
                             <td>${scheduleDTO2.trainDTO.trainName}</td>
-                            <td>${scheduleDTO2.tripInfoDTOList.get(0).stationFrom.title}</td>
+                            <td>${scheduleDTO2.tripInfoList.get(0).stationFrom.title}</td>
                             <th scope="row">${scheduleDTO2.stationToDTO.title}</th>
                             <fmt:setLocale value="en_US" scope="session"/>
                             <td>
-                                <fmt:formatDate value="${scheduleDTO2.tripInfoDTOList.get(0).departureTime}"
+                                <fmt:formatDate value="${scheduleDTO2.tripInfoList.get(0).departureTime}"
                                                 pattern="HH:mm"/>
                                 <br>
-                                <fmt:formatDate value="${scheduleDTO2.tripInfoDTOList.get(0).departureTime}"
+                                <fmt:formatDate value="${scheduleDTO2.tripInfoList.get(0).departureTime}"
                                                 pattern="E, dd.MM.yyyy"/>
                             </td>
                             <td>
@@ -296,7 +296,7 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <c1:forEach var="tripInfo" items="${scheduleDTO2.tripInfoDTOList}">
+                                                    <c1:forEach var="tripInfo" items="${scheduleDTO2.tripInfoList}">
                                                         <tr>
                                                             <c:choose>
                                                                 <c:when test="${(tripInfo.stationTo.title.equals(scheduleDTO2.stationToDTO.title)) && (tripInfo.arrivalTime.equals(scheduleDTO2.arrivalTime))}">

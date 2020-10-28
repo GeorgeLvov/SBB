@@ -236,7 +236,8 @@ public class TicketPDFExporter {
         document.add(Chunk.NEWLINE);
         document.add(Chunk.NEWLINE);
 
-        Paragraph paragraph3  = new Paragraph("Swiss Federal Railways, 2020", new Font(Font.HELVETICA, 10, Font.NORMAL));
+        Paragraph paragraph3  = new Paragraph("Swiss Federal Railways, 2020", new Font(Font.HELVETICA, 10,
+                Font.NORMAL));
         paragraph3.setAlignment(Element.ALIGN_CENTER);
         document.add(paragraph3);
 

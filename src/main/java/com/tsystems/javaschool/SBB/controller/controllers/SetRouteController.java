@@ -1,13 +1,14 @@
 package com.tsystems.javaschool.SBB.controller.controllers;
 
 import com.tsystems.javaschool.SBB.dto.RouteDTO;
-import com.tsystems.javaschool.SBB.dto.RouteDTOContainer;
+import com.tsystems.javaschool.SBB.dto.RouteContainer;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.dto.TrainDTO;
-import com.tsystems.javaschool.SBB.service.impl.RouteDTOContainerService;
+import com.tsystems.javaschool.SBB.service.impl.RouteContainerService;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.StationService;
 import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
+import com.tsystems.javaschool.SBB.utils.CollectionUtils;
 import com.tsystems.javaschool.SBB.validator.RouteValidator;
 import com.tsystems.javaschool.SBB.validator.StartRouteValidator;
 import org.springframework.stereotype.Controller;
@@ -38,9 +39,9 @@ public class SetRouteController{
     @Autowired
     private ScheduleService scheduleService;
     @Autowired
-    private RouteDTOContainer routeDTOContainer;
+    private RouteContainer routeContainer;
     @Autowired
-    private RouteDTOContainerService containerService;
+    private RouteContainerService containerService;
 
 
     @ModelAttribute("stationsList")
@@ -79,7 +80,7 @@ public class SetRouteController{
     @GetMapping("/setRoute")
     public ModelAndView setRoute() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("resultRouteDTO", routeDTOContainer);
+        modelAndView.addObject("resultRouteDTO", routeContainer);
         modelAndView.addObject("routeDTO", new RouteDTO());
         modelAndView.setViewName("SetRoutePage");
         return modelAndView;
@@ -91,12 +92,11 @@ public class SetRouteController{
         ModelAndView modelAndView = new ModelAndView();
         routeValidator.validate(routeDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("resultRouteDTO", routeDTOContainer);
+            modelAndView.addObject("resultRouteDTO", routeContainer);
             modelAndView.setViewName("SetRoutePage");
             return modelAndView;
         }
-
-        if (routeDTOContainer.getSideStations() != null) {
+        if (CollectionUtils.isNotEmpty(routeContainer.getSideStations())) {
             containerService.updateListFields(routeDTO);
         } else containerService.setFields(routeDTO, false);
 
@@ -106,21 +106,19 @@ public class SetRouteController{
 
 
     @GetMapping(value = "/deleteLast")
-    public ModelAndView deleteLastChange() {
-        ModelAndView modelAndView = new ModelAndView();
-        if (routeDTOContainer.getSideStations() != null && !routeDTOContainer.getSideStations().isEmpty()
-                && routeDTOContainer.getSideArrivalTimes() != null && !routeDTOContainer.getSideArrivalTimes().isEmpty()) {
+    public String deleteLastChange() {
+        if (CollectionUtils.isNotEmpty(routeContainer.getSideStations())
+                && CollectionUtils.isNotEmpty(routeContainer.getSideArrivalTimes())) {
             containerService.deleteLastChange();
-            modelAndView.setViewName("redirect:/admin/setRoute");
-            return modelAndView;
+            return "redirect:/admin/setRoute";
         }
-        modelAndView.setViewName("redirect:/admin/trainselect");
-        return modelAndView;
+        return "redirect:/admin/trainselect";
+
     }
 
     @GetMapping("/createtrip")
     public RedirectView createTrip(RedirectAttributes redirectAttributes) {
-        RedirectView redirectView = new RedirectView("/admin",true);
+        RedirectView redirectView = new RedirectView("/admin/management",true);
         scheduleService.createTrip();
         redirectAttributes.addFlashAttribute("successMessage",
                 "Trip was created!" + "Show it in dropdown tab \"Show\" -> \"Show all trips\" ");

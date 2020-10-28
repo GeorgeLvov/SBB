@@ -40,7 +40,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-light bg-dark">
 
-    <a class="navbar-brand" href="<c:url value="/admin"/>" style="color: white">
+    <a class="navbar-brand" href="<c:url value="/admin/management"/>" style="color: white">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         SBB CFF FFS
     </a>

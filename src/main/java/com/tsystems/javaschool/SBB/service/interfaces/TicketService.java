@@ -2,7 +2,7 @@ package com.tsystems.javaschool.SBB.service.interfaces;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
-import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
+import com.tsystems.javaschool.SBB.dto.TicketInfo;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -28,7 +28,7 @@ public interface TicketService {
      */
     boolean isTimeValid(Timestamp departureTime);
 
-    List<TicketInfoDTO> getAllUserTickets(String username);
+    List<TicketInfo> getAllUserTickets(String username);
 
     void setPassengerToTicket(PassengerDTO passengerDTO);
 

@@ -1,8 +1,9 @@
 package com.tsystems.javaschool.SBB.validator;
 
 import com.tsystems.javaschool.SBB.dto.RouteDTO;
-import com.tsystems.javaschool.SBB.dto.RouteDTOContainer;
-import org.apache.commons.collections4.CollectionUtils;
+import com.tsystems.javaschool.SBB.dto.RouteContainer;
+
+import com.tsystems.javaschool.SBB.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -16,7 +17,7 @@ import java.util.List;
 public class RouteValidator implements Validator {
 
     @Autowired
-    private RouteDTOContainer container;
+    private RouteContainer container;
 
     @Override
     public boolean supports(Class<?> aClass) {
@@ -36,7 +37,7 @@ public class RouteValidator implements Validator {
                 if (stationList.get(0).equals(container.getDepartureStationName())) {
                     errors.rejectValue("sideStations", "DuplicateStation.inRoute");
                 }
-            } else if (stationList.get(0).equals(sideStations.get(sideStations.size() - 1))) {
+            } else if (stationList.get(0).equals(CollectionUtils.getLast(sideStations))) {
                 errors.rejectValue("sideStations", "DuplicateStation.inRoute");
             }
 
@@ -62,9 +63,10 @@ public class RouteValidator implements Validator {
                     errors.rejectValue("sideArrivalTimes", "Invalid.route.duration");
                 }
 
-            }  else if(!isEnteredArrivalTimeValid(resultArrTimes.get(resultArrTimes.size() - 1), arrTimes.get(0),
-                    resultStops.get(resultStops.size() - 1))) {
+            }  else if(!isEnteredArrivalTimeValid(CollectionUtils.getLast(resultArrTimes), arrTimes.get(0),
+                    CollectionUtils.getLast(resultStops))) {
                 errors.rejectValue("sideArrivalTimes", "Invalid.routeTime.2");
+
             } else if (LocalDateTime.parse(arrTimes.get(0)).compareTo(LocalDateTime.parse(container.getDeclaredArrivalDate())) > 0) {
                 errors.rejectValue("sideArrivalTimes", "TimeIsMoreThanMain");
             }

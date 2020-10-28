@@ -1,6 +1,8 @@
 package com.tsystems.javaschool.SBB.controller.controllers;
 
+
 import com.tsystems.javaschool.SBB.dto.*;
+import com.tsystems.javaschool.SBB.repository.interfaces.TripRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
-
 
 
 @Controller
@@ -32,6 +34,14 @@ public class SBBController {
     }
 
 
+
+/*    @GetMapping(value = "/send")
+    public ModelAndView send() {
+        ModelAndView modelAndView = new ModelAndView();
+        messageSender.sendMessage("Message!");
+        modelAndView.setViewName("Success");
+        return modelAndView;
+    }*/
 
     @GetMapping(value = "/")
     public ModelAndView getMainPage() {
@@ -88,8 +98,5 @@ public class SBBController {
         modelAndView.setViewName("TimeTable");
         return modelAndView;
     }
-
-
-
 
 }

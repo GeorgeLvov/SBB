@@ -139,7 +139,7 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoDTOList}">
+                                            <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoList}">
                                                 <c:choose>
                                                     <c:when test="${(tripInfo.departureTime.equals(scheduleDTO.departureTime)) && (tripInfo.arrivalTime.equals(scheduleDTO.arrivalTime))}">
                                                         <tr>
@@ -204,23 +204,25 @@
                 </td>
                 <td>
                     <c1:choose>
-                        <c1:when test="${scheduleDTO.availableOnTime}">
-                            ${scheduleDTO.freePlacesCount}
+                        <c1:when test="${(scheduleDTO.canceled) || (!scheduleDTO.availableOnTime)}">
+                            -
                         </c1:when>
                         <c1:otherwise>
-                            -
+                            ${scheduleDTO.freePlacesCount}
                         </c1:otherwise>
                     </c1:choose>
                 </td>
                 <td>
                     <c1:choose>
-                        <c1:when test="${(scheduleDTO.freePlacesCount == 0) || (!scheduleDTO.availableOnTime)}">
+                        <c1:when test="${(scheduleDTO.freePlacesCount == 0) || (!scheduleDTO.availableOnTime)
+                        || (scheduleDTO.canceled)}">
                             <button type="button" class="btn btn-secondary btn" disabled>Buy ticket</button>
                         </c1:when>
                         <c1:otherwise>
                             <a class="btn btn-danger"
-                               href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripId}&stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
-                    &departureTime=${scheduleDTO.departureTime}&arrivalTime=${scheduleDTO.arrivalTime}"
+                               href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripDTO.id}
+                               &stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
+                               &departureTime=${scheduleDTO.departureTime}&arrivalTime=${scheduleDTO.arrivalTime}"
                                role="button" target="_blank">Buy ticket</a>
                         </c1:otherwise>
                     </c1:choose>

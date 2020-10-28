@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
-    <title>SBB: Routes</title>
+    <title>SBB: Trips</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -46,7 +46,7 @@
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/admin/trainsAndRoutes"/>">Show all trips</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/allTrips"/>">Show all trips</a>
 
                 </div>
             </li>
@@ -66,7 +66,7 @@
 
 <c:choose>
     <c:when test="${empty allTrips}">
-       <div class="container-fluid">
+        <div class="container-fluid">
             <div class="row" style="height: 100px">
                 <div class="col-2"></div>
                 <div class="col-8"  style="text-align:center;" >
@@ -88,31 +88,42 @@
                     <th scope="col">Arrival</th>
                     <th scope="col">Trip Info</th>
                     <th scope="col">Passengers</th>
+                    <th scope="col">Action</th>
                 </tr>
 
                 <tbody>
 
-                <c:forEach var="tripInfoList" items="${allTrips}" varStatus="vs">
+                <c:forEach var="trip" items="${allTrips}" varStatus="vs">
 
                     <tr>
-                        <th scope="row">${tripInfoList[0].trainDTO.trainName}</th>
-                        <td>${tripInfoList[0].stationFrom.title}</td>
-                        <td>${tripInfoList[tripInfoList.size() - 1].stationTo.title}</td>
+                        <th scope="row">
+                                ${trip.trainDTO.trainName}
+                            <c:if test="${trip.canceled}">
+                                <br>
+                                <span class="badge badge-danger">canceled</span>
+                            </c:if>
+                            <c:if test="${(!trip.canceled) && (trip.delay != 0)}">
+                                <br>
+                                <span class="badge badge-warning">delayed</span>
+                            </c:if>
+                        </th>
+                        <td>${trip.departureStationDTO.title}</td>
+                        <td>${trip.arrivalStationDTO.title}</td>
                         <fmt:setLocale value="en_US" scope="session"/>
                         <td>
-                            <strong><fmt:formatDate value="${tripInfoList[0].departureTime}" pattern="HH:mm"/></strong>
+                            <strong><fmt:formatDate value="${trip.departureTime}" pattern="HH:mm"/></strong>
                             <br>
-                            <fmt:formatDate value="${tripInfoList[0].departureTime}" pattern="E, dd.MM.yyyy"/>
+                            <fmt:formatDate value="${trip.departureTime}" pattern="E, dd.MM.yyyy"/>
                         </td>
                         <td>
-                            <strong><fmt:formatDate value="${tripInfoList[tripInfoList.size() - 1].arrivalTime}" pattern="HH:mm"/></strong>
+                            <strong><fmt:formatDate value="${trip.arrivalTime}" pattern="HH:mm"/></strong>
                             <br>
-                            <fmt:formatDate value="${tripInfoList[tripInfoList.size() - 1].arrivalTime}" pattern="E, dd.MM.yyyy"/>
+                            <fmt:formatDate value="${trip.arrivalTime}" pattern="E, dd.MM.yyyy"/>
                         </td>
                         <td>
                             <!-- Button trigger modal -->
                             <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal${vs.index}"
-                             id="viewDetailButton1${vs.index}">
+                                    id="viewDetailButton1${vs.index}">
                                 Show Info
                             </button>
                             <!-- Modal -->
@@ -136,7 +147,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <c1:forEach var="tripInfo" items="${tripInfoList}">
+                                                <c1:forEach var="tripInfo" items="${trip.tripInfoList}">
                                                     <tr>
                                                         <td>${tripInfo.stationFrom.title}</td>
                                                         <td>${tripInfo.stationTo.title}</td>
@@ -155,8 +166,98 @@
                             </div>
                         </td>
                         <td>
-                            <a class="btn btn-danger" href="/admin/passengers/${tripInfoList[0].trainDTO.id}/${tripInfoList[0].tripId}/" role="button">Show Info</a>
+                            <a class="btn btn-success" href="/admin/passengers/${trip.trainDTO.id}/${trip.id}/" role="button">Show Info</a>
                         </td>
+
+
+                        <c:choose>
+                            <c:when test="${trip.canceled == false}">
+                                <td>
+                                    
+                                    <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#delayTrip${vs.index}"
+                                            id="viewDetailButton${vs.index}">
+                                        Delay
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="delayTrip${vs.index}" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel1">Delay trip</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+
+                                                <c:url value="/admin/delayTrip/${trip.id}" var="varT"/>
+                                                <form action="${varT}" method="POST">
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label for="delay">Enter delay in minutes: </label>
+                                                            <div class="row">
+                                                                <div class="col-3"></div>
+                                                                <div class="col-7">
+                                                                    <input class="form-control" type="number" name="delay"
+                                                                           id="delay" min="1" max="180" required
+                                                                           style="width: 200px">
+
+                                                                </div>
+                                                                <div class="col-3"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-dismiss="modal">Close
+                                                        </button>
+                                                        <button type="submit" class="btn btn-warning">Delay</button>
+                                                    </div>
+                                                    <input type="hidden" name="${_csrf.parameterName}"
+                                                           value="${_csrf.token}"/>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn btn-outline-danger" data-toggle="modal"
+                                            data-target="#cancelModal${vs.index}"
+                                            id="viewDetailButton11${vs.index}">
+                                        Cancel
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="cancelModal${vs.index}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel2">Warning</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Once canceled, you cannot restore this trip.
+                                                    <br>
+                                                    Are you sure?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a class="btn btn-danger" href="/admin/cancelTrip/${trip.id}/" role="button">
+                                                        Cancel Trip
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </c:when>
+                            <c:otherwise>
+                            <td>-</td>
+                            </c:otherwise>
+                        </c:choose>
                     </tr>
                 </c:forEach>
                 </tbody>

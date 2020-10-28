@@ -83,7 +83,7 @@
             </form>
             <security:authorize access="isAnonymous()">
             <h5 style=" padding-top: 35px; padding-bottom: 10px">Don't have an account?</h5>
-            <a class="btn btn-primary" href="/registration" role="button"
+            <a class="btn btn-primary" href="${pageContext.request.contextPath}/user" role="button"
                style="padding-bottom: 10px; margin-bottom: 10px;">Create it here!</a>
         </div>
         </security:authorize>

@@ -2,7 +2,7 @@ package com.tsystems.javaschool.SBB.controller.controllers;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
-import com.tsystems.javaschool.SBB.dto.TicketInfoDTO;
+import com.tsystems.javaschool.SBB.dto.TicketInfo;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
 import com.tsystems.javaschool.SBB.validator.PassengerValidator;
@@ -59,9 +59,8 @@ public class TicketController {
     @GetMapping(value = "/alltickets")
     public ModelAndView getAllUserTickets() {
         ModelAndView modelAndView = new ModelAndView();
-        ticketService.setValidityOfTickets();
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<TicketInfoDTO> ticketInfos = ticketService.getAllUserTickets(auth.getName());
+        List<TicketInfo> ticketInfos = ticketService.getAllUserTickets(auth.getName());
         modelAndView.addObject("ticketInfos", ticketInfos);
         modelAndView.setViewName("UserTicketsPage");
         return modelAndView;
@@ -74,7 +73,6 @@ public class TicketController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=eTicket_SBB.pdf";
         response.setHeader(headerKey,headerValue);
-        ticketService.setValidityOfTickets();
         TicketDTO ticketDTO = ticketService.getTicketDTOById(ticketId);
         TicketPDFExporter pdfExporter = new TicketPDFExporter(ticketDTO);
         pdfExporter.export(response);

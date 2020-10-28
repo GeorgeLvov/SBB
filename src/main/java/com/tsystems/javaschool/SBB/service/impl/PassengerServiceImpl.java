@@ -1,7 +1,7 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.dto.PassengerDTO;
-import com.tsystems.javaschool.SBB.dto.PassengerInfoDTO;
+import com.tsystems.javaschool.SBB.dto.PassengerInfo;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.mapper.PassengerMapper;
@@ -61,13 +61,14 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public List<PassengerInfoDTO> getAllPassengersByTrainIdAndTripId(int trainId, int tripId) {
-        List<PassengerInfoDTO> passengers = new ArrayList<>();
+    public List<PassengerInfo> getAllPassengersByTrainIdAndTripId(int trainId, int tripId) {
+        List<PassengerInfo> passengers = new ArrayList<>();
         List<Object[]> objects = passengerRepository.getAllPassengersByTrainIdAndTripId(trainId, tripId);
         for (Object[] object : objects) {
-            PassengerInfoDTO passengerInfoDTO = new PassengerInfoDTO((String) object[0], (String) object[1], (String) object[2], (Date) object[3],
-                    (String) object[4], (String) object[5], (Timestamp) object[6], (Timestamp) object[7]);
-            passengers.add(passengerInfoDTO);
+            PassengerInfo passengerInfo = new PassengerInfo((String) object[0], (String) object[1],
+                    (String) object[2], (Date) object[3], (String) object[4], (String) object[5], (Timestamp) object[6],
+                    (Timestamp) object[7]);
+            passengers.add(passengerInfo);
         }
 
         return passengers;

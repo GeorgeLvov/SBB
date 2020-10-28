@@ -32,7 +32,7 @@
         <ul class="navbar-nav mr-auto">
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin" style="color: white">Management</a>
+                    <a class="nav-link" href="/admin/management" style="color: white">Management</a>
                 </li>
             </security:authorize>
         </ul>

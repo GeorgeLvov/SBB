@@ -51,7 +51,7 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     public List<Schedule> getSchedulesByTrainIdTripIdStationTo(int trainId, int tripId, Station stationTo) {
         Query query = entityManager
-                .createQuery("select s from Schedule s where s.train.id =:trainId and s.tripId =:tripId" +
+                .createQuery("select s from Schedule s where s.train.id =:trainId and s.trip.id =:tripId" +
                         " and s.stationTo = :stationTo")
                 .setParameter("trainId", trainId)
                 .setParameter("tripId", tripId)
@@ -78,55 +78,24 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
 
     @Override
-    public List<Schedule> getSchedulesByTrainIdAndTripId(int trainId, int tripId) {
+    public List<Schedule> getSchedulesByTripId(int tripId) {
         Query query = entityManager
-                .createQuery("select s from Schedule s where s.train.id = :trainId and s.tripId = :tripId")
-                .setParameter("trainId", trainId)
+                .createQuery("select s from Schedule s where s.trip.id = :tripId")
                 .setParameter("tripId", tripId);
         return query.getResultList();
     }
 
     @Override
-    public Integer getMaxTripId() {
-        Query query = entityManager.createQuery("select max(s.tripId) from Schedule s");
-        return (Integer) query.getSingleResult();
+    public void updateTimes(int tripId, String delayStr){
+        Query query = entityManager
+                .createNativeQuery("update schedule set departure_time=(select ADDTIME(departure_time, ?)),\n" +
+                        "arrival_time=(select ADDTIME(arrival_time, ?)) where trip_id = ?");
+        query.setParameter(1, delayStr);
+        query.setParameter(2, delayStr);
+        query.setParameter(3, tripId);
+        query.executeUpdate();
+
     }
-
-
-    @Override
-    public List<Timestamp> getAllDepartureTimesByTrainId(int trainId) {
-        Query query = entityManager.createNativeQuery("select s1.departure_time from schedule s1\n" +
-                "inner join\n" +
-                "(select trip_id, min(station_index) as MinStIndex from schedule\n" +
-                "where train_id = ? group by trip_id) groupedSched\n" +
-                "on s1.trip_id = groupedSched.trip_id\n" +
-                "and s1.station_index = groupedSched.MinStIndex;");
-        query.setParameter(1, trainId);
-
-        return (List<Timestamp>) query.getResultList();
-    }
-
-
-    @Override
-    public List<Timestamp> getAllArrivalTimesByTrainId(int trainId) {
-        Query query = entityManager.createNativeQuery("select s1.arrival_time from schedule s1\n" +
-                "inner join\n" +
-                "(select trip_id, max(station_index) as MaxStIndex from schedule\n" +
-                "where train_id = ? group by trip_id) groupedSched\n" +
-                "on s1.trip_id = groupedSched.trip_id\n" +
-                "and s1.station_index = groupedSched.MaxStIndex;");
-        query.setParameter(1, trainId);
-
-        return (List<Timestamp>) query.getResultList();
-    }
-
-    @Override
-    public List<Object[]> getAllTrainsAndTrips(){
-        Query query = entityManager.createNativeQuery("select train_id, trip_id from schedule\n" +
-                "group by trip_id order by train_id, departure_time");
-        return query.getResultList();
-    }
-
 
 
 }

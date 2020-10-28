@@ -1,30 +1,30 @@
 package com.tsystems.javaschool.SBB.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
-/**
- * Data access object that provides info about one segment of all train's trip
- *
- * @author George Lvov
- * @version 1.0
- */
-
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TripInfoDTO {
+public class PassengerInfo {
 
-    TrainDTO trainDTO;
+    public String trainName;
 
-    Integer tripId;
+    private String firstName;
 
-    private StationDTO stationFrom;
+    private String lastName;
 
-    private StationDTO stationTo;
+    private Date birthDate;
+
+    private String stationFrom;
+
+    private String stationTo;
 
     private Timestamp departureTime;
 

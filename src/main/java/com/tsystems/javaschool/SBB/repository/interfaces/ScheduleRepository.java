@@ -13,7 +13,7 @@ public interface ScheduleRepository {
     /**
      * Provides all schedules with specified params
      * Helper method like {@link #getSchedulesByTrainIdTripIdStationTo(int trainId, int tripId, Station stationTo)}
-     *
+     * <p>
      * for searching trips from station A to station B at a given time
      *
      * @param stationFrom starting station
@@ -26,8 +26,9 @@ public interface ScheduleRepository {
     /**
      * Provides all schedules with specified param
      * Helper method for searching trips from station A to station B at a given time
-     * @param trainId id of train
-     * @param tripId  id of trip
+     *
+     * @param trainId   id of train
+     * @param tripId    id of trip
      * @param stationTo end station
      */
     List<Schedule> getSchedulesByTrainIdTripIdStationTo(int trainId, int tripId, Station stationTo);
@@ -52,16 +53,9 @@ public interface ScheduleRepository {
     /**
      * Returns all schedules with specified params
      *
-     * @param trainId id of train
      * @param tripId  id of trip
      */
-    List<Schedule> getSchedulesByTrainIdAndTripId(int trainId, int tripId);
+    List<Schedule> getSchedulesByTripId(int tripId);
 
-    Integer getMaxTripId();
-
-    List<Timestamp> getAllDepartureTimesByTrainId(int trainId);
-
-    List<Timestamp> getAllArrivalTimesByTrainId(int trainId);
-
-    List<Object[]> getAllTrainsAndTrips();
+    void updateTimes(int tripId, String delayStr);
 }
