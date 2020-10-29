@@ -1,6 +1,6 @@
 package com.tsystems.javaschool.SBB.config;
 
-/*
+
 import java.util.Properties;
 
 
@@ -52,4 +52,4 @@ public class MessagingConfig {
     }
 
 }
-*/
+

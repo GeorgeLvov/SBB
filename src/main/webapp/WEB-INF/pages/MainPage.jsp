@@ -76,7 +76,7 @@
                 <c:url value="/timetable" var="var"/>
                 <form action="${var}" method="GET">
                     <div class="form-group">
-                        <select class="form-control" name="timeTable" id="exampleSelectSt" required style="margin-top: 20px;">
+                        <select class="form-control" name="stationId" id="exampleSelectSt" required style="margin-top: 20px;">
                             <option value="" disabled selected>Select station</option>
                             <c:forEach var="station" items="${stations}">
                                 <option value="${station.id}">${station.title}</option>

@@ -12,8 +12,6 @@ public interface TripRepository {
 
     List<Trip> getTripsByTrainId(int trainId);
 
-    Object[] getInfoAboutDelayAndCancel(int tripId);
-
     List<Trip> getAllTrips();
 
     void cancelTrip(int tripId);

@@ -204,18 +204,17 @@
                 </td>
                 <td>
                     <c1:choose>
-                        <c1:when test="${(scheduleDTO.canceled) || (!scheduleDTO.availableOnTime)}">
-                            -
+                        <c1:when test="${scheduleDTO.availableOnTime}">
+                            ${scheduleDTO.freePlacesCount}
                         </c1:when>
                         <c1:otherwise>
-                            ${scheduleDTO.freePlacesCount}
+                            -
                         </c1:otherwise>
                     </c1:choose>
                 </td>
                 <td>
                     <c1:choose>
-                        <c1:when test="${(scheduleDTO.freePlacesCount == 0) || (!scheduleDTO.availableOnTime)
-                        || (scheduleDTO.canceled)}">
+                        <c1:when test="${(scheduleDTO.freePlacesCount == 0) || (!scheduleDTO.availableOnTime)}">
                             <button type="button" class="btn btn-secondary btn" disabled>Buy ticket</button>
                         </c1:when>
                         <c1:otherwise>

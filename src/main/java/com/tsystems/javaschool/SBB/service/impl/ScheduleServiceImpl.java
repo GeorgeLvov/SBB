@@ -107,10 +107,6 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .toDTOList(scheduleRepository.getSchedulesByStationFrom(stationFrom));
 
         for (ScheduleDTO scheduleDTO : resultSchedules) {
-            Object[] objects = tripRepository.getInfoAboutDelayAndCancel(scheduleDTO.getTripDTO().getId());
-            scheduleDTO.setDelay((Integer) objects[0]);
-            scheduleDTO.setCanceled((Boolean) objects[1]);
-            System.out.println(scheduleDTO);
             scheduleDTO.setTripInfoList(getAllSegmentsByTripId(scheduleDTO.getTripDTO().getId()));
         }
 
@@ -124,9 +120,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<ScheduleDTO> resultSchedules = scheduleMapper
                 .toDTOList(scheduleRepository.getSchedulesByStationTo(stationTo));
         for (ScheduleDTO scheduleDTO : resultSchedules) {
-            Object[] objects = tripRepository.getInfoAboutDelayAndCancel(scheduleDTO.getTripDTO().getId());
-            scheduleDTO.setDelay((Integer) objects[0]);
-            scheduleDTO.setCanceled((Boolean) objects[1]);
             scheduleDTO.setTripInfoList(getAllSegmentsByTripId(scheduleDTO.getTripDTO().getId()));
         }
         return resultSchedules;
@@ -176,9 +169,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
     private void setInfo(ScheduleDTO scheduleDTO) {
-        Object[] objects = tripRepository.getInfoAboutDelayAndCancel(scheduleDTO.getTripDTO().getId());
+      /*  Object[] objects = tripRepository.getInfoAboutDelayAndCancel(scheduleDTO.getTripDTO().getId());
         scheduleDTO.setDelay((Integer) objects[0]);
-        scheduleDTO.setCanceled((Boolean) objects[1]);
+        scheduleDTO.setCanceled((Boolean) objects[1]);*/
 
         scheduleDTO
                 .setTripInfoList(getAllSegmentsByTripId(scheduleDTO.getTripDTO().getId()));

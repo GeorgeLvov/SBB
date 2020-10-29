@@ -16,7 +16,7 @@ public class TripDTO {
 
     private int id;
 
-    TrainDTO trainDTO;
+    private TrainDTO trainDTO;
 
     private StationDTO departureStationDTO;
 

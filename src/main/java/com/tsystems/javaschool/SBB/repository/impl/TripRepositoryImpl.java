@@ -50,12 +50,6 @@ public class TripRepositoryImpl implements TripRepository {
         return query.getResultList();
     }
 
-    @Override
-    public Object[] getInfoAboutDelayAndCancel(int tripId){
-        Query query = entityManager.createNativeQuery("select delay, canceled from trip where trip.id = ?");
-        query.setParameter(1, tripId);
-        return (Object[]) query.getSingleResult();
-    }
 
     @Override
     public Trip getTripById(int id) {
