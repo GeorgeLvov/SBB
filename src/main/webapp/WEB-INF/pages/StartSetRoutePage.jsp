@@ -8,12 +8,12 @@
     <title>SBB: SetRoute</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="<c:url value="/res/css/forMainPages.css"/>"/>
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
     <a class="navbar-brand" href="<c:url value="/admin/management"/>" style="color: white">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -28,11 +28,11 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/crud"/>" style="color: white">Add train | station</a>
+                <a class="nav-link" href="<c:url value="/admin/crud"/>">Add train | station</a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="/admin/trainselect" style="color: white">Set trip for train</a>
+                <a class="nav-link" href="/admin/trainselect">Set trip for train</a>
             </li>
 
             <li class="nav-item dropdown">
@@ -48,7 +48,7 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/addemployee"/>" style="color: white"> Add new employee </a>
+                <a class="nav-link" href="<c:url value="/admin/addemployee"/>"> Add new employee </a>
             </li>
         </ul>
 

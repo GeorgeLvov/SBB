@@ -7,6 +7,8 @@ import java.util.Properties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import javax.jms.ConnectionFactory;
+
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.core.JmsTemplate;
 
 

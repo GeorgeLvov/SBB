@@ -1,13 +1,12 @@
 body{
-    background: url(../img/train21.jpg);
+    background: url(../img/train.jpg);
     background-repeat: no-repeat;
     background-size: cover;
 }
 
-.nav.navbar-nav li a {
-    color: lightgrey;
+a.nav-link{
+    color: #696969;
 }
-
-.nav.navbar-nav a:hover {
-    color: white;
+.nav-link:hover {
+    color: #D51313 !important;
 }

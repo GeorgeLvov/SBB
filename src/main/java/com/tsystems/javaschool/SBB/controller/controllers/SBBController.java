@@ -6,6 +6,7 @@ import com.tsystems.javaschool.SBB.repository.interfaces.TripRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;

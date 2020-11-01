@@ -6,37 +6,19 @@
 
 <html>
 <head>
-    <title>SBB: Timetable</title>
+    <title>SBB CFF FFS: Timetable</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
-    <script>
-        function showOrHideDeparture() {
-            var divDeparture = document.getElementById("myDIV");
-            var divArrival = document.getElementById("myDIV2");
-            showHide(divDeparture, divArrival);
-        }
-        function showOrHideArrival(){
-            var divArrival = document.getElementById("myDIV2")
-            var divDeparture = document.getElementById("myDIV")
-            showHide(divArrival, divDeparture);
-
-        }
-        function showHide(x, y) {
-            if (x.style.display === "none" && y.style.display === "block") {
-                x.style.display = "block";
-                y.style.display = "none"
-            }
-        }
-    </script>
+    <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>" />
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
 
     <a class="navbar-brand" href="<c:url value="/"/>">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        SBB CFF FFS
+        Swiss Federal Railways &#8592;
     </a>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -45,7 +27,10 @@
 
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">Management</a>
+                    <a class="nav-link" href="/admin">
+                        <i class="fas fa-cog"></i>
+                        Management
+                    </a>
                 </li>
             </security:authorize>
 
@@ -57,7 +42,7 @@
         </ul>
 
         <security:authorize access="isAnonymous()">
-            <a class="nav-link" href="<c:url value="/success"/>" style="color: white">
+            <a class="nav-link" href="<c:url value="/success"/>">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 Log in
             </a>
@@ -65,7 +50,8 @@
 
 
         <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
-            <a href="<c:url value="/logout"/>" style="color: white"><i class="fa fa-user" aria-hidden="true"></i>
+            <a class="nav-link" href="<c:url value="/logout"/>">
+                <i class="fa fa-user" aria-hidden="true"></i>
                 Log out
             </a>
         </security:authorize>
@@ -76,19 +62,18 @@
     <div class="row" style="height: 90px">
     </div>
 </div>
-<div class="custom-control custom-radio custom-control-inline">
-    <input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input"
-           onclick="showOrHideDeparture()" checked>
-    <label class="custom-control-label" for="customRadioInline1">Departure</label>
-</div>
-<div class="custom-control custom-radio custom-control-inline">
-    <input type="radio" id="customRadioInline2" name="customRadioInline1" class="custom-control-input"
-           onclick="showOrHideArrival()">
-    <label class="custom-control-label" for="customRadioInline2">Arrival</label>
+
+
+<div class="btn-group" role="group" aria-label="Basic example">
+    <button type="button" id="departureButton" class="btn btn-danger" onclick="showOrHideDeparture()"
+            style="width: 100px">Departure</button>
+
+    <button type="button" id="arrivalButton" class="btn btn-light" onclick="showOrHideArrival()"
+            style="width: 100px"> Arrival </button>
 </div>
 
 
-<div id="myDIV" style="display: block">
+<div id="departureTable" style="display: block">
     <c:choose>
         <c:when test="${empty scheduleDTOListFrom}">
             <div class="container-fluid">
@@ -216,7 +201,7 @@
         </c:otherwise>
     </c:choose>
 </div>
-<div id="myDIV2" style="display: none">
+<div id="arrivalTable" style="display: none">
     <c:choose>
         <c:when test="${empty scheduleDTOListTo}">
             <div class="container-fluid">
@@ -343,6 +328,7 @@
         </c:otherwise>
     </c:choose>
 </div>
+<script src="<c:url value="/res/js/timetable.js"/>"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

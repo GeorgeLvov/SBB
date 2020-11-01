@@ -1,5 +1,6 @@
 package com.tsystems.javaschool.SBB.repository.impl;
 
+import com.tsystems.javaschool.SBB.dto.TimetableDTO;
 import com.tsystems.javaschool.SBB.entities.Schedule;
 import com.tsystems.javaschool.SBB.entities.Station;
 import com.tsystems.javaschool.SBB.repository.interfaces.ScheduleRepository;
@@ -95,6 +96,23 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         query.setParameter(3, tripId);
         query.executeUpdate();
 
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    @Transactional
+    public List<TimetableDTO> getTimetableByStationName(Integer stationId) {
+
+        Query query =
+                    entityManager.createQuery("select new com.tsystems.javaschool.SBB.dto.TimetableDTO(s.train.trainName, " +
+                            "s.stationFrom.title, s.trip.arrivalStation.title, s.departureTime, s.trip.arrivalTime," +
+                            " s.trip.delay, s.trip.canceled) from Schedule s where s.stationFrom.id =: stationId and " +
+                            "date(s.departureTime) = current_date order by s.departureTime");
+
+
+        query.setParameter("stationId", stationId);
+
+        return query.getResultList();
     }
 
 

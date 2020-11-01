@@ -40,10 +40,6 @@ public class ScheduleDTO {
 
     private boolean availableOnTime;
 
-    private int delay;
-
-    private boolean canceled;
-
     private List<TripInfo> tripInfoList;
 
 }

@@ -1,5 +1,6 @@
 package com.tsystems.javaschool.SBB.repository.interfaces;
 
+import com.tsystems.javaschool.SBB.dto.TimetableDTO;
 import com.tsystems.javaschool.SBB.entities.Schedule;
 import com.tsystems.javaschool.SBB.entities.Station;
 
@@ -58,4 +59,6 @@ public interface ScheduleRepository {
     List<Schedule> getSchedulesByTripId(int tripId);
 
     void updateTimes(int tripId, String delayStr);
+
+    List<TimetableDTO> getTimetableByStationName(Integer stationId);
 }
