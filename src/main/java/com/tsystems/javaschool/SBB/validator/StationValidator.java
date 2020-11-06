@@ -8,12 +8,11 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 
-
 @Component
 public class StationValidator implements Validator {
 
     @Autowired
-    StationService stationService;
+    private StationService stationService;
 
     @Override
     public boolean supports(Class<?> aClass) {

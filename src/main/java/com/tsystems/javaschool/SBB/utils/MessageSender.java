@@ -10,12 +10,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageSender {
 
+    @Lazy
     @Autowired
     private JmsTemplate jmsTemplate;
 
-    public void sendMessage(String message) {
-        jmsTemplate.send(session -> session.createTextMessage(message));
+    public void sendTextMessage(String message) {
+        jmsTemplate.send(session -> session.createObjectMessage(message));
     }
+
 }
 
 

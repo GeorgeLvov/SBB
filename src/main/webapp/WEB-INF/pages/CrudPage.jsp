@@ -7,20 +7,24 @@
 <html>
 <head>
     <title>SBB: Add train | station</title>
-    <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/res/img/sbbBadge.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>" />
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-    <a class="navbar-brand" href="<c:url value="/admin/management"/>" style="color: white">
-        <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        SBB CFF FFS
+    <a class="navbar-brand" href="<c:url value="/admin/management"/>">
+        <img src="${pageContext.request.contextPath}/res/img/sbbBadge.png" width="30" height="30"
+             class="d-inline-block align-top" alt="">
+        Swiss Federal Railways &#8592;
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -29,93 +33,116 @@
         <ul class="navbar-nav mr-auto">
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/crud"/>" style="color: white">Add train | station</a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/trainselect"/>" style="color: white">Set trip for train</a>
+                <a class="nav-link" href="<c:url value="/admin/trainselect"/>">Set trip for train</a>
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     Show
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="<c:url value="/admin/stations"/>">Show all stations</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/admin/allTrips"/>">Show all trips</a>
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/addemployee"/>" style="color: white"> Add new employee </a>
             </li>
         </ul>
 
-        <a class="nav-link" href="<c:url value="/logout"/>" style="color: white">
+        <a class="nav-link" href="<c:url value="/logout"/>">
             <i class="fa fa-user" aria-hidden="true"></i>
             Log out
         </a>
     </div>
 </nav>
 
+
 <div class="container-fluid">
-    <div class="row" style="height: 100px">
+    <div class="row" style="height: 20px">
     </div>
+
     <div class="row">
-        <div class="col-md-1">
+        <div class="col-2"></div>
+        <div class="col-4" style="border-radius: 2%">
+        <div class="card bg-light" style="width: 24rem; height: 31rem;">
+            <img class="card-img-top" src="${pageContext.request.contextPath}/res/img/station.jpeg"
+                 alt="Card image cap">
+
+            <div class="card-body">
+                <h3 style="padding-bottom: 23px">Add new station:</h3>
+                <form:form method="POST" name="stationForm" action="/admin/addStation" modelAttribute="stationDTO"
+                           class="form-signin" onsubmit="return validateStationForm()">
+                    <spring:bind path="title">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label id="statLbl" for="statInput" style="font-size: 14px"> Enter station title: </label>
+                            <form:input type="text" path="title" class="form-control" placeholder="ex: Zurich Hbf"
+                                        autofocus="true" name="station" id="statInput" onchange="undo('stat')"></form:input>
+                            <form:errors path="title" cssStyle="display: none"></form:errors>
+                        </div>
+                    </spring:bind>
+                    <button type="submit" class="btn btn-success" style="width: 340px; margin-top:5px">Create</button>
+                </form:form>
+            </div>
         </div>
-        <div class="col-md-4 bg-light" style="border-radius: 2%">
-            <h2 style="padding-top: 25px;  padding-bottom: 10px">Create new station</h2>
-            <form:form method="POST" action="/admin/addStation" modelAttribute="stationDTO" class="form-signin">
-
-            <spring:bind path="title">
-                <div class="form-group ${status.error ? 'has-error' : ''}">
-            <label for="stationTitleId">Station Title:</label>
-            <form:input type="text" path="title" class="form-control" placeholder="Enter station title"
-                        autofocus="true" id="stationTitleId"></form:input>
-                    <form:errors path="title" cssStyle="color: red; font-size: 14px"></form:errors>
-        </div>
-        </spring:bind>
-        <button type="submit" class="btn btn-success" style="width: 100px; margin-top:15px">Create</button>
-        </form:form>
-    </div>
-
-
-    <div class="col-md-1">
-    </div>
-    <div class="col-md-4 bg-light " style="border-radius: 2%">
-        <h2 style="padding-top: 25px; padding-bottom: 10px">Create new train</h2>
-
-            <form:form method="POST" action="/admin/addTrain" modelAttribute="trainDTO" class="form-signin">
-                <spring:bind path="trainName">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label for="trainId">Train name:</label>
-                        <form:input type="text" path="trainName" class="form-control" placeholder="Enter name"
-                                     autofocus="true" id="trainId"></form:input>
-                        <form:errors path="trainName" cssStyle="color: red; font-size: 14px"></form:errors>
-                    </div>
-                </spring:bind>
-
-                <spring:bind path="capacity">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <label for="capacityLbl">Train capacity:</label>
-                        <form:input type="text" path="capacity" class="form-control"
-                                    placeholder="Enter capacity" id="capacityLbl"></form:input>
-                        <form:errors path="capacity" cssStyle="color: red; font-size: 14px"></form:errors>
-                    </div>
-                </spring:bind>
-
-                <button class="btn btn-success" type="submit" style="width: 100px; margin-top:15px">Create</button>
-            </form:form>
         </div>
 
-        <div class="col-md-1">
+        <div class="col-4" style="border-radius: 2%">
+
+        <div class="card bg-light" style="width: 24rem; height: 31rem;">
+
+            <img class="card-img-top" src="${pageContext.request.contextPath}/res/img/train2.jpg"
+                 width="60px" height="190px" alt="Card image cap">
+
+            <div class="card-body" style="padding-top: 15px">
+
+                <h3 style="padding-bottom: 10px">Add new train:</h3>
+
+                <form:form name="trainForm" method="POST" action="/admin/addTrain" modelAttribute="trainDTO"
+                           class="form-signin" onsubmit="return validateTrainForm()">
+                    <spring:bind path="trainName">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label id="trainLbl" for="trainInput" style="font-size: 14px">Enter train name:</label>
+                            <form:input type="text" path="trainName" class="form-control" placeholder="ex: HSR-350x"
+                                        autofocus="true" id="trainInput" onchange="undo('train')"></form:input>
+                            <form:errors path="trainName" cssStyle="display: none"></form:errors>
+                        </div>
+                    </spring:bind>
+
+                    <spring:bind path="capacity">
+                        <div class="form-group ${status.error ? 'has-error' : ''}">
+                            <label id="capLbl" for="capInput" style="font-size: 14px">Enter capacity:</label>
+                            <form:input type="number" path="capacity" class="form-control"
+                                        name="capacity" autofocus="true" id="capInput" onchange="undo('cap')"></form:input>
+                            <form:errors path="capacity" cssStyle="display: none"></form:errors>
+                        </div>
+                    </spring:bind>
+
+                    <button class="btn btn-success" type="submit" style="width: 340px; margin-top: 5px">
+                        Create
+                    </button>
+                </form:form>
+            </div>
+        </div>
         </div>
 
+        <div class="col-2"></div>
     </div>
 </div>
+
+<footer class="fixed-bottom page-footer" style="background-color: #F4F6F6; margin-top: 40px">
+    <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
+</footer>
+
+
+<script src="${pageContext.request.contextPath}/res/js/formValidation.js"></script>
+<c:choose>
+    <c:when test="${param.train != null}">
+        <script>success('train')</script>
+    </c:when>
+    <c:when test="${param.station != null}">
+        <script>success('station')</script>
+    </c:when>
+</c:choose>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

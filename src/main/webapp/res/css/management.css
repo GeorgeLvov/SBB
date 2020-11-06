@@ -1,0 +1,41 @@
+body {
+    background: url(../img/train.jpg) no-repeat;
+    background-size: cover;
+}
+
+a.nav-link {
+    color: #696969;
+}
+.nav-link:hover {
+    color: #D51313 !important;
+}
+
+.container{
+    margin-top: 105px;
+}
+
+.list-group a{
+    font-size: 17px;
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 17px;
+    border: none;
+    border-radius: 3px;
+    background: white linear-gradient(#d9534f, #d9534f) no-repeat;
+    background-size: 0 100%; /* width and height */
+    transition-property: padding, background-size;
+    transition-duration: 0.4s, 0.2s;
+    transition-delay: 0s, 0s;
+}
+
+.list-group a:hover {
+    color: white !important;
+    background-size: 100% 100%;
+    padding: 21px;
+}
+
+.list-group a .arrow{
+    color: white;
+    float: right;
+    padding-top: 3px;
+}

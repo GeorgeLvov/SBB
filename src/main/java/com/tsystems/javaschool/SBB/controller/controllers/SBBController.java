@@ -1,18 +1,14 @@
 package com.tsystems.javaschool.SBB.controller.controllers;
 
-
 import com.tsystems.javaschool.SBB.dto.*;
-import com.tsystems.javaschool.SBB.repository.interfaces.TripRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 
 
@@ -41,10 +37,11 @@ public class SBBController {
     @GetMapping(value = "/send")
     public ModelAndView send() {
         ModelAndView modelAndView = new ModelAndView();
-        messageSender.sendMessage("Message!");
-        modelAndView.setViewName("Success");
+        messageSender.sendTextMessage("Message!");
+        modelAndView.setViewName("MainPage");
         return modelAndView;
     }
+
 
     @GetMapping(value = "/")
     public ModelAndView getMainPage() {
@@ -58,13 +55,6 @@ public class SBBController {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("login");
         modelAndView.addObject("logoutmessage", "You have been logged out successfully.");
-        return modelAndView;
-    }
-
-    @GetMapping(value = "/success")
-    public ModelAndView getUserPage() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("Success");
         return modelAndView;
     }
 

@@ -7,6 +7,7 @@ import com.tsystems.javaschool.SBB.repository.interfaces.TripRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
 import com.tsystems.javaschool.SBB.service.interfaces.TripService;
+import com.tsystems.javaschool.SBB.utils.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +26,8 @@ public class TripServiceImpl implements TripService {
     private TrainService trainService;
     @Autowired
     private ScheduleService scheduleService;
-
+    @Autowired
+    private MessageSender messageSender;
 
     @Override
     @Transactional
@@ -43,12 +45,14 @@ public class TripServiceImpl implements TripService {
         tripRepository.updateDepartureAndArrivalTimes(tripId, delay, delayStr);
 
         scheduleService.updateTimes(tripId, delayStr);
+        messageSender.sendTextMessage("Trip was delayed!");
     }
 
     @Override
     @Transactional
     public void cancelTrip(int tripId){
         tripRepository.cancelTrip(tripId);
+        messageSender.sendTextMessage("Trip was canceled!");
     }
 
     @Override

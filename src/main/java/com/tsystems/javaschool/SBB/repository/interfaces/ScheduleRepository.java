@@ -58,7 +58,12 @@ public interface ScheduleRepository {
      */
     List<Schedule> getSchedulesByTripId(int tripId);
 
+
     void updateTimes(int tripId, String delayStr);
 
-    List<TimetableDTO> getTimetableByStationName(Integer stationId);
+
+    List<TimetableDTO> getDepartureTimetableByStationId(Integer stationId);
+
+
+    List<TimetableDTO> getArrivalTimetableByStationId(Integer stationId);
 }

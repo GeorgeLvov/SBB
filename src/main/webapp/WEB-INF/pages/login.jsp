@@ -7,28 +7,27 @@
 <head>
     <title>SBB CFF FFS</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-dark">
-
-    <a class="navbar-brand" href="<c:url value="/"/>" style="color: white">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="<c:url value="/"/>">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        SBB CFF FFS
+        Swiss Federal Railways &#8592;
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
 </nav>
 
 
 <div class="container-fluid">
-    <div class="row" style="height: 40px">
+    <div class="row" style="height: 30px">
     </div>
 
     <div class="row">
@@ -36,7 +35,7 @@
         </div>
 
         <div class="col-md-4 bg-light" style="border-radius: 2%">
-         <h2 style="text-align:center; padding-top: 15px; padding-bottom: 15px">Sign In</h2>
+            <h2 style="text-align:center; padding-top: 15px; padding-bottom: 15px">Sign In</h2>
             <c:url var="var" value="/login"/>
             <form action="${var}" method="post">
                 <security:csrfInput/>
@@ -83,8 +82,8 @@
             </form>
             <security:authorize access="isAnonymous()">
             <h5 style=" padding-top: 35px; padding-bottom: 10px">Don't have an account?</h5>
-            <a class="btn btn-primary" href="${pageContext.request.contextPath}/user" role="button"
-               style="padding-bottom: 10px; margin-bottom: 10px;">Create it here!</a>
+            <a class="btn btn-info" href="${pageContext.request.contextPath}/registration" role="button"
+               style="width: 210px; padding-bottom: 10px; margin-bottom: 20px;">Create it here!</a>
         </div>
         </security:authorize>
 
@@ -94,7 +93,11 @@
     </div>
 </div>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+<footer class="fixed-bottom page-footer" style="background-color:#F2F3F4">
+    <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"

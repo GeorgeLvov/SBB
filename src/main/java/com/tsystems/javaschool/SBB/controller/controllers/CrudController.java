@@ -54,12 +54,12 @@ public class CrudController {
         }
 
         stationService.addStation(stationDTO);
-        modelAndView.setViewName("redirect:/admin/crud");
+        modelAndView.setViewName("redirect:/admin/crud?station");
         return modelAndView;
     }
 
     @PostMapping(value = "/addTrain")
-    public ModelAndView addTrain(@ModelAttribute("trainDTO") TrainDTO trainDTO,
+    public ModelAndView addTrain(@ModelAttribute("trainDTO") @Valid TrainDTO trainDTO,
                                  BindingResult bindingResult,
                                  @ModelAttribute("stationDTO") StationDTO stationDTO) {
         ModelAndView modelAndView = new ModelAndView();
@@ -69,7 +69,7 @@ public class CrudController {
             return modelAndView;
         }
         trainService.addTrain(trainDTO);
-        modelAndView.setViewName("redirect:/admin/crud");
+        modelAndView.setViewName("redirect:/admin/crud?train");
         return modelAndView;
     }
 
@@ -92,7 +92,7 @@ public class CrudController {
     }
 
     @GetMapping(value = "/allTrips")
-    public ModelAndView getAllAllTrips() {
+    public ModelAndView getAllTrips() {
         ModelAndView modelAndView = new ModelAndView();
         List<TripDTO> allTrips = tripService.getAllTrips();
         modelAndView.addObject("allTrips", allTrips);

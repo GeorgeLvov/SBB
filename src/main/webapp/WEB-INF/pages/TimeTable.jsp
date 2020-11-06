@@ -24,25 +24,33 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav mr-auto">
-
+            <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
+                <li class="nav-item">
+                    <a class="nav-link" href="/alltickets">
+                        <i class="fas fa-ticket-alt"></i>
+                        My tickets
+                    </a>
+                </li>
+            </security:authorize>
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin">
+                    <a class="nav-link" href="/admin/management">
                         <i class="fas fa-cog"></i>
                         Management
                     </a>
                 </li>
             </security:authorize>
-
-            <security:authorize access="hasRole('USER')">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">My tickets</a>
-                </li>
-            </security:authorize>
         </ul>
 
+        <div class="btn-group" role="group" aria-label="Basic example">
+            <button type="button" id="departureButton" class="btn btn-danger" onclick="showOrHideDeparture()"
+                    style="width: 100px">Departure</button>
+            <button type="button" id="arrivalButton" class="btn btn-light" onclick="showOrHideArrival()"
+                    style="width: 100px"> Arrival </button>
+        </div>
+
         <security:authorize access="isAnonymous()">
-            <a class="nav-link" href="<c:url value="/success"/>">
+            <a class="nav-link" href="<c:url value="/login"/>">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 Log in
             </a>
@@ -57,21 +65,12 @@
         </security:authorize>
 
     </div>
+
 </nav>
+
 <div class="container">
-    <div class="row" style="height: 90px">
-    </div>
+    <div class="row" style="height: 30px"></div>
 </div>
-
-
-<div class="btn-group" role="group" aria-label="Basic example">
-    <button type="button" id="departureButton" class="btn btn-danger" onclick="showOrHideDeparture()"
-            style="width: 100px">Departure</button>
-
-    <button type="button" id="arrivalButton" class="btn btn-light" onclick="showOrHideArrival()"
-            style="width: 100px"> Arrival </button>
-</div>
-
 
 <div id="departureTable" style="display: block">
     <c:choose>
@@ -88,7 +87,9 @@
         </c:when>
         <c:otherwise>
             <div class="container mt-4 p-md-4 col-12 rounded-container">
-                <h2 style="margin-bottom: 30px; text-align: center">Departure(${station.title})</h2>
+                <h2 style="margin-bottom: 30px; text-align: center; font-weight: normal">
+                    Departure: <i>${station.title}</i>
+                </h2>
                 <table class="table" style="text-align: center">
                     <tr>
                         <th scope="col">Train</th>
@@ -216,7 +217,9 @@
         </c:when>
         <c:otherwise>
             <div class="container mt-4 p-md-4 col-12 rounded-container">
-                <h2 style="margin-bottom: 30px; text-align: center">Arrival(${station.title})</h2>
+                <h2 style="margin-bottom: 30px; text-align: center; font-weight: normal">
+                    Arrival: <i>${station.title}</i>
+                </h2>
                 <table class="table" style="text-align: center">
                     <tr>
                         <th scope="col">Train</th>
@@ -328,6 +331,11 @@
         </c:otherwise>
     </c:choose>
 </div>
+
+<footer class="fixed-bottom page-footer" style="background-color: #F4F6F6; margin-top: 40px">
+    <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
+</footer>
+
 <script src="<c:url value="/res/js/timetable.js"/>"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

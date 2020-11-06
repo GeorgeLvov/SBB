@@ -20,7 +20,8 @@
               alert("You haven't added any arrival stations!");
             } else {
                 var x = Date.parse("${resultRouteDTO.declaredArrivalDate}");
-                var y = Date.parse("${(resultRouteDTO.sideArrivalTimes != null && !empty resultRouteDTO.sideArrivalTimes) ? resultRouteDTO.sideArrivalTimes.get(resultRouteDTO.sideArrivalTimes.size()-1) : "0"}");
+                var y = Date.parse("${(resultRouteDTO.sideArrivalTimes != null && !empty resultRouteDTO.sideArrivalTimes)
+                 ? resultRouteDTO.sideArrivalTimes.get(resultRouteDTO.sideArrivalTimes.size()-1) : "0"}");
 
                 if (x !== y) {
                     $('#WARN').modal({

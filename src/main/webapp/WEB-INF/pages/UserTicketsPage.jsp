@@ -10,34 +10,34 @@
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>"/>
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
 </head>
-<body>
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
 
+<body>
+
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
     <a class="navbar-brand" href="<c:url value="/"/>">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        SBB CFF FFS
+        Swiss Federal Railways &#8592;
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-        <ul class="navbar-nav mr-auto">
-
-        </ul>
+        <ul class="navbar-nav mr-auto"></ul>
 
         <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
-            <a href="<c:url value="/logout"/>" style="color: white"><i class="fa fa-user" aria-hidden="true"></i>
+            <a class="nav-link" href="<c:url value="/logout"/>">
+                <i class="fa fa-user" aria-hidden="true"></i>
                 Log out
             </a>
         </security:authorize>
     </div>
 </nav>
+
 <c:if test="${errorMessage != null}">
 <div class="container" style="padding-top: 80px;">
     <div class="row">
@@ -75,14 +75,14 @@
                 <div class="row" style="height: 100px">
                     <div class="col-5"></div>
                     <div class="col-4">
-                        <h1 style="padding-top: 10px">Tickets</h1>
+                        <h1 style="padding-top: 20px">Tickets</h1>
                     </div>
                     <div class="col-5"></div>
 
                 </div>
             </div>
             <table class="table" style="text-align: center">
-                <thead class="thead-light">
+
                 <tr>
                     <th scope="col">Train</th>
                     <th scope="col">From</th>
@@ -93,7 +93,7 @@
                     <th scope="col"></th>
                     <th scope="col">Download e-ticket</th>
                 </tr>
-                </thead>
+
                 <tbody>
                 <c:forEach var="ticketInfo" items="${ticketInfos}" varStatus="vs">
                 <tbody>
@@ -184,6 +184,11 @@
         </div>
     </c:otherwise>
 </c:choose>
+
+<footer class="fixed-bottom page-footer" style="background-color:#F2F3F4">
+    <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
+</footer>
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

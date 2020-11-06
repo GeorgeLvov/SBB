@@ -1,5 +1,6 @@
 let deptButton = document.getElementById("departureButton");
 let arrButton = document.getElementById("arrivalButton");
+
 let divDeparture = document.getElementById("departureTable");
 let divArrival = document.getElementById("arrivalTable");
 

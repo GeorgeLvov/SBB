@@ -11,6 +11,7 @@ import com.tsystems.javaschool.SBB.repository.interfaces.*;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.TicketService;
 import com.tsystems.javaschool.SBB.utils.CollectionUtils;
+import com.tsystems.javaschool.SBB.utils.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,7 +45,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private RouteContainer routeContainer;
     @Autowired
     private TripRepository tripRepository;
-
+    @Autowired
+    private MessageSender messageSender;
 
     @Override
     @Transactional
@@ -96,6 +98,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
             scheduleRepository.add(schedule);
         }
+
+        messageSender.sendTextMessage("New trip was added!");
 
     }
 

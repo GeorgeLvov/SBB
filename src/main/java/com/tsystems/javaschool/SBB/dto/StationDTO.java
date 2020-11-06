@@ -25,8 +25,8 @@ public class StationDTO {
 
     private int id;
 
-    @NotBlank(message = "This field cant be empty.")
+    @NotBlank(message = "*This field cant be empty.")
     @Size(min = 3, max = 50, message = "*Title must be between 3 and 50 characters.")
-    @Pattern(regexp = "^[a-zA-Z \\-]+$", message = "*Only latin letters, digits, hyphens and spaces are allowed.")
+    @Pattern(regexp = "^[a-zA-Z .\\-]+$", message = "*Invalid symbol (only spaces,hyphens or dots are allowed).")
     private String title;
 }

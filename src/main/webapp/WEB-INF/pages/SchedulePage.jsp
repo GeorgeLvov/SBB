@@ -11,11 +11,14 @@
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>"/>
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
+
+
 </head>
 <body>
-<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
 
+<nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
     <a class="navbar-brand" href="<c:url value="/"/>">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         Swiss Federal Railways &#8592;
@@ -44,7 +47,7 @@
         </ul>
 
         <security:authorize access="isAnonymous()">
-            <a class="nav-link" href="<c:url value="/success"/>" style="color: white">
+            <a class="nav-link" href="<c:url value="/login"/>">
                 <i class="fa fa-user" aria-hidden="true"></i>
                 Log in
             </a>
@@ -52,13 +55,14 @@
 
 
         <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
-            <a href="<c:url value="/logout"/>" style="color: white"><i class="fa fa-user" aria-hidden="true"></i>
+            <a href="<c:url value="/logout"/>"><i class="fa fa-user" aria-hidden="true"></i>
                 Log out
             </a>
         </security:authorize>
 
     </div>
 </nav>
+
 <c:choose>
     <c:when test="${empty scheduleDTOList}">
         <div class="container-fluid">
@@ -88,6 +92,7 @@
 
         <div class="container mt-4 p-md-4 col-12 rounded-container">
             <table class="table" style="text-align: center">
+
                 <tr>
                     <th scope="col">Train</th>
                     <th scope="col">From</th>
@@ -249,6 +254,8 @@
 <footer class="fixed-bottom page-footer"  style="background-color:#F2F3F4">
     <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
 </footer>
+
+
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>

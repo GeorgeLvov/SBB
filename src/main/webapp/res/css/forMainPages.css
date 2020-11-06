@@ -1,6 +1,5 @@
 body{
-    background: url(../img/train.jpg);
-    background-repeat: no-repeat;
+    background: url(../img/train.jpg) no-repeat;
     background-size: cover;
 }
 

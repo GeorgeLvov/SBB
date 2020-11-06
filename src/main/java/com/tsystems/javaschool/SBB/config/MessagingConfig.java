@@ -6,12 +6,11 @@ import java.util.Properties;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import javax.jms.ConnectionFactory;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jms.core.JmsTemplate;
 
 
+import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -32,6 +31,7 @@ public class MessagingConfig {
     }
 
 
+    @Lazy
     @Bean
     public ConnectionFactory connectionFactory() throws NamingException {
 
@@ -40,6 +40,7 @@ public class MessagingConfig {
         return (ConnectionFactory) namingContext.lookup("jms/RemoteConnectionFactory");
     }
 
+    @Lazy
     @Bean
     public JmsTemplate jmsTemplate() throws NamingException {
 
@@ -47,11 +48,12 @@ public class MessagingConfig {
 
         JmsTemplate template = new JmsTemplate();
         template.setConnectionFactory(connectionFactory());
-        Destination destination = (Destination) namingContext.lookup( "jms/queue/myQueue");
+        Destination destination = (Destination) namingContext.lookup( "jms/topic/myTopic");
         template.setDefaultDestination(destination);
 
         return template;
     }
 
 }
+
 
