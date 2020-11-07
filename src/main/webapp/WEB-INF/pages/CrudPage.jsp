@@ -11,17 +11,17 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>" />
-    <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-    <a class="navbar-brand" href="<c:url value="/admin/management"/>">
+    <a class="navbar-brand" href="<c:url value="/"/>">
         <img src="${pageContext.request.contextPath}/res/img/sbbBadge.png" width="30" height="30"
              class="d-inline-block align-top" alt="">
-        Swiss Federal Railways &#8592;
+        Swiss Federal Railways
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,6 +31,12 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="<c:url value="/admin/management"/>" >
+                    <i class="fas fa-cog"></i>
+                    Management &#8592;
+                </a>
+            </li>
 
             <li class="nav-item">
                 <a class="nav-link" href="<c:url value="/admin/trainselect"/>">Set trip for train</a>
@@ -42,9 +48,9 @@
                     Show
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<c:url value="/admin/stations"/>">Show all stations</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/trainsandstations"/>">Show all trains | stations</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/allTrips"/>">Show all trips</a>
                 </div>
             </li>
         </ul>
@@ -59,10 +65,10 @@
 
 <div class="container-fluid">
     <div class="row" style="height: 20px">
-    </div>
 
+    </div>
     <div class="row">
-        <div class="col-2"></div>
+        <div class="col-lg"></div>
         <div class="col-4" style="border-radius: 2%">
         <div class="card bg-light" style="width: 24rem; height: 31rem;">
             <img class="card-img-top" src="${pageContext.request.contextPath}/res/img/station.jpeg"
@@ -124,8 +130,7 @@
             </div>
         </div>
         </div>
-
-        <div class="col-2"></div>
+        <div class="col-lg"></div>
     </div>
 </div>
 

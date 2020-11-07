@@ -26,12 +26,6 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="${pageContext.request.contextPath}/admin/addemployee">
-                    <i class="fas fa-user-friends"></i>
-                    Add new employee
-                </a>
-            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link" href="${pageContext.request.contextPath}/logout">
                     <i class="fa fa-user" aria-hidden="true"></i>
@@ -65,19 +59,11 @@
                 </span>
                 </a>
 
-                <a href="${pageContext.request.contextPath}/admin/trains"
+                <a href="${pageContext.request.contextPath}/admin/trainsandstations"
                    class="list-group-item list-group-item-action list-group-item">
                     <i class="fas fa-subway"></i>
-                    Show all trains
-                    <span class="arrow">
-                    <i class="fas fa-long-arrow-alt-right"></i>
-                </span>
-                </a>
-
-                <a href="${pageContext.request.contextPath}/admin/stations"
-                   class="list-group-item list-group-item-action list-group-item">
                     <i class="fas fa-map-pin"></i>
-                    Show all stations
+                    Show all trains / stations
                     <span class="arrow">
                     <i class="fas fa-long-arrow-alt-right"></i>
                 </span>
@@ -87,6 +73,15 @@
                    class="list-group-item list-group-item-action list-group-item">
                     <i class="fas fa-list"></i>
                     Show all trips
+                    <span class="arrow">
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                </span>
+                </a>
+
+                <a href="${pageContext.request.contextPath}/admin/addemployee"
+                   class="list-group-item list-group-item-action list-group-item">
+                    <i class="fas fa-user-friends"></i>
+                    Add new employee
                     <span class="arrow">
                     <i class="fas fa-long-arrow-alt-right"></i>
                 </span>

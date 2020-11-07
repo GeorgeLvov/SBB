@@ -58,6 +58,22 @@ public class CrudController {
         return modelAndView;
     }
 
+    @PostMapping(value = "/editStation")
+    public ModelAndView editStation(@ModelAttribute("stationDTO")@Valid StationDTO stationDTO,
+                                   BindingResult bindingResult
+    ) {
+        ModelAndView modelAndView = new ModelAndView();
+        stationValidator.validate(stationDTO, bindingResult);
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("CrudPage");
+            return modelAndView;
+        }
+
+        stationService.addStation(stationDTO);
+        modelAndView.setViewName("redirect:/admin/crud?station");
+        return modelAndView;
+    }
+
     @PostMapping(value = "/addTrain")
     public ModelAndView addTrain(@ModelAttribute("trainDTO") @Valid TrainDTO trainDTO,
                                  BindingResult bindingResult,
@@ -73,21 +89,15 @@ public class CrudController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/trains")
-    public ModelAndView getAllTrains() {
+    @GetMapping(value = "/trainsandstations")
+    public ModelAndView getAllTrainsAndStations() {
         ModelAndView modelAndView = new ModelAndView();
-        List<TrainDTO> trains = trainService.getAllTrainsDTO();
-        modelAndView.addObject("trainsList", trains);
-        modelAndView.setViewName("AllTrainsPage");
-        return modelAndView;
-    }
 
-    @GetMapping(value = "/stations")
-    public ModelAndView getAllStations() {
-        ModelAndView modelAndView = new ModelAndView();
         List<StationDTO> stations = stationService.getAllStationsDTO();
+        List<TrainDTO> trains = trainService.getAllTrainsDTO();
         modelAndView.addObject("stationsList", stations);
-        modelAndView.setViewName("AllStationsPage");
+        modelAndView.addObject("trainsList", trains);
+        modelAndView.setViewName("TrainsAndStationsPage");
         return modelAndView;
     }
 
