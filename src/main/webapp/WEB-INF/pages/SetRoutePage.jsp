@@ -202,11 +202,6 @@
     <div class="col-2"></div>
 </form:form>
 
-
-
-
-
-
 <!-- Modal -->
 
 <div class="modal fade" id="exampleModal13" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel13" aria-hidden="true">

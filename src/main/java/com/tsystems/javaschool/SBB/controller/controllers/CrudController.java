@@ -9,6 +9,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -58,21 +60,7 @@ public class CrudController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/editStation")
-    public ModelAndView editStation(@ModelAttribute("stationDTO")@Valid StationDTO stationDTO,
-                                   BindingResult bindingResult
-    ) {
-        ModelAndView modelAndView = new ModelAndView();
-        stationValidator.validate(stationDTO, bindingResult);
-        if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("CrudPage");
-            return modelAndView;
-        }
 
-        stationService.addStation(stationDTO);
-        modelAndView.setViewName("redirect:/admin/crud?station");
-        return modelAndView;
-    }
 
     @PostMapping(value = "/addTrain")
     public ModelAndView addTrain(@ModelAttribute("trainDTO") @Valid TrainDTO trainDTO,
@@ -90,16 +78,45 @@ public class CrudController {
     }
 
     @GetMapping(value = "/trainsandstations")
-    public ModelAndView getAllTrainsAndStations() {
+    public ModelAndView getAllTrainsAndStations(@ModelAttribute("stationToEdit") StationDTO stationDTO) {
         ModelAndView modelAndView = new ModelAndView();
-
         List<StationDTO> stations = stationService.getAllStationsDTO();
         List<TrainDTO> trains = trainService.getAllTrainsDTO();
         modelAndView.addObject("stationsList", stations);
         modelAndView.addObject("trainsList", trains);
+
         modelAndView.setViewName("TrainsAndStationsPage");
         return modelAndView;
     }
+
+    @GetMapping(value = "/editstation/{id}")
+    public ModelAndView editStation(@PathVariable("id") int stationId, RedirectAttributes redirectAttributes) {
+
+        StationDTO stationDTO = stationService.getStationDTOById(stationId);
+
+        redirectAttributes.addFlashAttribute("stationToEdit", stationDTO);
+
+        return new ModelAndView("redirect:/admin/trainsandstations?edit=" + stationDTO.getId());
+    }
+
+
+    @PostMapping(value = "/editstation")
+    public ModelAndView editStation(@ModelAttribute("stationToEdit")@Valid StationDTO stationDTO,
+                                    BindingResult bindingResult) {
+
+        stationValidator.validate(stationDTO, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView("redirect:/admin/trainsandstations?error=" + stationDTO.getTitle());
+        }
+
+        System.out.println(stationDTO);
+
+        stationService.updateStation(stationDTO);
+
+        return new ModelAndView("redirect:/admin/trainsandstations?success");
+    }
+
 
     @GetMapping(value = "/allTrips")
     public ModelAndView getAllTrips() {
@@ -110,15 +127,15 @@ public class CrudController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/cancelTrip/{tripId}")
-    public String cancelTrip(@PathVariable int tripId){
-        tripService.cancelTrip(tripId);
-        return "redirect:/admin/allTrips";
-    }
-
     @PostMapping(value = "/delayTrip/{tripId}")
     public String delayTrip(@PathVariable int tripId, @RequestParam int delay){
         tripService.delayTrip(tripId, delay);
+        return "redirect:/admin/allTrips";
+    }
+
+    @GetMapping(value = "/cancelTrip/{tripId}")
+    public String cancelTrip(@PathVariable int tripId){
+        tripService.cancelTrip(tripId);
         return "redirect:/admin/allTrips";
     }
 

@@ -5,6 +5,8 @@ const records_per_stationPage = 5;
 
 let idList = [];
 let titles = [];
+console.log(titles);
+console.log(idList);
 
 /* Fill in list with station titles, which will be rendered on page */
 function data(id, title) {
@@ -12,7 +14,7 @@ function data(id, title) {
     titles.push(title);
 }
 
-/* Function for rendering pages */
+/* Function for filling pages */
 function changePage(page) {
     let btn_next = document.getElementById("btn_next");
     let btn_prev = document.getElementById("btn_prev");
@@ -21,14 +23,13 @@ function changePage(page) {
 
     stations_table.innerHTML = "";
 
-
     for (let i = (page - 1) * records_per_stationPage; i < (page * records_per_stationPage) && i < titles.length; i++) {
-        let str = '/edit/' + idList[i];
+        let str = '/admin/editstation/' + idList[i];
         stations_table.innerHTML +=
             "<tr>" +
             "<th>" + (i + 1) + "</th>" +
             "<td>" + titles[i] + "</td>" +
-            "<td>" + "<a href=\""  + str + "\">" + 'Edit' + "</a>" + "</td>" +
+            "<td>" + "<a class=\"pag-link\" href=\""  + str + "\">" + '<i class="far fa-edit"></i>' + "</a>" + "</td>" +
             "</tr>";
     }
 

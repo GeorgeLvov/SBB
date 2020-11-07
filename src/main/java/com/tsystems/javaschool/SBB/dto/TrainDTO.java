@@ -29,7 +29,7 @@ public class TrainDTO {
 
     @NotBlank(message = "*This field can't be empty.")
     @Size(min = 3, max = 30, message = "*Name must be between 3 and 30 characters.")
-    @Pattern(regexp = "^[a-zA-Z \\-]+$", message = "*Invalid symbol (only spaces or hyphens are allowed).")
+    @Pattern(regexp = "^[a-zA-Z0-9 \\-]+$", message = "*Invalid symbol (only spaces or hyphens are allowed).")
     private String trainName;
 
     @Range(min = 1, max = 1000, message = "*Capacity must be between 1 and 1000 seats.")

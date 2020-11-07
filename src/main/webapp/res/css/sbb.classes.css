@@ -1,0 +1,14 @@
+.pag-control {
+    font-size: 18px;
+    position: absolute;
+    bottom: 20px
+}
+
+.pag-link {
+    color: #6c757d;
+}
+
+.pag-link:hover {
+    text-decoration: none;
+    color: #d9534f;
+}

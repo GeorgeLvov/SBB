@@ -12,6 +12,15 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>" />
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -82,7 +91,8 @@
                         <div class="form-group ${status.error ? 'has-error' : ''}">
                             <label id="statLbl" for="statInput" style="font-size: 14px"> Enter station title: </label>
                             <form:input type="text" path="title" class="form-control" placeholder="ex: Zurich Hbf"
-                                        autofocus="true" name="station" id="statInput" onchange="undo('stat')"></form:input>
+                                        autofocus="true" name="station" id="statInput"
+                                        onchange="undoStationInputStyle()"></form:input>
                             <form:errors path="title" cssStyle="display: none"></form:errors>
                         </div>
                     </spring:bind>
@@ -109,7 +119,8 @@
                         <div class="form-group ${status.error ? 'has-error' : ''}">
                             <label id="trainLbl" for="trainInput" style="font-size: 14px">Enter train name:</label>
                             <form:input type="text" path="trainName" class="form-control" placeholder="ex: HSR-350x"
-                                        autofocus="true" id="trainInput" onchange="undo('train')"></form:input>
+                                        autofocus="true" id="trainInput"
+                                        onchange="undoTrainInputStyle('train')"></form:input>
                             <form:errors path="trainName" cssStyle="display: none"></form:errors>
                         </div>
                     </spring:bind>
@@ -117,8 +128,9 @@
                     <spring:bind path="capacity">
                         <div class="form-group ${status.error ? 'has-error' : ''}">
                             <label id="capLbl" for="capInput" style="font-size: 14px">Enter capacity:</label>
-                            <form:input type="number" path="capacity" class="form-control"
-                                        name="capacity" autofocus="true" id="capInput" onchange="undo('cap')"></form:input>
+                            <form:input type="number" path="capacity" class="form-control" name="capacity"
+                                        autofocus="true" id="capInput"
+                                        onchange="undoTrainInputStyle('cap')"></form:input>
                             <form:errors path="capacity" cssStyle="display: none"></form:errors>
                         </div>
                     </spring:bind>
@@ -134,30 +146,24 @@
     </div>
 </div>
 
+
 <footer class="fixed-bottom page-footer" style="background-color: #F4F6F6; margin-top: 40px">
     <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
 </footer>
 
 
-<script src="${pageContext.request.contextPath}/res/js/formValidation.js"></script>
+<script src="${pageContext.request.contextPath}/res/js/commonFormValidation.js"></script>
+<script src="${pageContext.request.contextPath}/res/js/stationFormValidation.js"></script>
+<script src="${pageContext.request.contextPath}/res/js/trainFormValidation.js"></script>
+
 <c:choose>
     <c:when test="${param.train != null}">
-        <script>success('train')</script>
+        <script>trainSuccess()</script>
     </c:when>
     <c:when test="${param.station != null}">
-        <script>success('station')</script>
+        <script>stationSuccess()</script>
     </c:when>
 </c:choose>
-
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-        crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
 
 </body>
 </html>

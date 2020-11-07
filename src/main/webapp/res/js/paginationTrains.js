@@ -12,7 +12,7 @@ function trainData(n, c) {
     caps.push(c);
 }
 
-/* Function for rendering pages */
+/* Function for filling pages */
 function changeCurrPage(page) {
     let btn_next = document.getElementById("btn_nextt");
     let btn_prev = document.getElementById("btn_prevt");
