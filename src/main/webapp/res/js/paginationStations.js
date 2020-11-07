@@ -23,12 +23,12 @@ function changePage(page) {
 
 
     for (let i = (page - 1) * records_per_stationPage; i < (page * records_per_stationPage) && i < titles.length; i++) {
-        let str = 'edit/' + idList[i];
+        let str = '/edit/' + idList[i];
         stations_table.innerHTML +=
             "<tr>" +
             "<th>" + (i + 1) + "</th>" +
             "<td>" + titles[i] + "</td>" +
-            "<td>" + "<a href=str>" + 'Edit' + "</a>" + "</td>" +
+            "<td>" + "<a href=\""  + str + "\">" + 'Edit' + "</a>" + "</td>" +
             "</tr>";
     }
 
