@@ -68,6 +68,7 @@
     <div class="row">
         <div class="col-2"></div>
         <div class="col-md-8 bg-light" style="border-radius: 2%">
+
             <form:form method="POST" modelAttribute="routeDTO" class="form-signin">
                 <div class="row" style="height: 40px">
                 </div>
@@ -127,6 +128,10 @@
                 </div>
                 <button type="submit" class="btn btn-danger" style="margin-top: 40px;">Create route</button>
             </form:form>
+
+
+
+
         </div>
     </div>
 </div>

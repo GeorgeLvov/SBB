@@ -21,7 +21,6 @@ import javax.naming.NamingException;
 public class MessagingConfig {
 
     private final Properties PROPERTIES;
-
     {
         PROPERTIES = new Properties();
         PROPERTIES.put(Context.INITIAL_CONTEXT_FACTORY, "org.jboss.naming.remote.client.InitialContextFactory");
@@ -29,7 +28,6 @@ public class MessagingConfig {
         PROPERTIES.put(Context.SECURITY_PRINCIPAL, "wildfly");
         PROPERTIES.put(Context.SECURITY_CREDENTIALS, "1234");
     }
-
 
     @Lazy
     @Bean

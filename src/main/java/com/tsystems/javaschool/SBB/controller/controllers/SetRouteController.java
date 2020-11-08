@@ -54,6 +54,7 @@ public class SetRouteController{
         return trainService.getAllTrainsDTO();
     }
 
+
     @GetMapping("/trainselect")
     public ModelAndView selectTrain() {
         ModelAndView modelAndView = new ModelAndView();
@@ -64,7 +65,8 @@ public class SetRouteController{
     }
 
     @PostMapping("/trainselect")
-    public ModelAndView selectTrain(@Valid @ModelAttribute("routeDTO") RouteDTO routeDTO, BindingResult bindingResult) {
+    public ModelAndView selectTrain(@Valid @ModelAttribute("routeDTO") RouteDTO routeDTO,
+                                    BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         startRouteValidator.validate(routeDTO, bindingResult);
         if(bindingResult.hasErrors()){
@@ -120,8 +122,7 @@ public class SetRouteController{
     public RedirectView createTrip(RedirectAttributes redirectAttributes) {
         RedirectView redirectView = new RedirectView("/admin/management",true);
         scheduleService.createTrip();
-        redirectAttributes.addFlashAttribute("successMessage",
-                "Trip was created!" + "Show it in dropdown tab \"Show\" -> \"Show all trips\" ");
+        redirectAttributes.addFlashAttribute("successMessage", "Trip was created.");
         containerService.truncate();
         return redirectView;
     }

@@ -16,6 +16,8 @@ public class TripRepositoryImpl implements TripRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+
+
     @Override
     public List<Trip> getAllTrips(){
         Query query = entityManager.createQuery("select t from Trip t order by t.train.id, t.departureTime");

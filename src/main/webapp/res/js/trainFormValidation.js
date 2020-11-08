@@ -8,9 +8,13 @@ const trainLabelText = trainLabel.textContent;
 const capLabelText = capLabel.textContent;
 
 let trainError = document.getElementById("trainName.errors");
+let capError = document.getElementById("capacity.errors");
 
 if (trainError !== null) {
-    invalid(trainInput, trainLabel, "*Such train already exists.");
+    invalid(trainInput, trainLabel, trainError.textContent);
+}
+if (capError !== null) {
+    invalid(capInput, capLabel, capError.textContent);
 }
 
 function trainSuccess() {

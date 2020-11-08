@@ -38,10 +38,11 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
 
     @Transactional
     @Override
-    public List<Schedule> getSchedulesByDepartureStationAndTime(Station stationFrom, Timestamp dateFrom, Timestamp dateTo) {
+    public List<Schedule> getSchedulesByDepartureStationAndTime(Station stationFrom, Timestamp dateFrom,
+                                                                Timestamp dateTo) {
         Query query = entityManager
                 .createQuery("select s from Schedule s where (s.departureTime between :tmp1 and :tmp2)" +
-                        " and s.stationFrom = :stationFrom order by s.departureTime")
+                        " and s.stationFrom = :stationFrom and s.trip.canceled = false order by s.departureTime")
                 .setParameter("stationFrom", stationFrom)
                 .setParameter("tmp1", dateFrom)
                 .setParameter("tmp2", dateTo);

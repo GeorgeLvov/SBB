@@ -84,18 +84,14 @@ public class CrudController {
         List<TrainDTO> trains = trainService.getAllTrainsDTO();
         modelAndView.addObject("stationsList", stations);
         modelAndView.addObject("trainsList", trains);
-
         modelAndView.setViewName("TrainsAndStationsPage");
         return modelAndView;
     }
 
     @GetMapping(value = "/editstation/{id}")
     public ModelAndView editStation(@PathVariable("id") int stationId, RedirectAttributes redirectAttributes) {
-
         StationDTO stationDTO = stationService.getStationDTOById(stationId);
-
         redirectAttributes.addFlashAttribute("stationToEdit", stationDTO);
-
         return new ModelAndView("redirect:/admin/trainsandstations?edit=" + stationDTO.getId());
     }
 
@@ -103,17 +99,11 @@ public class CrudController {
     @PostMapping(value = "/editstation")
     public ModelAndView editStation(@ModelAttribute("stationToEdit")@Valid StationDTO stationDTO,
                                     BindingResult bindingResult) {
-
         stationValidator.validate(stationDTO, bindingResult);
-
         if (bindingResult.hasErrors()) {
             return new ModelAndView("redirect:/admin/trainsandstations?error=" + stationDTO.getTitle());
         }
-
-        System.out.println(stationDTO);
-
         stationService.updateStation(stationDTO);
-
         return new ModelAndView("redirect:/admin/trainsandstations?success");
     }
 
@@ -144,7 +134,9 @@ public class CrudController {
                                                @PathVariable int tripId) {
         ModelAndView modelAndView = new ModelAndView();
         List<PassengerInfo> passengers = passengerService.getAllPassengersByTrainIdAndTripId(trainId, tripId);
+        TripDTO tripDTO = tripService.getTripDTOById(tripId);
         modelAndView.addObject("passengers", passengers);
+        modelAndView.addObject("currentTrip", tripDTO);
         modelAndView.setViewName("Passengers");
         return modelAndView;
     }

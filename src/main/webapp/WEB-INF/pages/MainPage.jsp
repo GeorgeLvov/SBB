@@ -108,13 +108,10 @@
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-
             <c:if test="${param.success != null}">
                 <div class="alert alert-success alert-dismissible fade show col-sm-5 offset-sm-3">
-
                     <strong>Success!</strong>
-                    <br>
-                    You have signed in as <strong>${pageContext.request.userPrincipal.name}</strong>.
+                    You have signed in with <strong>${pageContext.request.userPrincipal.name}</strong>
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                 </div>
             </c:if>

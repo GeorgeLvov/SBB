@@ -12,8 +12,12 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>"/>
-    <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
-
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <style>
+       label {
+           font-size: 14px;
+       }
+    </style>
 </head>
 
 <body>
@@ -22,7 +26,7 @@
 
     <a class="navbar-brand" href="<c:url value="/"/>">
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        Swiss Federal Railways &#8592;
+        Swiss Federal Railways
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +37,10 @@
         <ul class="navbar-nav mr-auto">
             <security:authorize access="hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="/admin/management">Management</a>
+                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/management">
+                        <i class="fas fa-cog"></i>
+                        Management &#8592;
+                    </a>
                 </li>
             </security:authorize>
         </ul>
@@ -43,6 +50,12 @@
                 <i class="fa fa-user" aria-hidden="true"></i>
                 Back to Sign In
             </a>
+        </security:authorize>
+        <security:authorize access="hasRole('ADMIN')">
+        <a class="nav-link" href="${pageContext.request.contextPath}/logout">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            Log out
+        </a>
         </security:authorize>
     </div>
 </nav>
@@ -56,8 +69,9 @@
         </div>
 
         <div class="col-md-4 bg-light" style="border-radius: 2%">
+            <form:form name="regForm" method="POST" modelAttribute="userForm" class="form-signin"
+            onsubmit="return validateRegistrationForm()">
 
-            <form:form method="POST" modelAttribute="userForm" class="form-signin">
                 <security:authorize access="isAnonymous()">
                     <h2 class="form-signin-heading" style="text-align:center; padding-top: 15px; padding-bottom: 5px">
                         Register</h2>
@@ -73,25 +87,31 @@
 
                 <spring:bind path="username">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <form:input type="text" path="username" class="form-control" placeholder="Username"
-                                    autofocus="true" id="usr"></form:input>
-                        <form:errors path="username" cssStyle="color: red; font-size: 14px"></form:errors>
+                        <label id="emailLbl" for="emailInp">Email: </label>
+                        <form:input type="text" path="username" class="form-control" placeholder="Email"
+                                    autofocus="true" id="emailInp"
+                                    onchange="undoUserInputStyle('email')"></form:input>
+                        <form:errors path="username" cssStyle="display: none"></form:errors>
                     </div>
                 </spring:bind>
 
                 <spring:bind path="password">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label id="passLbl" for="passInp">Password: </label>
                         <form:input type="password" path="password" class="form-control"
-                                    placeholder="Password"></form:input>
-                        <form:errors path="password" cssStyle="color: red; font-size: 14px"></form:errors>
+                                    placeholder="Password" id="passInp"
+                                    onchange="undoUserInputStyle('pass')"></form:input>
+                        <form:errors path="password" cssStyle="display: none"></form:errors>
                     </div>
                 </spring:bind>
 
                 <spring:bind path="confirmPassword">
                     <div class="form-group ${status.error ? 'has-error' : ''}">
+                        <label id="confLbl" for="confInp">Confirm password: </label>
                         <form:input type="password" path="confirmPassword" class="form-control"
-                                    placeholder="Confirm your password"></form:input>
-                        <form:errors path="confirmPassword" cssStyle="color: red; font-size: 14px"></form:errors>
+                                    placeholder="Confirm your password" id="confInp"
+                                    onchange="undoUserInputStyle('conf')"></form:input>
+                        <form:errors path="confirmPassword" cssStyle="display: none"></form:errors>
                     </div>
                 </spring:bind>
 
@@ -103,7 +123,6 @@
                         Create account
                     </security:authorize>
                 </button>
-
             </form:form>
         </div>
         <div class="col-md-4">
@@ -115,6 +134,10 @@
 <footer class="fixed-bottom page-footer" style="background-color:#F2F3F4">
     <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
 </footer>
+
+<script src="${pageContext.request.contextPath}/res/js/commonFormValidation.js"></script>
+<script src="${pageContext.request.contextPath}/res/js/userFormValidation.js"></script>
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

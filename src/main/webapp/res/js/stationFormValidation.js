@@ -5,7 +5,7 @@ const statLabelText = statLabel.textContent;
 let statError = document.getElementById("title.errors");
 
 if(statError !== null){
-    invalid(statInput, statLabel, "*Such station already exists.");
+    invalid(statInput, statLabel, statError.textContent);
 }
 
 function stationSuccess(){

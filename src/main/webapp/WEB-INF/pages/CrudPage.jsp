@@ -91,8 +91,7 @@
                         <div class="form-group ${status.error ? 'has-error' : ''}">
                             <label id="statLbl" for="statInput" style="font-size: 14px"> Enter station title: </label>
                             <form:input type="text" path="title" class="form-control" placeholder="ex: Zurich Hbf"
-                                        autofocus="true" name="station" id="statInput"
-                                        onchange="undoStationInputStyle()"></form:input>
+                                        name="station" id="statInput" onchange="undoStationInputStyle()"></form:input>
                             <form:errors path="title" cssStyle="display: none"></form:errors>
                         </div>
                     </spring:bind>
@@ -119,8 +118,7 @@
                         <div class="form-group ${status.error ? 'has-error' : ''}">
                             <label id="trainLbl" for="trainInput" style="font-size: 14px">Enter train name:</label>
                             <form:input type="text" path="trainName" class="form-control" placeholder="ex: HSR-350x"
-                                        autofocus="true" id="trainInput"
-                                        onchange="undoTrainInputStyle('train')"></form:input>
+                                        id="trainInput" onchange="undoTrainInputStyle('train')"></form:input>
                             <form:errors path="trainName" cssStyle="display: none"></form:errors>
                         </div>
                     </spring:bind>
@@ -129,8 +127,7 @@
                         <div class="form-group ${status.error ? 'has-error' : ''}">
                             <label id="capLbl" for="capInput" style="font-size: 14px">Enter capacity:</label>
                             <form:input type="number" path="capacity" class="form-control" name="capacity"
-                                        autofocus="true" id="capInput"
-                                        onchange="undoTrainInputStyle('cap')"></form:input>
+                                        id="capInput" onchange="undoTrainInputStyle('cap')"></form:input>
                             <form:errors path="capacity" cssStyle="display: none"></form:errors>
                         </div>
                     </spring:bind>

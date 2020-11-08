@@ -8,16 +8,18 @@
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
+    <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>" />
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-dark">
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
-    <a class="navbar-brand" href="<c:url value="/admin/management"/>" style="color: white">
-        <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
-        SBB CFF FFS
+    <a class="navbar-brand" href="<c:url value="/"/>">
+        <img src="${pageContext.request.contextPath}/res/img/sbbBadge.png" width="30" height="30"
+             class="d-inline-block align-top" alt="">
+        Swiss Federal Railways
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -27,36 +29,34 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
         <ul class="navbar-nav mr-auto">
-
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/crud"/>" style="color: white"> Add train | station </a>
+                <a class="nav-link" href="<c:url value="/admin/management"/>" >
+                    <i class="fas fa-cog"></i>
+                    Management &#8592;
+                </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/trainselect"/>" style="color: white"> Set trip for train </a>
+                <a class="nav-link" href="<c:url value="/admin/crud"/>"> Add train | station </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" href="<c:url value="/admin/trainselect"/>"> Set trip for train </a>
             </li>
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false" style="color: white">
+                   aria-haspopup="true" aria-expanded="false">
                     Show
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<c:url value="/admin/stations"/>">Show all stations</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/admin/allTrips"/>">Show all trips</a>
-
+                    <a class="dropdown-item" href="<c:url value="/admin/trainsandstations"/>">
+                        Show all trains | stations</a>
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/addemployee"/>" style="color: white"> Add new
-                    employee </a>
             </li>
         </ul>
 
-        <a class="nav-link" href="<c:url value="/logout"/>" style="color: white">
+        <a class="nav-link" href="<c:url value="/logout"/>">
             <i class="fa fa-user" aria-hidden="true"></i>
             Log out
         </a>
@@ -78,7 +78,8 @@
     </c:when>
     <c:otherwise>
 
-        <div class="container mt-4 p-md-4 col-12 rounded-container">
+        <div class="container mt-4 p-md-3 mb-5 col-12 rounded-container">
+            <h1 style="text-align: center; margin-bottom: 20px;">Trips</h1>
             <table class="table" style="text-align: center">
                 <tr>
                     <th scope="col">Train</th>
@@ -166,7 +167,7 @@
                             </div>
                         </td>
                         <td>
-                            <a class="btn btn-success" href="/admin/passengers/${trip.trainDTO.id}/${trip.id}/" role="button">Show Info</a>
+                            <a class="btn btn-success" href="/admin/passengers/${trip.trainDTO.id}/${trip.id}/" role="button" target="_blank">Show Info</a>
                         </td>
 
 
@@ -202,8 +203,7 @@
                                                                 <div class="col-7">
                                                                     <input class="form-control" type="number" name="delay"
                                                                            id="delay" min="1" max="180" required
-                                                                           style="width: 200px">
-
+                                                                           style="width: 200px; margin-left: 5px">
                                                                 </div>
                                                                 <div class="col-3"></div>
                                                             </div>
@@ -267,9 +267,9 @@
 </c:choose>
 
 
-
-
-
+<footer class="fixed-bottom page-footer" style="background-color: #F4F6F6">
+    <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
+</footer>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

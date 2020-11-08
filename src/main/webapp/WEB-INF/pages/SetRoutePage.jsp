@@ -10,14 +10,19 @@
 <head>
     <title>SBB: Set trip</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <style>
+        #startModalId .close {
+        display: none;
+    }
+    </style>
     <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
-
 
     <script>
         function mainFunction() {
             if (${resultRouteDTO.sideArrivalTimes == null || empty resultRouteDTO.sideArrivalTimes}) {
-              alert("You haven't added any arrival stations!");
+                alert("You haven't added any arrival stations!");
             } else {
                 var x = Date.parse("${resultRouteDTO.declaredArrivalDate}");
                 var y = Date.parse("${(resultRouteDTO.sideArrivalTimes != null && !empty resultRouteDTO.sideArrivalTimes)
@@ -58,19 +63,16 @@
             </li>
 
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false" style="color: white">
                     Show
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<c:url value="/admin/stations"/>">Show all stations</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/trainsandstations"/>">
+                        Show all trains | stations</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="<c:url value="/admin/trains"/>">Show all trains</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Show passengers</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/allTrips"/>">Show all trips</a>
                 </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="<c:url value="/admin/addemployee"/>" style="color: white"> Add new employee </a>
             </li>
         </ul>
 
@@ -81,6 +83,85 @@
     </div>
 </nav>
 
+<!-- Modal for start set route-->
+<div class="modal fade bd-example-modal-lg" id="startModalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form:form method="POST" modelAttribute="routeDTO" class="form-signin">
+                    <div class="row" style="height: 40px">
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            <spring:bind path="trainName">
+                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                    <label for="trainselect">Train:</label>
+                                    <form:select class="form-control" path="trainName" varStatus="tagStatus" multiple="0"
+                                                 id="trainselect">
+                                        <form:option value="" label="Select"/>
+                                        <form:options items="${trainsList}" itemValue="trainName" itemLabel="trainName"/>
+                                    </form:select>
+                                    <form:errors path="trainName" cssStyle="color: red; font-size: 14px"></form:errors>
+                                </div>
+                            </spring:bind>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5">
+                            <spring:bind path="departureStationName">
+                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                    <label for="depStation">Departure station:</label>
+                                    <form:select class="form-control" path="departureStationName" varStatus="tagStatus"
+                                                 multiple="0" id="depStation">
+                                        <form:option value="" label="From"/>
+                                        <form:options items="${stationsList}" itemValue="title" itemLabel="title"/>
+                                    </form:select>
+                                    <form:errors path="departureStationName"
+                                                 cssStyle="color: red; font-size: 14px"></form:errors>
+                                </div>
+                            </spring:bind>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                            <spring:bind path="departureDate">
+                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                    <label for="depTime">Departure time:</label>
+                                    <form:input type="datetime-local" path="departureDate" class="form-control"
+                                                placeholder="" id="depTime"></form:input>
+                                    <form:errors path="departureDate" cssStyle="color: red; font-size: 14px"></form:errors>
+                                </div>
+                            </spring:bind>
+                        </div>
+                        <div class="col-4">
+                            <spring:bind path="declaredArrivalDate">
+                                <div class="form-group ${status.error ? 'has-error' : ''}">
+                                    <label for="arrTime">End time of the route:</label>
+                                    <form:input type="datetime-local" path="declaredArrivalDate" class="form-control"
+                                                placeholder="" id="arrTime"></form:input>
+                                    <form:errors path="declaredArrivalDate"
+                                                 cssStyle="color: red; font-size: 14px"></form:errors>
+                                </div>
+                            </spring:bind>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-danger" style="margin-top: 40px;">Create route</button>
+                </form:form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for start set route-->
 
 <div class="container bg-light col-12">
     <table class="table table-sm">
@@ -282,6 +363,14 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+
+<script>
+    $('#startModalId').modal({
+        show: true,
+        backdrop: 'static',
+        keyboard: false
+    });
+</script>
 
 </body>
 </html>

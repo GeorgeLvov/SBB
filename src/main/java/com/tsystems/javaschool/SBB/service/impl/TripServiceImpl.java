@@ -67,6 +67,13 @@ public class TripServiceImpl implements TripService {
 
     @Override
     @Transactional
+    public TripDTO getTripDTOById(int id) {
+        Trip trip = tripRepository.getTripById(id);
+        return tripMapper.toDTO(trip);
+    }
+
+    @Override
+    @Transactional
     public boolean isTrainAvailableForNewTrip(String trainName, String departureTimeStr, String arrivalTimeStr) {
 
         int trainId = trainService.findTrainByName(trainName).getId();

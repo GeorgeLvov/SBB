@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
+
 
 @Controller
 public class UserController {
@@ -36,7 +38,8 @@ public class UserController {
     }
 
     @PostMapping(value = "/registration")
-    public ModelAndView register(@ModelAttribute("userForm") UserDTO userDTO, BindingResult bindingResult) {
+    public ModelAndView register(@Valid @ModelAttribute("userForm") UserDTO userDTO,
+                                 BindingResult bindingResult) {
         ModelAndView modelAndView = new ModelAndView();
         userValidator.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -44,11 +47,12 @@ public class UserController {
             return modelAndView;
         }
         userDTO.setRoleDTO(roleService.getRoleDTOById(1));
+        
         userService.registry(userDTO);
 
         securityService.autoLogin(userDTO.getUsername(), userDTO.getConfirmPassword());
 
-        modelAndView.setViewName("Success");
+        modelAndView.setViewName("redirect:/?success");
 
         return modelAndView;
     }

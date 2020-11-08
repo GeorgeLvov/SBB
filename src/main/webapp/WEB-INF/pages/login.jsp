@@ -40,7 +40,7 @@
             <form action="${var}" method="post">
                 <security:csrfInput/>
                 <c:if test="${param.error != null}">
-                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" style="font-size: 15px">
                         <strong>Failed to log in.</strong>
                         <br>
                         Please make sure that you have entered your <strong>login</strong> and
