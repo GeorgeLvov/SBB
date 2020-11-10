@@ -21,36 +21,39 @@ public class StationServiceImpl implements StationService {
     private StationMapper stationMapper;
 
 
-
-    @Transactional
     @Override
+    @Transactional
     public List<StationDTO> getAllStationsDTO() {
         List<Station> stations = stationRepository.getAllStations();
         return stationMapper.toDTOList(stations);
     }
 
-    @Transactional
+
     @Override
+    @Transactional
     public StationDTO getStationDTOById(int id) {
         return stationMapper.toDTO(stationRepository.getStationById(id));
     }
 
-    @Transactional
+
     @Override
+    @Transactional
     public StationDTO findStationDTOByTitle(String title) {
         Station station = stationRepository.findStationByTitle(title);
         return stationMapper.toDTO(station);
     }
 
-    @Transactional
+
     @Override
+    @Transactional
     public void addStation(StationDTO stationDTO) {
         Station station = stationMapper.toEntity(stationDTO);
         stationRepository.addStation(station);
     }
 
-    @Transactional
+
     @Override
+    @Transactional
     public void updateStation(StationDTO stationDTO) {
         Station station = stationMapper.toEntity(stationDTO);
         stationRepository.updateStation(station);

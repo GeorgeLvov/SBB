@@ -149,9 +149,9 @@
 </footer>
 
 
-<script src="${pageContext.request.contextPath}/res/js/commonFormValidation.js"></script>
-<script src="${pageContext.request.contextPath}/res/js/stationFormValidation.js"></script>
-<script src="${pageContext.request.contextPath}/res/js/trainFormValidation.js"></script>
+<script src="<c:url value="/res/js/validation/commonFormValidation.js"/>"></script>
+<script src="<c:url value="/res/js/validation/stationFormValidation.js"/>"></script>
+<script src="<c:url value="/res/js/validation/trainFormValidation.js"/>"></script>
 
 <c:choose>
     <c:when test="${param.train != null}">

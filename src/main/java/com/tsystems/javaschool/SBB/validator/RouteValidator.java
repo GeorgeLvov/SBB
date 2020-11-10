@@ -3,6 +3,7 @@ package com.tsystems.javaschool.SBB.validator;
 import com.tsystems.javaschool.SBB.dto.RouteDTO;
 import com.tsystems.javaschool.SBB.dto.RouteContainer;
 
+import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -30,14 +31,15 @@ public class RouteValidator implements Validator {
         RouteDTO routeDTO = (RouteDTO) o;
 
         List<String> stationList = routeDTO.getSideStations();
-        List<String> sideStations = container.getSideStations();
+
+        List<StationDTO> sideStations = container.getSideStations();
 
         if (CollectionUtils.isNotEmpty(stationList)) {
             if (CollectionUtils.isEmpty(sideStations)) {
-                if (stationList.get(0).equals(container.getDepartureStationName())) {
+                if (stationList.get(0).equals(String.valueOf(container.getDepartureStation().getId()))) {
                     errors.rejectValue("sideStations", "DuplicateStation.inRoute");
                 }
-            } else if (stationList.get(0).equals(CollectionUtils.getLast(sideStations))) {
+            } else if (stationList.get(0).equals(String.valueOf(CollectionUtils.getLast(sideStations).getId()))) {
                 errors.rejectValue("sideStations", "DuplicateStation.inRoute");
             }
 
@@ -67,7 +69,8 @@ public class RouteValidator implements Validator {
                     CollectionUtils.getLast(resultStops))) {
                 errors.rejectValue("sideArrivalTimes", "Invalid.routeTime.2");
 
-            } else if (LocalDateTime.parse(arrTimes.get(0)).compareTo(LocalDateTime.parse(container.getDeclaredArrivalDate())) > 0) {
+            } else if (LocalDateTime.parse(arrTimes.get(0))
+                    .compareTo(LocalDateTime.parse(container.getDeclaredArrivalDate())) > 0) {
                 errors.rejectValue("sideArrivalTimes", "TimeIsMoreThanMain");
             }
 

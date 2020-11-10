@@ -39,9 +39,10 @@ public class SetRouteController{
     @Autowired
     private ScheduleService scheduleService;
     @Autowired
-    private RouteContainer routeContainer;
-    @Autowired
     private RouteContainerService containerService;
+
+    @Autowired
+    private RouteContainer routeContainer;
 
 
     @ModelAttribute("stationsList")
@@ -59,63 +60,66 @@ public class SetRouteController{
     public ModelAndView selectTrain() {
         ModelAndView modelAndView = new ModelAndView();
         containerService.truncate();
-        modelAndView.addObject("routeDTO", new RouteDTO());
-        modelAndView.setViewName("StartSetRoutePage");
+        modelAndView.setViewName("redirect:/admin/setroute?start");
         return modelAndView;
     }
 
-    @PostMapping("/trainselect")
-    public ModelAndView selectTrain(@Valid @ModelAttribute("routeDTO") RouteDTO routeDTO,
-                                    BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
-        startRouteValidator.validate(routeDTO, bindingResult);
-        if(bindingResult.hasErrors()){
-            modelAndView.setViewName("StartSetRoutePage");
-            return modelAndView;
-        }
-        containerService.setFields(routeDTO, true);
-        modelAndView.setViewName("redirect:/admin/setRoute");
-        return modelAndView;
-    }
-
-
-    @GetMapping("/setRoute")
+    @GetMapping("/setroute")
     public ModelAndView setRoute() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("resultRouteDTO", routeContainer);
         modelAndView.addObject("routeDTO", new RouteDTO());
+        modelAndView.addObject("resultRouteDTO", routeContainer);
         modelAndView.setViewName("SetRoutePage");
         return modelAndView;
     }
 
+    @PostMapping("/trainselect")
+    public ModelAndView selectTrain(@Valid @ModelAttribute("routeDTO") RouteDTO routeDTO, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
+        System.out.println(routeDTO);
+        startRouteValidator.validate(routeDTO, bindingResult);
+        if(bindingResult.hasErrors()){
+            modelAndView.addObject("error", "error");
+            modelAndView.setViewName("SetRoutePage");
+            return modelAndView;
+        }
+        containerService.setInitialInfo(routeDTO);
+        modelAndView.setViewName("redirect:/admin/setroute");
+        return modelAndView;
+    }
 
-    @PostMapping("/setRoute")
+    @PostMapping("/setroute")
     public ModelAndView setRoute(@ModelAttribute("routeDTO") RouteDTO routeDTO, BindingResult bindingResult) {
+
         ModelAndView modelAndView = new ModelAndView();
         routeValidator.validate(routeDTO, bindingResult);
+
         if (bindingResult.hasErrors()) {
             modelAndView.addObject("resultRouteDTO", routeContainer);
             modelAndView.setViewName("SetRoutePage");
             return modelAndView;
         }
-        if (CollectionUtils.isNotEmpty(routeContainer.getSideStations())) {
-            containerService.updateListFields(routeDTO);
-        } else containerService.setFields(routeDTO, false);
 
-        modelAndView.setViewName("redirect:/admin/setRoute");
+        if (CollectionUtils.isEmpty(routeContainer.getSideStations())) {
+            containerService.setSegmentsInfo(routeDTO);
+        } else {
+            containerService.updateSegmentsInfo(routeDTO);
+        }
+
+        modelAndView.setViewName("redirect:/admin/setroute");
         return modelAndView;
     }
-
 
     @GetMapping(value = "/deleteLast")
     public String deleteLastChange() {
         if (CollectionUtils.isNotEmpty(routeContainer.getSideStations())
                 && CollectionUtils.isNotEmpty(routeContainer.getSideArrivalTimes())) {
             containerService.deleteLastChange();
-            return "redirect:/admin/setRoute";
+            return "redirect:/admin/setroute";
         }
-        return "redirect:/admin/trainselect";
 
+        containerService.truncate();
+        return "redirect:/admin/trainselect";
     }
 
     @GetMapping("/createtrip")
@@ -126,6 +130,5 @@ public class SetRouteController{
         containerService.truncate();
         return redirectView;
     }
-
 
 }

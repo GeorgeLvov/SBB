@@ -44,15 +44,16 @@ public class PassengerServiceImpl implements PassengerService {
     @Transactional
     public boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTO ticketDTO) {
 
-        List<Object[]> list = passengerRepository.getPassengerWithTicketsByPersonalData(firstName, lastName, birthDate);
+        List<Object[]> list =
+                passengerRepository.getPassengerWithTicketsByPersonalData(firstName, lastName, birthDate);
 
         for (Object[] objects : list) {
-            int trainId = (int) objects[0];
+          //  int trainId = (int) objects[0];
             int tripId = (int) objects[1];
             Timestamp departureTime = (Timestamp) objects[2];
             Timestamp arrivalTime = (Timestamp) objects[3];
-            if (trainId == ticketDTO.getTrainDTO().getId() && tripId == ticketDTO.getTripId()
-                    && departureTime.equals(ticketDTO.getDepartureTime()) && arrivalTime.equals(ticketDTO.getArrivalTime())) {
+            if (tripId == ticketDTO.getTripId() && departureTime.equals(ticketDTO.getDepartureTime())
+                    && arrivalTime.equals(ticketDTO.getArrivalTime())) {
                 return true;
             }
         }

@@ -36,7 +36,6 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         entityManager.persist(schedule);
     }
 
-    @Transactional
     @Override
     public List<Schedule> getSchedulesByDepartureStationAndTime(Station stationFrom, Timestamp dateFrom,
                                                                 Timestamp dateTo) {
@@ -49,18 +48,15 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         return query.getResultList();
     }
 
-    @Transactional
+
     @Override
-    public List<Schedule> getSchedulesByTrainIdTripIdStationTo(int trainId, int tripId, Station stationTo) {
+    public List<Schedule> getSchedulesByTripIdAndStationTo(int tripId, Station stationTo) {
         Query query = entityManager
-                .createQuery("select s from Schedule s where s.train.id =:trainId and s.trip.id =:tripId" +
-                        " and s.stationTo = :stationTo")
-                .setParameter("trainId", trainId)
+                .createQuery("select s from Schedule s where s.trip.id =:tripId and s.stationTo = :stationTo")
                 .setParameter("tripId", tripId)
                 .setParameter("stationTo", stationTo);
         return query.getResultList();
     }
-
 
     @Override
     public List<Schedule> getSchedulesByStationFrom(Station stationFrom) {
@@ -77,7 +73,6 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
                 .setParameter("stationTo", stationTo);
         return query.getResultList();
     }
-
 
     @Override
     public List<Schedule> getSchedulesByTripId(int tripId) {

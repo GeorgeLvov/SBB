@@ -13,18 +13,18 @@ import java.util.List;
 public class RouteDTO {
 
     @NotBlank(message = "Train is not selected!")
-    String trainName;
+    private String trainName;
 
     @NotBlank(message = "Station is not selected!")
-    String departureStationName;
+    private String departureStationName;
 
-    String departureDate;
+    private String departureDate;
 
-    String declaredArrivalDate;
+    private String declaredArrivalDate;
 
-    List<String> sideStations;
+    private List<String> sideStations;
 
-    List<String> sideArrivalTimes;
+    private List<String> sideArrivalTimes;
 
-    List<String> stops;
+    private List<String> stops;
 }

@@ -27,11 +27,6 @@ public class TicketRepositoryImpl implements TicketRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Override
-    public Ticket getTicketById(int id) {
-        return entityManager.find(Ticket.class, id);
-    }
-
 
     @Override
     public void setValidityOfTickets() {
@@ -51,11 +46,6 @@ public class TicketRepositoryImpl implements TicketRepository {
         return (BigInteger) query.getSingleResult();
     }
 
-    @Override
-    public void add(Ticket ticket) {
-        entityManager.persist(ticket);
-    }
-
 
     @Override
     public List<Object[]> getAllTicketsByUserId(int userId) {
@@ -70,8 +60,16 @@ public class TicketRepositoryImpl implements TicketRepository {
                         "where ticket.user_id=?;");
         query.setParameter(1, userId);
         return query.getResultList();
+
+    }
+    @Override
+    public Ticket getTicketById(int id) {
+        return entityManager.find(Ticket.class, id);
     }
 
-
+    @Override
+    public void add(Ticket ticket) {
+        entityManager.persist(ticket);
+    }
 
 }

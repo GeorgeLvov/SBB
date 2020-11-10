@@ -105,7 +105,7 @@
                     <th scope="col">Edit</th>
                 </tr>
                 </thead>
-                <tbody id="listingTable">
+                <tbody id="stationTable">
                 </tbody>
             </table>
 
@@ -114,7 +114,7 @@
                     <i class="far fa-arrow-alt-circle-left"></i>
                 </a>
                 <span>
-                    page: <span id="page"></span>
+                    page: <span id="stationPage"></span>
                 </span>
                 <a class="pag-link" href="javascript:nextPage()" id="btn_next">
                     <i class="far fa-arrow-alt-circle-right"></i>
@@ -200,8 +200,8 @@
 
 <script src="${pageContext.request.contextPath}/res/js/paginationStations.js"></script>
 <script src="${pageContext.request.contextPath}/res/js/paginationTrains.js"></script>
-<script src="${pageContext.request.contextPath}/res/js/commonFormValidation.js"></script>
-<script src="${pageContext.request.contextPath}/res/js/stationFormValidation.js"></script>
+<script src="${pageContext.request.contextPath}/res/js/validation/commonFormValidation.js"></script>
+<script src="${pageContext.request.contextPath}/res/js/validation/stationFormValidation.js"></script>
 
 <c:forEach var="station" items="${stationsList}" >
     <script> data(${station.id}, "${station.title}") </script>

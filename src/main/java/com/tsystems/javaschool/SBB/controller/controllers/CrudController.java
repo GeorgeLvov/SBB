@@ -12,7 +12,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -25,9 +28,9 @@ public class CrudController {
     @Autowired
     private StationService stationService;
     @Autowired
-    private TrainService trainService;
-    @Autowired
     private StationValidator stationValidator;
+    @Autowired
+    private TrainService trainService;
     @Autowired
     private TrainValidator trainValidator;
     @Autowired
@@ -44,10 +47,9 @@ public class CrudController {
     }
 
     @PostMapping(value = "/addStation")
-    public ModelAndView addStation(@ModelAttribute("stationDTO")@Valid StationDTO stationDTO,
+    public ModelAndView addStation(@ModelAttribute("stationDTO") @Valid StationDTO stationDTO,
                                    BindingResult bindingResult,
-                                   @ModelAttribute("trainDTO") TrainDTO trainDTO
-    ) {
+                                   @ModelAttribute("trainDTO") TrainDTO trainDTO) {
         ModelAndView modelAndView = new ModelAndView();
         stationValidator.validate(stationDTO, bindingResult);
         if (bindingResult.hasErrors()) {
@@ -59,7 +61,6 @@ public class CrudController {
         modelAndView.setViewName("redirect:/admin/crud?station");
         return modelAndView;
     }
-
 
 
     @PostMapping(value = "/addTrain")
@@ -109,9 +110,12 @@ public class CrudController {
 
 
     @GetMapping(value = "/allTrips")
-    public ModelAndView getAllTrips() {
+    public ModelAndView getAllTrips(HttpServletRequest httpServletRequest) {
         ModelAndView modelAndView = new ModelAndView();
         List<TripDTO> allTrips = tripService.getAllTrips();
+        if(httpServletRequest.getParameter("lastadded") != null){
+            allTrips.sort(Comparator.comparing(TripDTO::getId).reversed());
+        }
         modelAndView.addObject("allTrips", allTrips);
         modelAndView.setViewName("AllTripsPage");
         return modelAndView;

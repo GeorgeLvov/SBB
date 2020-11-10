@@ -1,19 +1,15 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
-import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.dto.TicketInfo;
 import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.entities.Ticket;
 import com.tsystems.javaschool.SBB.entities.User;
 import com.tsystems.javaschool.SBB.exception.NoTicketsException;
-import com.tsystems.javaschool.SBB.mapper.PassengerMapper;
 import com.tsystems.javaschool.SBB.mapper.TicketMapper;
-import com.tsystems.javaschool.SBB.repository.interfaces.PassengerRepository;
-import com.tsystems.javaschool.SBB.repository.interfaces.TicketRepository;
-import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
-import com.tsystems.javaschool.SBB.repository.interfaces.UserRepository;
+import com.tsystems.javaschool.SBB.repository.interfaces.*;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
+import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,7 +22,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class TicketServiceImpl implements TicketService {
@@ -40,34 +35,55 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private TicketDTO ticketDTO;
-    @Autowired
     private PassengerRepository passengerRepository;
     @Autowired
-    private PassengerMapper passengerMapper;
+    private StationRepository stationRepository;
     @Autowired
-    private StationService stationService;
-    @Autowired
-    private TrainService trainService;
-    @Autowired
-    private UserService userService;
-
+    private TicketPDFExporter pdfExporter;
 
 
     @Override
     @Transactional
-    public TicketDTO getTicketDTOById(int id) {
-        setValidityOfTickets();
-        Ticket ticket = ticketRepository.getTicketById(id);
-        return ticketMapper.toDTO(ticket);
+    public void createTicket(TicketDTO ticketDTO) throws NoTicketsException {
+        Ticket ticket = ticketMapper.toEntity(ticketDTO);
+
+        ticket.setTrain(trainRepository.getTrainById(ticketDTO.getTrainId()));
+        ticket.setStationFrom(stationRepository.getStationById(ticketDTO.getStationFromId()));
+        ticket.setStationTo(stationRepository.getStationById(ticketDTO.getStationToId()));
+        ticket.setValid(true);
+
+        String firstName = ticketDTO.getPassengerName();
+        String lastName = ticketDTO.getPassengerSurName();
+        Date birthDate = ticketDTO.getBirthDate();
+        Passenger existingPassenger = passengerRepository.getPassengerByPersonalData(firstName, lastName, birthDate);
+        if (existingPassenger != null) {
+            ticket.setPassenger(existingPassenger);
+        } else {
+            Passenger passenger = new Passenger(firstName,lastName,birthDate);
+            passengerRepository.add(passenger);
+            ticket.setPassenger(passenger);
+        }
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        if (!username.equals("anonymousUser")) {
+            ticket.setUser(userRepository.findUserByName(auth.getName()));
+        }
+
+        if(isTimeValid(ticket.getDepartureTime())
+                && !isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
+                ticket.getTrain().getId(), ticket.getTripId())){
+            ticketRepository.add(ticket);
+        } else {
+            throw new NoTicketsException();
+        }
     }
 
+
     @Override
-    //@Transactional(propagation = Propagation.MANDATORY)
     public void setValidityOfTickets() {
         ticketRepository.setValidityOfTickets();
     }
-
 
     @Override
     public boolean isTimeValid(Timestamp departureTimeIn) {
@@ -82,69 +98,6 @@ public class TicketServiceImpl implements TicketService {
         BigInteger bigInteger = ticketRepository.getTakenSeatsCount(trainId, tripId, departureTime, arrivalTime);
         return trainRepository.getTrainById(trainId).getCapacity() <= bigInteger.longValue();
     }
-
-
-    @Override
-    @Transactional
-    public void prepareTicketForPassenger(Map<String, String> allRequestParams) throws NoTicketsException {
-
-        int trainId = Integer.parseInt(allRequestParams.get("trainId").trim());
-        int tripId = Integer.parseInt(allRequestParams.get("tripId").trim());
-        int stationFromId = Integer.parseInt(allRequestParams.get("stF").trim());
-        int stationToId = Integer.parseInt(allRequestParams.get("stT").trim());
-        Timestamp departureTime = Timestamp.valueOf(allRequestParams.get("departureTime"));
-        Timestamp arrivalTime = Timestamp.valueOf(allRequestParams.get("arrivalTime"));
-
-        ticketDTO.setTrainDTO(trainService.getTrainDTOById(trainId));
-        ticketDTO.setTripId(tripId);
-        ticketDTO.setStationFromDTO(stationService.getStationDTOById(stationFromId));
-        ticketDTO.setStationToDTO(stationService.getStationDTOById(stationToId));
-        ticketDTO.setDepartureTime(departureTime);
-        ticketDTO.setArrivalTime(arrivalTime);
-        ticketDTO.setValid(true);
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-
-        if (!username.equals("anonymousUser")) {
-            ticketDTO.setUserDTO(userService.findUserDTOByName(auth.getName()));
-        }
-
-    }
-
-
-    @Override
-    @Transactional
-    public void setPassengerToTicket(PassengerDTO passengerDTO){
-        String firstName = passengerDTO.getFirstName();
-        String lastName = passengerDTO.getLastName();
-        Date birthDate = passengerDTO.getBirthDate();
-        Passenger existingPassenger = passengerRepository.getPassengerByPersonalData(firstName, lastName, birthDate);
-        if (existingPassenger != null) {
-            ticketDTO.setPassengerDTO(passengerMapper.toDTO(existingPassenger));
-        } else {
-            Passenger passenger = passengerMapper.toEntity(passengerDTO);
-            passengerRepository.add(passenger);
-            ticketDTO.setPassengerDTO(passengerMapper.toDTO(passenger));
-        }
-    }
-
-
-    @Override
-    @Transactional
-    public void createTicket(TicketDTO ticketDTO) throws NoTicketsException {
-
-        if(isTimeValid(ticketDTO.getDepartureTime())
-                && !isTrainFull(ticketDTO.getDepartureTime(), ticketDTO.getArrivalTime(),
-                ticketDTO.getTrainDTO().getId(), ticketDTO.getTripId())){
-
-            Ticket ticket = ticketMapper.toEntity(ticketDTO);
-            ticketRepository.add(ticket);
-        }
-
-        else throw new NoTicketsException();
-
-    }
-
 
     @Override
     @Transactional
@@ -173,6 +126,20 @@ public class TicketServiceImpl implements TicketService {
         }
 
         return userTickets;
+    }
+
+    @Override
+    @Transactional
+    public TicketDTO getTicketDTOById(int id) {
+        setValidityOfTickets();
+        Ticket ticket = ticketRepository.getTicketById(id);
+        return ticketMapper.toDTO(ticket);
+    }
+
+    @Override
+    public void exportToPDF(int id) {
+        Ticket ticket = ticketRepository.getTicketById(id);
+        pdfExporter.setTicket(ticket);
     }
 
 }

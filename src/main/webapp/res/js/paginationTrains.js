@@ -44,7 +44,7 @@ function changeCurrPage(page) {
         btn_next.style.visibility = "visible";
     }
 }
-/* Is invoked on click of the Prev link on UI. */
+/* Is invoked on click of the arrow-to-left on UI. */
 function prevTrainPage() {
     if (current_trainPage > 1) {
         current_trainPage--;
@@ -52,7 +52,7 @@ function prevTrainPage() {
     }
 }
 
-/* Is invoked on click of the Next link on UI */
+/* Is invoked on click of the arrow-to-right on UI */
 function nextTrainPage() {
     if (current_trainPage < numberPages()) {
         current_trainPage++;

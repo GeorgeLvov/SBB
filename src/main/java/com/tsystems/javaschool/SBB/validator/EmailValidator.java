@@ -13,8 +13,8 @@ import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Email(message="Email must contain @")
-@Pattern(regexp=".+@.+\\..+", message="Invalid email!")
+@Email(message="Invalid email address!")
+@Pattern(regexp=".+@.+\\..+", message="Invalid email address!")
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})

@@ -5,10 +5,9 @@ const records_per_stationPage = 5;
 
 let idList = [];
 let titles = [];
-console.log(titles);
-console.log(idList);
 
-/* Fill in list with station titles, which will be rendered on page */
+/* Fill in list with station id's.
+   Fill in list with station titles, which will be rendered on page */
 function data(id, title) {
     idList.push(id);
     titles.push(title);
@@ -18,8 +17,8 @@ function data(id, title) {
 function changePage(page) {
     let btn_next = document.getElementById("btn_next");
     let btn_prev = document.getElementById("btn_prev");
-    let stations_table = document.getElementById("listingTable");
-    let page_span = document.getElementById("page");
+    let stations_table = document.getElementById("stationTable");
+    let page_span = document.getElementById("stationPage");
 
     stations_table.innerHTML = "";
 
@@ -48,7 +47,7 @@ function changePage(page) {
     }
 }
 
-/* Is invoked on click of the Prev link on UI. */
+/* Is invoked on click of the arrow-to-left on UI. */
 function prevPage() {
     if (current_stationPage > 1) {
         current_stationPage--;
@@ -56,7 +55,7 @@ function prevPage() {
     }
 }
 
-/* Is invoked on click of the Next link on UI */
+/* Is invoked on click of the arrow-to-right on UI */
 function nextPage() {
     if (current_stationPage < numPages()) {
         current_stationPage++;

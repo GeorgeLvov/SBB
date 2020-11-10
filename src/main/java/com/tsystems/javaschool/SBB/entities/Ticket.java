@@ -35,11 +35,11 @@ public class Ticket {
 
     @ManyToOne
     @JoinColumn(name = "station_from_id")
-    Station stationFrom;
+    private Station stationFrom;
 
     @ManyToOne
     @JoinColumn(name = "station_to_id")
-    Station stationTo;
+    private Station stationTo;
 
     @Column(name = "departure_time")
     private Timestamp departureTime;

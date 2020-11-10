@@ -4,23 +4,24 @@
 <%@ taglib prefix="c1" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://www.springframework.org/security/tags" prefix="security" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <html>
 <head>
     <title>SBB CFF FFS: Schedule</title>
-    <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
+    <link rel="shortcut icon" href="<c:url value="/res/img/sbbBadge.png"/>" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>"/>
-    <script src="https://use.fontawesome.com/465a5a8cc2.js"></script>
-
-
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 <body>
 
 <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
     <a class="navbar-brand" href="<c:url value="/"/>">
-        <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
+        <img src="<c:url value="/res/img/sbbBadge.png"/>" width="30" height="30" class="d-inline-block align-top"
+             alt="">
         Swiss Federal Railways &#8592;
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -28,20 +29,14 @@
         <span class="navbar-toggler-icon"></span>
     </button>
 
-
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
         <ul class="navbar-nav mr-auto">
-
-            <security:authorize access="hasRole('ADMIN')">
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin">Management</a>
-                </li>
-            </security:authorize>
-
             <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
                 <li class="nav-item">
-                    <a class="nav-link" href="/alltickets">My tickets</a>
+                    <a class="nav-link" href="<c:url value="/alltickets"/>">
+                        <i class="fas fa-ticket-alt"></i>
+                        My tickets
+                    </a>
                 </li>
             </security:authorize>
         </ul>
@@ -53,9 +48,9 @@
             </a>
         </security:authorize>
 
-
         <security:authorize access="hasRole('USER') or hasRole('ADMIN')">
-            <a href="<c:url value="/logout"/>"><i class="fa fa-user" aria-hidden="true"></i>
+            <a class="nav-link" href="<c:url value="/logout"/>">
+                <i class="fa fa-user" aria-hidden="true"></i>
                 Log out
             </a>
         </security:authorize>
@@ -64,6 +59,7 @@
 </nav>
 
 <c:choose>
+
     <c:when test="${empty scheduleDTOList}">
         <div class="container-fluid">
             <div class="row" style="height: 100px">
@@ -75,24 +71,32 @@
             </div>
         </div>
     </c:when>
+
     <c:otherwise>
         <div class="container">
-            <div class="row" style="height: 50px">
-            </div>
+            <div class="row" style="height: 50px"></div>
         </div>
+
         <div class="row" style="margin-top:30px">
             <div class="col-2"></div>
             <div class="col-8" style="text-align:center;">
-                <h2><c:out value="${scheduleDTOList[0].stationFromDTO.title}" />
+                <c:if test="${param.err != null}">
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Failed!</strong> Such passenger is already checked in for this trip.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </c:if>
+                <h2><c:out value="${scheduleDTOList[0].stationFromDTO.title}"/>
                     &#8594;
-                <c:out value="${scheduleDTOList[0].stationToDTO.title}" /></h2>
+                    <c:out value="${scheduleDTOList[0].stationToDTO.title}"/></h2>
             </div>
             <div class="col-2"></div>
         </div>
 
         <div class="container mt-4 p-md-4 col-12 rounded-container">
             <table class="table" style="text-align: center">
-
                 <tr>
                     <th scope="col">Train</th>
                     <th scope="col">From</th>
@@ -101,14 +105,13 @@
                     <th scope="col">Arrival</th>
                     <th scope="col">Trip Info</th>
                     <th scope="col">Tickets left</th>
-                    <th scope="col"></th>
+                    <th scope="col">Buy Ticket</th>
                 </tr>
 
                 <tbody>
-
                 <c:forEach var="scheduleDTO" items="${scheduleDTOList}" varStatus="vs">
                     <tr>
-                        <th scope="row">${scheduleDTO.trainDTO.trainName}</th>
+                        <th scope="row">${scheduleDTO.tripDTO.trainDTO.trainName}</th>
                         <td>${scheduleDTO.stationFromDTO.title}</td>
                         <td>${scheduleDTO.stationToDTO.title}</td>
                         <fmt:setLocale value="en_US" scope="session"/>
@@ -122,13 +125,12 @@
                             <br>
                             <fmt:formatDate value="${scheduleDTO.arrivalTime}" pattern="E, dd.MM.yyyy"/>
                         </td>
-                        <td><!-- Button trigger modal -->
+                        <td><!-- Button for Trip info modal -->
                             <button type="button" class="btn btn-info" data-toggle="modal"
                                     data-target="#exampleModal${vs.index}" id="viewDetailButton${vs.index}">
                                 Show info
                             </button>
-
-                            <!-- Modal -->
+                            <!-- Trip Info Modal -->
                             <div class="modal fade" id="exampleModal${vs.index}" tabindex="-1" role="dialog"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
@@ -142,7 +144,6 @@
                                             </button>
                                         </div>
                                         <div class="modal-body">
-                                                <%--Modalbody--%>
                                             <table class="table">
                                                 <thead class="thead-success">
                                                 <tr>
@@ -155,7 +156,9 @@
                                                 <tbody>
                                                 <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoList}">
                                                     <c:choose>
-                                                        <c:when test="${(tripInfo.departureTime.equals(scheduleDTO.departureTime)) && (tripInfo.arrivalTime.equals(scheduleDTO.arrivalTime))}">
+                                                        <c:when test="${(tripInfo.departureTime.equals
+                                                        (scheduleDTO.departureTime))
+                                                        && (tripInfo.arrivalTime.equals(scheduleDTO.arrivalTime))}">
                                                             <tr>
                                                                 <td><strong>${tripInfo.stationFrom.title}</strong>
                                                                 </td>
@@ -169,7 +172,8 @@
                                                             </tr>
 
                                                         </c:when>
-                                                        <c:when test="${tripInfo.departureTime.equals(scheduleDTO.departureTime)}">
+                                                        <c:when test="${tripInfo.departureTime
+                                                        .equals(scheduleDTO.departureTime)}">
                                                             <tr>
                                                                 <td><strong>${tripInfo.stationFrom.title}</strong>
                                                                 </td>
@@ -181,7 +185,8 @@
                                                                                     pattern="HH:mm dd.MM"/></td>
                                                             </tr>
                                                         </c:when>
-                                                        <c:when test="${tripInfo.arrivalTime.equals(scheduleDTO.arrivalTime)}">
+                                                        <c:when test="${tripInfo.arrivalTime
+                                                        .equals(scheduleDTO.arrivalTime)}">
                                                             <tr>
                                                                 <td>${tripInfo.stationFrom.title}</td>
                                                                 <td><strong>${tripInfo.stationTo.title}</strong></td>
@@ -208,7 +213,6 @@
                                                 </c1:forEach>
                                                 </tbody>
                                             </table>
-
                                         </div>
                                         <div class="modal-footer" style="border-top: 0 none;">
                                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close
@@ -217,6 +221,7 @@
                                     </div>
                                 </div>
                             </div>
+                                <%-- End Trip Info Modal--%>
                         </td>
                         <td>
                             <c1:choose>
@@ -234,14 +239,100 @@
                                     <button type="button" class="btn btn-secondary btn" disabled>Buy ticket</button>
                                 </c1:when>
                                 <c1:otherwise>
-                                    <a class="btn btn-danger"
-                                       href="/checkin?trainId=${scheduleDTO.trainDTO.id}&tripId=${scheduleDTO.tripDTO.id}
-                               &stF=${scheduleDTO.stationFromDTO.id}&stT=${scheduleDTO.stationToDTO.id}
-                               &departureTime=${scheduleDTO.departureTime}&arrivalTime=${scheduleDTO.arrivalTime}"
-                                       role="button" target="_blank">Buy ticket</a>
+                                    <c:choose>
+                                        <c:when test="${empty pageContext.request.userPrincipal}">
+                                            <a class="btn btn-danger" href="<c:url value="/login"/>" role="button">
+                                                Buy ticket</a>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <!-- Button for modal check in form -->
+                                            <button type="button" class="btn btn-danger" data-toggle="modal"
+                                                    data-target="#m${vs.index}">
+                                                Buy ticket
+                                            </button>
+                                        </c:otherwise>
+                                    </c:choose>
+                                    <%-- Modal for check in form--%>
+                                    <div class="modal fade" id="m${vs.index}" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <div class="navbar-brand">
+                                                        <img src="<c:url value="/res/img/sbbBadge.png"/>"
+                                                             width="30" height="30" class="d-inline-block align-top"
+                                                             alt="">
+                                                        Swiss Federal Railways
+                                                    </div>
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form:form name="checkInForm" method="POST" action="/checkin"
+                                                               modelAttribute="ticket" class="form-signin"
+                                                               onsubmit="return validationCheckInForm()">
+                                                        <h2 class="form-signin-heading"
+                                                            style="padding-bottom: 15px">
+                                                            Check In</h2>
+
+                                                        <input type="hidden" name="timeSearchFrom"
+                                                               value="${param.dateFrom}"/>
+                                                        <input type="hidden" name="timeSearchTo" value="${param.dateTo}"/>
+                                                        <form:hidden path="trainId"
+                                                                     value="${scheduleDTO.tripDTO.trainDTO.id}"/>
+                                                        <form:hidden path="tripId" value="${scheduleDTO.tripDTO.id}"/>
+                                                        <form:hidden path="departureTime"
+                                                                     value="${scheduleDTO.departureTime}"/>
+                                                        <form:hidden path="arrivalTime"
+                                                                     value="${scheduleDTO.arrivalTime}"/>
+                                                        <form:hidden path="stationFromId" value="${param.stationFrom}"/>
+                                                        <form:hidden path="stationToId" value="${param.stationTo}"/>
+
+                                                        <spring:bind path="passengerName">
+                                                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                                <label id="fNLbl" for="firstN">Passenger name:</label>
+                                                                <form:input type="text" path="passengerName"
+                                                                            class="form-control"
+                                                                            placeholder="Enter name"
+                                                                            autofocus="true" id="firstN"
+                                                                onchange="undoCheckInInputStyle('firstN')"></form:input>
+                                                            </div>
+                                                        </spring:bind>
+
+                                                        <spring:bind path="passengerSurName">
+                                                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                                <label id="lNLbl" for="lastN">Passenger surname:</label>
+                                                                <form:input type="text" path="passengerSurName"
+                                                                            class="form-control"
+                                                                            placeholder="Enter surname"
+                                                                            id="lastN"
+                                                                onchange="undoCheckInInputStyle('lastN')"></form:input>
+                                                            </div>
+                                                        </spring:bind>
+
+                                                        <spring:bind path="birthDate">
+                                                            <div class="form-group ${status.error ? 'has-error' : ''}">
+                                                                <label id="bDLbl" for="BD">Date of birth:</label>
+                                                                <form:input type="date" path="birthDate"
+                                                                            class="form-control"
+                                                                            placeholder="Birthdate"
+                                                                            id="BD"
+                                                                onchange="undoCheckInInputStyle('BD')"></form:input>
+                                                            </div>
+                                                        </spring:bind>
+                                                        <button class="btn btn-lg btn-success btn-block" type="submit"
+                                                                style="margin-top: 35px">Check In
+                                                        </button>
+                                                    </form:form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <%-- End modal for check in form--%>
                                 </c1:otherwise>
                             </c1:choose>
-
                         </td>
                     </tr>
                 </c:forEach>
@@ -251,11 +342,13 @@
     </c:otherwise>
 </c:choose>
 
-<footer class="fixed-bottom page-footer"  style="background-color:#F2F3F4">
+<footer class="fixed-bottom page-footer" style="background-color:#F2F3F4">
     <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
 </footer>
 
 
+<script src="<c:url value="/res/js/validation/commonFormValidation.js"/>"></script>
+<script src="<c:url value="/res/js/validation/checkInFormValidation.js"/>"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -268,3 +361,4 @@
 
 </body>
 </html>
+

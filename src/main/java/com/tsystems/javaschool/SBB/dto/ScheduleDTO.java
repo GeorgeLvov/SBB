@@ -22,8 +22,6 @@ public class ScheduleDTO {
 
     private int id;
 
-    private TrainDTO trainDTO;
-
     private TripDTO tripDTO;
 
     private int stationIndex;

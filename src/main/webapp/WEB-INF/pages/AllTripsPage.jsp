@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/res/css/navbar.css"/>" />
+    <link rel="stylesheet" href="<c:url value="/res/css/sbb.classes.css"/>" />
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
 </head>
 
@@ -27,7 +28,6 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
                 <a class="nav-link" href="<c:url value="/admin/management"/>" >
@@ -79,24 +79,35 @@
     <c:otherwise>
 
         <div class="container mt-4 p-md-3 mb-5 col-12 rounded-container">
-            <h1 style="text-align: center; margin-bottom: 20px;">Trips</h1>
-            <table class="table" style="text-align: center">
+            <div>
+                <a class="link-no-dec" href="${pageContext.request.contextPath}/admin/allTrips?lastadded">
+                    <h1 style="text-align: center; margin-bottom: 20px;">Trips</h1>
+                </a>
+            </div>
+
+            <table id="myTable" class="table" style="text-align: center">
+                <thead>
                 <tr>
                     <th scope="col">Train</th>
                     <th scope="col">From</th>
                     <th scope="col">To</th>
-                    <th scope="col">Departure</th>
+                    <th scope="col">
+                        <a class="link-no-dec" href="${pageContext.request.contextPath}/admin/allTrips">
+                            Departure</a>
+                    </th>
                     <th scope="col">Arrival</th>
                     <th scope="col">Trip Info</th>
                     <th scope="col">Passengers</th>
                     <th scope="col">Action</th>
                 </tr>
+                </thead>
 
                 <tbody>
 
                 <c:forEach var="trip" items="${allTrips}" varStatus="vs">
 
                     <tr>
+                        <%--<td style="display: none">${trip.id}</td>--%>
                         <th scope="row">
                                 ${trip.trainDTO.trainName}
                             <c:if test="${trip.canceled}">

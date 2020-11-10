@@ -5,7 +5,7 @@ import com.tsystems.javaschool.SBB.entities.Passenger;
 import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
-@Mapper(uses = {TicketMapper.class})
+@Mapper
 @Component
 public interface PassengerMapper {
 

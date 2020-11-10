@@ -135,8 +135,8 @@
     <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
 </footer>
 
-<script src="${pageContext.request.contextPath}/res/js/commonFormValidation.js"></script>
-<script src="${pageContext.request.contextPath}/res/js/userFormValidation.js"></script>
+<script src="<c:url value="/res/js/validation/commonFormValidation.js"/>"></script>
+<script src="<c:url value="/res/js/validation/userFormValidation.js"/>"></script>
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"

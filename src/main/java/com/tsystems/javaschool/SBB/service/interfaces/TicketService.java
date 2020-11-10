@@ -1,24 +1,23 @@
 package com.tsystems.javaschool.SBB.service.interfaces;
 
-import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.dto.TicketInfo;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
+
 
 public interface TicketService {
 
-
-    TicketDTO getTicketDTOById(int id);
+    void exportToPDF(int id);
 
     void createTicket(TicketDTO ticketDTO);
+
+    TicketDTO getTicketDTOById(int id);
 
     void setValidityOfTickets();
 
     boolean isTrainFull(Timestamp departureTime, Timestamp arrivalTime, int trainId, int tripId);
-
 
     /**
      * Checks by time whether it is still possible to buy a ticket
@@ -30,7 +29,4 @@ public interface TicketService {
 
     List<TicketInfo> getAllUserTickets(String username);
 
-    void setPassengerToTicket(PassengerDTO passengerDTO);
-
-    void prepareTicketForPassenger(Map<String, String> allRequestParams);
 }

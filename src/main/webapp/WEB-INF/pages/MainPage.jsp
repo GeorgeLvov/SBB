@@ -115,7 +115,13 @@
                     <button type="button" class="close" data-dismiss="alert">&times;</button>
                 </div>
             </c:if>
-
+            <c:if test="${param.purerr != null}">
+                <div class="alert alert-success alert-dismissible fade show col-sm-5 offset-sm-3">
+                    <strong>Warning!</strong>
+                    Please complete your first purchase or close the registration window.
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            </c:if>
             <c:url value="/schedule" var="varT"/>
             <form action="${varT}" method="GET" style="padding-top: 40px">
                 <div class="row">
@@ -167,7 +173,7 @@
     </div>
 </div>
 
-<footer class="fixed-bottom page-footer" style="background-color: #F4F6F6 ">
+<footer class="fixed-bottom page-footer" style="background-color: white">
     <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
 </footer>
 

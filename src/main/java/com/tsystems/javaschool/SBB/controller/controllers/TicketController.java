@@ -1,11 +1,11 @@
 package com.tsystems.javaschool.SBB.controller.controllers;
 
-import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.dto.TicketInfo;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
-import com.tsystems.javaschool.SBB.validator.PassengerValidator;
+import com.tsystems.javaschool.SBB.validator.TicketValidator;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,45 +16,40 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
-import java.util.Map;
 
+@Log4j2
 @Controller
 public class TicketController {
 
     @Autowired
     private TicketService ticketService;
     @Autowired
-    private PassengerValidator passengerValidator;
+    private TicketValidator ticketValidator;
     @Autowired
-    private TicketDTO ticketDTO;
+    private TicketPDFExporter pdfExporter;
 
-
-
-    @GetMapping(value = "/checkin")
-    public ModelAndView checkIn(@RequestParam Map<String, String> allRequestParams) {
+    @RequestMapping(value = "/checkin", method = { RequestMethod.POST, RequestMethod.GET})
+    public ModelAndView testing(@ModelAttribute TicketDTO ticketDTO,
+                                BindingResult bindingResult,
+                                @RequestParam String timeSearchFrom,
+                                @RequestParam String timeSearchTo) {
         ModelAndView modelAndView = new ModelAndView();
-        ticketService.prepareTicketForPassenger(allRequestParams);
-        modelAndView.addObject("passForm", new PassengerDTO());
-        modelAndView.setViewName("PassengerCheckIn");
-        return modelAndView;
-    }
-
-
-    @PostMapping("/checkin")
-    public ModelAndView checkInPassenger(@ModelAttribute("passForm") PassengerDTO passengerDTO, BindingResult bindingResult) {
-        ModelAndView modelAndView = new ModelAndView();
-        passengerValidator.validate(passengerDTO, bindingResult);
+        ticketValidator.validate(ticketDTO, bindingResult);
         if (bindingResult.hasErrors()) {
-            modelAndView.setViewName("PassengerCheckIn");
+            String redirectUrl = "redirect:/schedule?stationFrom=" + ticketDTO.getStationFromId()
+                    + "&stationTo=" + ticketDTO.getStationToId()
+                    + "&dateFrom=" + timeSearchFrom +
+                    "&dateTo=" + timeSearchTo +
+                    "&err=1";
+            modelAndView.setViewName(redirectUrl);
             return modelAndView;
         }
-        ticketService.setPassengerToTicket(passengerDTO);
+
         ticketService.createTicket(ticketDTO);
-
-        modelAndView.setViewName("redirect:/alltickets");
+        modelAndView.setViewName("redirect:/alltickets?success");
         return modelAndView;
-    }
 
+    }
 
     @GetMapping(value = "/alltickets")
     public ModelAndView getAllUserTickets() {
@@ -73,8 +68,7 @@ public class TicketController {
         String headerKey = "Content-Disposition";
         String headerValue = "attachment; filename=eTicket_SBB.pdf";
         response.setHeader(headerKey,headerValue);
-        TicketDTO ticketDTO = ticketService.getTicketDTOById(ticketId);
-        TicketPDFExporter pdfExporter = new TicketPDFExporter(ticketDTO);
+        ticketService.exportToPDF(ticketId);
         pdfExporter.export(response);
     }
 

@@ -22,6 +22,7 @@ public class SBBController {
     @Autowired
     private MessageSender messageSender;
 
+
     @ModelAttribute("stations")
     public List<StationDTO> getAllStations(){
         return stationService.getAllStationsDTO();
@@ -33,15 +34,13 @@ public class SBBController {
     }
 
 
-
-    @GetMapping(value = "/send")
+ /*   @GetMapping(value = "/send")
     public ModelAndView send() {
         ModelAndView modelAndView = new ModelAndView();
         messageSender.sendTextMessage("Message!");
         modelAndView.setViewName("MainPage");
         return modelAndView;
-    }
-
+    }*/
 
     @GetMapping(value = "/")
     public ModelAndView getMainPage() {
@@ -62,13 +61,15 @@ public class SBBController {
     public ModelAndView searchTrips(@RequestParam("stationFrom") Integer stationFromId,
                                     @RequestParam("stationTo") Integer stationToId,
                                     @RequestParam("dateFrom") String dateFrom,
-                                    @RequestParam("dateTo") String dateTo) {
+                                    @RequestParam("dateTo") String dateTo,
+                                    @RequestParam(value = "err", required = false) String err) {
 
         ModelAndView modelAndView = new ModelAndView();
 
         List<ScheduleDTO> list = scheduleService
                 .getSchedulesByStationsAndDate(stationFromId, stationToId, dateFrom, dateTo);
 
+        modelAndView.addObject("ticket", new TicketDTO());
         modelAndView.addObject("scheduleDTOList", list);
         modelAndView.setViewName("SchedulePage");
         return modelAndView;

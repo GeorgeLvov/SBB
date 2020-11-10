@@ -54,6 +54,9 @@
     </div>
 </div>
 </c:if>
+
+
+
 <c:choose>
     <c:when test="${empty ticketInfos}">
         <div class="container-fluid">
@@ -72,13 +75,31 @@
     <c:otherwise>
         <div class="container mt-4 p-md-4 col-12 rounded-container">
             <div class="container-fluid">
-                <div class="row" style="height: 100px">
-                    <div class="col-5"></div>
-                    <div class="col-4">
-                        <h1 style="padding-top: 20px">Tickets</h1>
+                <div class="row">
+                    <div class="col-lg"></div>
+                    <div class="col-3">
+                        <h1 style="padding: 20px">Tickets</h1>
                     </div>
-                    <div class="col-5"></div>
-
+                    <div class="col-4 mt-3">
+                        <c:if test="${param.success != null}">
+                            <div class="alert alert-success alert-dismissible fade show"
+                                 style="text-align: center; font-size: 15px">
+                                <strong>Success!</strong>
+                                <br>
+                                The ticket has been successfully purchased.
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            </div>
+                        </c:if>
+                        <c:if test="${param.error != null}">
+                            <div class="alert alert-danger alert-dismissible fade show"
+                                 style="text-align: center">
+                                <strong>Failed!</strong>
+                                <br>
+                                Perhaps there are no more seats available or that train leaves soon.
+                                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            </div>
+                        </c:if>
+                    </div>
                 </div>
             </div>
             <table class="table" style="text-align: center">

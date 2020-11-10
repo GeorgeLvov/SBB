@@ -1,12 +1,13 @@
 package com.tsystems.javaschool.SBB.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.sql.Timestamp;
+
 
 @Data
 @Builder
@@ -16,23 +17,26 @@ public class TicketDTO {
 
     private int id;
 
-    private TrainDTO trainDTO;
+    private Integer trainId;
 
     private Integer tripId;
 
-    private StationDTO stationFromDTO;
+    private Integer stationFromId;
 
-    private StationDTO stationToDTO;
+    private Integer stationToId;
 
     private Timestamp departureTime;
 
     private Timestamp arrivalTime;
 
-    private PassengerDTO passengerDTO;
+    private String passengerName;
+
+    private String passengerSurName;
+
+    private Date birthDate;
 
     private UserDTO userDTO;
 
     private boolean valid;
-
-
 }
+

@@ -13,7 +13,7 @@ public interface ScheduleRepository {
 
     /**
      * Provides all schedules with specified params
-     * Helper method like {@link #getSchedulesByTrainIdTripIdStationTo(int trainId, int tripId, Station stationTo)}
+     * Helper method like {@link #getSchedulesByTripIdAndStationTo(int tripId, Station stationTo)}
      * <p>
      * for searching trips from station A to station B at a given time
      *
@@ -28,11 +28,10 @@ public interface ScheduleRepository {
      * Provides all schedules with specified param
      * Helper method for searching trips from station A to station B at a given time
      *
-     * @param trainId   id of train
      * @param tripId    id of trip
      * @param stationTo end station
      */
-    List<Schedule> getSchedulesByTrainIdTripIdStationTo(int trainId, int tripId, Station stationTo);
+    List<Schedule> getSchedulesByTripIdAndStationTo(int tripId, Station stationTo);
 
 
     /**
