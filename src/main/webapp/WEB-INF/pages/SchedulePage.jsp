@@ -247,7 +247,7 @@
                                         <c:otherwise>
                                             <!-- Button for modal check in form -->
                                             <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#m${vs.index}">
+                                                    data-target="#m${vs.index}" onclick="setIndex(${vs.index})">
                                                 Buy ticket
                                             </button>
                                         </c:otherwise>
@@ -265,12 +265,12 @@
                                                         Swiss Federal Railways
                                                     </div>
                                                     <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
+                                                            aria-label="Close" onclick="closeMod()">
                                                         <span aria-hidden="true">&times;</span>
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form:form name="checkInForm" method="POST" action="/checkin"
+                                                    <form:form name="checkInForm${vs.index}" method="POST" action="/checkin"
                                                                modelAttribute="ticket" class="form-signin"
                                                                onsubmit="return validationCheckInForm()">
                                                         <h2 class="form-signin-heading"
@@ -292,34 +292,37 @@
 
                                                         <spring:bind path="passengerName">
                                                             <div class="form-group ${status.error ? 'has-error' : ''}">
-                                                                <label id="fNLbl" for="firstN">Passenger name:</label>
+                                                                <label id="fNLbl${vs.index}" for="firstN${vs.index}">
+                                                                    Passenger name:</label>
                                                                 <form:input type="text" path="passengerName"
                                                                             class="form-control"
-                                                                            placeholder="Enter name"
-                                                                            autofocus="true" id="firstN"
+                                                                            placeholder="Enter name" id="firstN${vs.index}"
                                                                 onchange="undoCheckInInputStyle('firstN')"></form:input>
                                                             </div>
                                                         </spring:bind>
 
                                                         <spring:bind path="passengerSurName">
                                                             <div class="form-group ${status.error ? 'has-error' : ''}">
-                                                                <label id="lNLbl" for="lastN">Passenger surname:</label>
+                                                                <label id="lNLbl${vs.index}" for="lastN${vs.index}">
+                                                                    Passenger surname:</label>
                                                                 <form:input type="text" path="passengerSurName"
                                                                             class="form-control"
                                                                             placeholder="Enter surname"
-                                                                            id="lastN"
-                                                                onchange="undoCheckInInputStyle('lastN')"></form:input>
+                                                                            id="lastN${vs.index}"
+                                                                            onchange="undoCheckInInputStyle('lastN')"></form:input>
                                                             </div>
                                                         </spring:bind>
 
                                                         <spring:bind path="birthDate">
                                                             <div class="form-group ${status.error ? 'has-error' : ''}">
-                                                                <label id="bDLbl" for="BD">Date of birth:</label>
+                                                                <label id="bDLbl${vs.index}" for="BD${vs.index}">
+                                                                    Date of birth:
+                                                                </label>
                                                                 <form:input type="date" path="birthDate"
                                                                             class="form-control"
                                                                             placeholder="Birthdate"
-                                                                            id="BD"
-                                                                onchange="undoCheckInInputStyle('BD')"></form:input>
+                                                                            id="BD${vs.index}"
+                                                                            onchange="undoCheckInInputStyle('BD')"></form:input>
                                                             </div>
                                                         </spring:bind>
                                                         <button class="btn btn-lg btn-success btn-block" type="submit"

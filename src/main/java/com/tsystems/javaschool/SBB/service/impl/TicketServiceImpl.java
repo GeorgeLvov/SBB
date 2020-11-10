@@ -29,6 +29,8 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     private TrainRepository trainRepository;
     @Autowired
+    private TripRepository tripRepository;
+    @Autowired
     private TicketRepository ticketRepository;
     @Autowired
     private TicketMapper ticketMapper;
@@ -45,9 +47,11 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public void createTicket(TicketDTO ticketDTO) throws NoTicketsException {
+
         Ticket ticket = ticketMapper.toEntity(ticketDTO);
 
         ticket.setTrain(trainRepository.getTrainById(ticketDTO.getTrainId()));
+        ticket.setTrip(tripRepository.getTripById(ticketDTO.getTripId()));
         ticket.setStationFrom(stationRepository.getStationById(ticketDTO.getStationFromId()));
         ticket.setStationTo(stationRepository.getStationById(ticketDTO.getStationToId()));
         ticket.setValid(true);
@@ -72,7 +76,7 @@ public class TicketServiceImpl implements TicketService {
 
         if(isTimeValid(ticket.getDepartureTime())
                 && !isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
-                ticket.getTrain().getId(), ticket.getTripId())){
+                ticket.getTrain().getId(), ticket.getTrip().getId())){
             ticketRepository.add(ticket);
         } else {
             throw new NoTicketsException();
@@ -108,6 +112,7 @@ public class TicketServiceImpl implements TicketService {
         List<Object[]> tickets = ticketRepository.getAllTicketsByUserId(user.getId());
 
         List<TicketInfo> userTickets = new ArrayList<>();
+
         for (Object[] objects : tickets) {
             int ticketId = (int) objects[0];
             String trainName = (String) objects[1];
@@ -120,8 +125,7 @@ public class TicketServiceImpl implements TicketService {
             Timestamp arrivalTime = (Timestamp) objects[8];
             boolean valid = (boolean) objects[9];
 
-            userTickets
-                    .add(new TicketInfo(ticketId, trainName, firstName, lastName, birthDate, statFromTitle,
+            userTickets.add(new TicketInfo(ticketId, trainName, firstName, lastName, birthDate, statFromTitle,
                             statToTitle, departureTime, arrivalTime, valid));
         }
 

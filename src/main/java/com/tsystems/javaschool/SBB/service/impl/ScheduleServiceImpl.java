@@ -170,7 +170,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         return resultSchedules;
     }
 
-// int freePlaces посмотреть нужно ли в метод gettakenseats передавать train.getId()
     private void setInfo(ScheduleDTO scheduleDTO) {
 
         scheduleDTO.setTripInfoList(getAllSegmentsByTripId(scheduleDTO.getTripDTO().getId()));

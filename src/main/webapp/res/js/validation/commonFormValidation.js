@@ -10,6 +10,8 @@ function invalid(input, label, textContent){
 
 /* Undoes style for form input after validation errors */
 function undoStyle(input, label){
-    input.classList.remove("is-invalid");
+    if(input.classList.contains("is-invalid")){
+        input.classList.remove("is-invalid");
+    }
     label.style.color = "black";
 }
