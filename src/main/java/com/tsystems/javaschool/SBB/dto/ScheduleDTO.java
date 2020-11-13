@@ -34,11 +34,15 @@ public class ScheduleDTO {
 
     private Timestamp arrivalTime;
 
+    private int departureDelay;
+
+    private int arrivalDelay;
+
     private int freePlacesCount;
 
     private boolean availableOnTime;
 
-    private List<TripInfo> tripInfoList;
+    private List<ScheduleDTO> scheduleDTOList;
 
 }
 

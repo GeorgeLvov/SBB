@@ -50,4 +50,10 @@ public class Schedule {
     @Column(name = "arrival_time")
     private Timestamp arrivalTime;
 
+    @Column(name = "departure_delay")
+    private int departureDelay;
+
+    @Column(name = "arrival_delay")
+    private int arrivalDelay;
+
 }

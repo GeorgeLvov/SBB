@@ -11,7 +11,6 @@ import com.tsystems.javaschool.SBB.repository.interfaces.*;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.TicketService;
 import com.tsystems.javaschool.SBB.utils.CollectionUtils;
-import com.tsystems.javaschool.SBB.utils.MessageSender;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log4j2
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
 
@@ -50,7 +50,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public void createTrip() {
+    public void createSchedulesAndTrip() {
         
         Train train = trainRepository.findTrainByName(routeContainer.getTrainName());
 
@@ -98,8 +98,11 @@ public class ScheduleServiceImpl implements ScheduleService {
             scheduleRepository.add(schedule);
         }
 
-        messageSender.sendTextMessage("New trip was created!");
+        String message = "New trip was created!";
 
+        messageSender.sendTextMessage(message);
+
+        log.info("Message: '" + message + "' was sent into topic.");
     }
 
     @Override
@@ -110,7 +113,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 .toDTOList(scheduleRepository.getSchedulesByStationFrom(stationFrom));
 
         for (ScheduleDTO scheduleDTO : resultSchedules) {
-            scheduleDTO.setTripInfoList(getAllSegmentsByTripId(scheduleDTO.getTripDTO().getId()));
+            scheduleDTO.setScheduleDTOList(getSchedulesByTripId(scheduleDTO.getTripDTO().getId()));
         }
 
         return resultSchedules;
@@ -123,18 +126,18 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<ScheduleDTO> resultSchedules = scheduleMapper
                 .toDTOList(scheduleRepository.getSchedulesByStationTo(stationTo));
         for (ScheduleDTO scheduleDTO : resultSchedules) {
-            scheduleDTO.setTripInfoList(getAllSegmentsByTripId(scheduleDTO.getTripDTO().getId()));
+            scheduleDTO.setScheduleDTOList(getSchedulesByTripId(scheduleDTO.getTripDTO().getId()));
         }
         return resultSchedules;
     }
 
     @Override
     @Transactional
-    public List<ScheduleDTO> getSchedulesByStationsAndDate(Integer stationFromId, Integer stationToTitle,
+    public List<ScheduleDTO> getSchedulesByStationsAndDate(Integer stationFromId, Integer stationToId,
                                                            String dateTimeFrom, String dateTimeTo) {
 
         Station stationFrom = stationRepository.getStationById(stationFromId);
-        Station stationTo = stationRepository.getStationById(stationToTitle);
+        Station stationTo = stationRepository.getStationById(stationToId);
         Timestamp dateFrom = Timestamp.valueOf(LocalDateTime.parse(dateTimeFrom));
         Timestamp dateTo = Timestamp.valueOf(LocalDateTime.parse(dateTimeTo));
 
@@ -170,9 +173,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         return resultSchedules;
     }
 
+
     private void setInfo(ScheduleDTO scheduleDTO) {
 
-        scheduleDTO.setTripInfoList(getAllSegmentsByTripId(scheduleDTO.getTripDTO().getId()));
+        scheduleDTO.setScheduleDTOList(getSchedulesByTripId(scheduleDTO.getTripDTO().getId()));
 
         int freePlaces = scheduleDTO.getTripDTO().getTrainDTO().getCapacity() -
                 ticketRepository.getTakenSeatsCount(scheduleDTO.getTripDTO().getTrainDTO().getId(),
@@ -187,23 +191,9 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     @Transactional
-    public List<TripInfo> getAllSegmentsByTripId(int tripId) {
-
-        List<ScheduleDTO> schedules = scheduleMapper
+    public List<ScheduleDTO> getSchedulesByTripId(int tripId) {
+        return scheduleMapper
                 .toDTOList(scheduleRepository.getSchedulesByTripId(tripId));
-        List<TripInfo> tripInfoList = new ArrayList<>();
-        for (ScheduleDTO schedule : schedules) {
-            tripInfoList.add(new TripInfo(schedule.getTripDTO().getTrainDTO(), schedule.getTripDTO().getId(),
-                            schedule.getStationFromDTO(), schedule.getStationToDTO(), schedule.getDepartureTime(),
-                            schedule.getArrivalTime()));
-        }
-        return tripInfoList;
     }
 
-
-    @Override
-    @Transactional
-    public void updateTimes(int tripId, String delayStr){
-        scheduleRepository.updateTimes(tripId, delayStr);
-    }
 }

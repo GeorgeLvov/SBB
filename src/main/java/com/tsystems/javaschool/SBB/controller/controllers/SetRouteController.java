@@ -4,7 +4,8 @@ import com.tsystems.javaschool.SBB.dto.RouteDTO;
 import com.tsystems.javaschool.SBB.dto.RouteContainer;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.dto.TrainDTO;
-import com.tsystems.javaschool.SBB.service.impl.RouteContainerService;
+
+import com.tsystems.javaschool.SBB.service.interfaces.RouteContainerService;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.StationService;
 import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
@@ -59,17 +60,8 @@ public class SetRouteController{
     @GetMapping("/trainselect")
     public ModelAndView selectTrain() {
         ModelAndView modelAndView = new ModelAndView();
-        containerService.truncate();
+        containerService.truncateContainer();
         modelAndView.setViewName("redirect:/admin/setroute?start");
-        return modelAndView;
-    }
-
-    @GetMapping("/setroute")
-    public ModelAndView setRoute() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("routeDTO", new RouteDTO());
-        modelAndView.addObject("resultRouteDTO", routeContainer);
-        modelAndView.setViewName("SetRoutePage");
         return modelAndView;
     }
 
@@ -85,6 +77,15 @@ public class SetRouteController{
         }
         containerService.setInitialInfo(routeDTO);
         modelAndView.setViewName("redirect:/admin/setroute");
+        return modelAndView;
+    }
+
+    @GetMapping("/setroute")
+    public ModelAndView setRoute() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("routeDTO", new RouteDTO());
+        modelAndView.addObject("resultRouteDTO", routeContainer);
+        modelAndView.setViewName("SetRoutePage");
         return modelAndView;
     }
 
@@ -118,16 +119,16 @@ public class SetRouteController{
             return "redirect:/admin/setroute";
         }
 
-        containerService.truncate();
+        containerService.truncateContainer();
         return "redirect:/admin/trainselect";
     }
 
     @GetMapping("/createtrip")
     public RedirectView createTrip(RedirectAttributes redirectAttributes) {
         RedirectView redirectView = new RedirectView("/admin/management",true);
-        scheduleService.createTrip();
+        scheduleService.createSchedulesAndTrip();
         redirectAttributes.addFlashAttribute("successMessage", "Trip was created.");
-        containerService.truncate();
+        containerService.truncateContainer();
         return redirectView;
     }
 

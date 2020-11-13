@@ -48,7 +48,7 @@ public class UserController {
         }
         userDTO.setRoleDTO(roleService.getRoleDTOById(1));
         
-        userService.registry(userDTO);
+        userService.register(userDTO);
 
         securityService.autoLogin(userDTO.getUsername(), userDTO.getConfirmPassword());
 

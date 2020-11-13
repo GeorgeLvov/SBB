@@ -15,13 +15,14 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.sql.Timestamp;
 import java.util.Comparator;
 import java.util.List;
 
 
 @Controller
 @RequestMapping("/admin")
-public class CrudController {
+public class ManagementController {
 
     @Autowired
     private PassengerService passengerService;
@@ -38,7 +39,7 @@ public class CrudController {
 
 
     @GetMapping(value = "/crud")
-    public ModelAndView addTrainOrStation() {
+    public ModelAndView getCrudPage() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("stationDTO", new StationDTO());
         modelAndView.addObject("trainDTO", new TrainDTO());
@@ -116,6 +117,7 @@ public class CrudController {
         if(httpServletRequest.getParameter("lastadded") != null){
             allTrips.sort(Comparator.comparing(TripDTO::getId).reversed());
         }
+
         modelAndView.addObject("allTrips", allTrips);
         modelAndView.setViewName("AllTripsPage");
         return modelAndView;
@@ -127,11 +129,13 @@ public class CrudController {
         return "redirect:/admin/allTrips";
     }
 
+
     @GetMapping(value = "/cancelTrip/{tripId}")
     public String cancelTrip(@PathVariable int tripId){
         tripService.cancelTrip(tripId);
         return "redirect:/admin/allTrips";
     }
+
 
     @GetMapping(value = "/passengers/{trainId}/{tripId}")
     public ModelAndView getAllPassengersOnTrip(@PathVariable int trainId,

@@ -66,16 +66,6 @@
                     <i class="fas fa-long-arrow-alt-right"></i>
                 </span>
                 </a>
-
-                <a href="${pageContext.request.contextPath}/admin/trainselect"
-                   class="list-group-item list-group-item-action list-group-item">
-                    <i class="far fa-calendar-alt"></i>
-                    Assign new trip
-                    <span class="arrow">
-                    <i class="fas fa-long-arrow-alt-right"></i>
-                </span>
-                </a>
-
                 <a href="${pageContext.request.contextPath}/admin/trainsandstations"
                    class="list-group-item list-group-item-action list-group-item">
                     <i class="fas fa-subway"></i>
@@ -85,7 +75,14 @@
                     <i class="fas fa-long-arrow-alt-right"></i>
                 </span>
                 </a>
-
+                <a href="${pageContext.request.contextPath}/admin/trainselect"
+                   class="list-group-item list-group-item-action list-group-item">
+                    <i class="far fa-calendar-alt"></i>
+                    Assign new trip
+                    <span class="arrow">
+                    <i class="fas fa-long-arrow-alt-right"></i>
+                </span>
+                </a>
                 <a href="${pageContext.request.contextPath}/admin/allTrips"
                    class="list-group-item list-group-item-action list-group-item">
                     <i class="fas fa-list"></i>

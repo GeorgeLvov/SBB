@@ -9,8 +9,6 @@ import java.util.List;
 
 public interface ScheduleRepository {
 
-    void add(Schedule schedule);
-
     /**
      * Provides all schedules with specified params
      * Helper method like {@link #getSchedulesByTripIdAndStationTo(int tripId, Station stationTo)}
@@ -58,11 +56,13 @@ public interface ScheduleRepository {
     List<Schedule> getSchedulesByTripId(int tripId);
 
 
-    void updateTimes(int tripId, String delayStr);
+    void updateTimes(int tripId, int delay, String delayStr);
 
 
     List<TimetableDTO> getDepartureTimetableByStationId(Integer stationId);
 
 
     List<TimetableDTO> getArrivalTimetableByStationId(Integer stationId);
+
+    void add(Schedule schedule);
 }

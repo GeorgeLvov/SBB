@@ -5,7 +5,8 @@
 <head>
     <title>SBB CFF FFS</title>
     <link rel="shortcut icon" href="/res/img/sbbBadge.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="<c:url value="/res/css/forMainPages.css"/>" />
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     
@@ -18,7 +19,8 @@
         <img src="/res/img/sbbBadge.png" width="30" height="30" class="d-inline-block align-top" alt="">
         Swiss Federal Railways
     </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -69,9 +71,10 @@
     </div>
 </nav>
 
-<%--Timetable --%>
+<%-- Modal for Timetable --%>
 
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -152,14 +155,14 @@
                     <div class="col-3">
                         <div class="form-group">
                             <input class="form-control" name="dateFrom" type="datetime-local" value="${currentDateTime}"
-                                   id="exdatetimelo">
+                                   min="2017-01-01T00:00" max="2025-01-01T00:00"  id="exdatetimelo">
                         </div>
                     </div>
 
                     <div class="col-3">
                         <div class="form-group">
                             <input class="form-control" name="dateTo" type="datetime-local" value="${currentDateTime}"
-                                   id="exdatetimel">
+                                   min="2017-01-01T00:00" max="2025-01-01T00:00"    id="exdatetimel">
                         </div>
                     </div>
                     <div class="col-3">

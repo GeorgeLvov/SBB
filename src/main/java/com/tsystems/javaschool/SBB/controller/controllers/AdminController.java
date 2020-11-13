@@ -33,7 +33,6 @@ public class AdminController {
         return modelAndView;
     }
 
-
     @GetMapping("/addemployee")
     public ModelAndView registry(){
         ModelAndView modelAndView = new ModelAndView();
@@ -52,7 +51,7 @@ public class AdminController {
             return modelAndView;
         }
         userDTO.setRoleDTO(roleService.getRoleDTOById(2));
-        userService.registry(userDTO);
+        userService.register(userDTO);
 
         modelAndView.addObject("message", "New employee account created!");
         modelAndView.addObject("username", userDTO.getUsername());

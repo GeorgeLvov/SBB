@@ -31,6 +31,32 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     private EntityManager entityManager;
 
 
+
+
+    @Override
+    public void updateTimes(int tripId, int delay, String delayStr){
+
+        Query query = entityManager.createNativeQuery("update schedule set \n" +
+                "departure_time = case when departure_time > now() then (select ADDTIME(departure_time, ?)) " +
+                "else departure_time end,\n" +
+                "arrival_time = case when arrival_time > now() then (select ADDTIME(arrival_time, ?)) " +
+                "else arrival_time end,\n" +
+                "departure_delay = case when departure_time > now() then departure_delay + ? " +
+                "else departure_delay end,\n" +
+                "arrival_delay = case when arrival_time > now() then arrival_delay + ? else arrival_delay end\n" +
+                "where trip_id = ?;");
+
+        query.setParameter(1, delayStr);
+        query.setParameter(2, delayStr);
+        query.setParameter(3, delay);
+        query.setParameter(4, delay);
+        query.setParameter(5, tripId);
+
+        query.executeUpdate();
+    }
+
+
+
     @Override
     public void add(Schedule schedule) {
         entityManager.persist(schedule);
@@ -82,32 +108,25 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
         return query.getResultList();
     }
 
-    @Override
-    public void updateTimes(int tripId, String delayStr){
-        Query query = entityManager
-                .createNativeQuery("update schedule set departure_time=(select ADDTIME(departure_time, ?)),\n" +
-                        "arrival_time=(select ADDTIME(arrival_time, ?)) where trip_id = ?");
-        query.setParameter(1, delayStr);
-        query.setParameter(2, delayStr);
-        query.setParameter(3, tripId);
-        query.executeUpdate();
-
-    }
 
     @SuppressWarnings("unchecked")
     @Override
     public List<TimetableDTO> getDepartureTimetableByStationId(Integer stationId) {
 
+        Query query = entityManager.createQuery("select " +
+                "new com.tsystems.javaschool.SBB.dto.TimetableDTO(s.trip.train.trainName, s.stationFrom.title, " +
+                "s.trip.arrivalStation.title, s.departureTime, s.trip.arrivalTime," +
+                "s.departureDelay, s.trip.canceled) " +
+                "from Schedule s where s.stationFrom.id =: stationId " +
+                "and date(s.departureTime) = current_date order by s.departureTime");
+
 /*        Query query =
-                    entityManager.createQuery("select new com.tsystems.javaschool.SBB.dto.TimetableDTO(s.train.trainName, " +
-                            "s.stationFrom.title, s.trip.arrivalStation.title, s.departureTime, s.trip.arrivalTime," +
-                            " s.trip.delay, s.trip.canceled) from Schedule s where s.stationFrom.id =: stationId and " +
-                            "date(s.departureTime) = current_date order by s.departureTime");*/
-        Query query =
-                entityManager.createQuery("select new com.tsystems.javaschool.SBB.dto.TimetableDTO(s.train.trainName, " +
+                entityManager.createQuery("select " +
+                        "new com.tsystems.javaschool.SBB.dto.TimetableDTO(s.trip.train.trainName, " +
                         "s.stationFrom.title, s.trip.arrivalStation.title, s.departureTime, s.trip.arrivalTime," +
-                        " s.trip.delay, s.trip.canceled) from Schedule s where s.stationFrom.id =: stationId " +
-                        "order by s.departureTime");
+                        " s.departureDelay, s.trip.canceled) " +
+                        "from Schedule s where s.stationFrom.id =: stationId " +
+                        "order by s.departureTime");*/
 
         query.setParameter("stationId", stationId);
 
@@ -119,16 +138,17 @@ public class ScheduleRepositoryImpl implements ScheduleRepository {
     @Override
     public List<TimetableDTO> getArrivalTimetableByStationId(Integer stationId) {
 
-       /* Query query =
-                entityManager.createQuery("select new com.tsystems.javaschool.SBB.dto.TimetableDTO(s.train.trainName, " +
+        Query query = entityManager.createQuery("select " +
+                "new com.tsystems.javaschool.SBB.dto.TimetableDTO(s.trip.train.trainName, s.trip.departureStation.title, " +
+                "s.stationTo.title, s.trip.departureTime, s.arrivalTime, s.arrivalDelay, s.trip.canceled) " +
+                "from Schedule s where s.stationTo.id =: stationId and date(s.arrivalTime) = current_date " +
+                "order by s.arrivalTime");
+
+/*       Query query =
+                entityManager.createQuery("select new com.tsystems.javaschool.SBB.dto.TimetableDTO(s.trip.train.trainName, " +
                         "s.trip.departureStation.title, s.stationTo.title, s.trip.departureTime, s.arrivalTime," +
-                        " s.trip.delay, s.trip.canceled) from Schedule s where s.stationTo.id =: stationId and " +
-                        "date(s.arrivalTime) = current_date order by s.arrivalTime");*/
-        Query query =
-                entityManager.createQuery("select new com.tsystems.javaschool.SBB.dto.TimetableDTO(s.train.trainName, " +
-                        "s.trip.departureStation.title, s.stationTo.title, s.trip.departureTime, s.arrivalTime," +
-                        " s.trip.delay, s.trip.canceled) from Schedule s where s.stationTo.id =: stationId " +
-                        "order by s.arrivalTime");
+                        " s.arrivalDelay, s.trip.canceled) from Schedule s where s.stationTo.id =: stationId " +
+                        "order by s.arrivalTime");*/
 
         query.setParameter("stationId", stationId);
 

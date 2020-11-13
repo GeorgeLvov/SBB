@@ -12,7 +12,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
- * Data access object that represents entity {@link User}
+ * Data transfer object that represents entity {@link User}
  *
  * @author George Lvov
  * @version 1.0

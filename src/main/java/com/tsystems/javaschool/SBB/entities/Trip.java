@@ -38,9 +38,6 @@ public class Trip {
     @Column(name = "arrival_time")
     private Timestamp arrivalTime;
 
-    @Column(name = "delay")
-    private int delay;
-
     @Column(name = "canceled")
     private boolean canceled;
 

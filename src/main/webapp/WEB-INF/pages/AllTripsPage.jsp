@@ -81,20 +81,30 @@
         <div class="container mt-4 p-md-3 mb-5 col-12 rounded-container">
             <div>
                 <a class="link-no-dec" href="${pageContext.request.contextPath}/admin/allTrips?lastadded">
-                    <h1 style="text-align: center; margin-bottom: 20px;">Trips</h1>
+                   Last added at first <h1 style="text-align: center; margin-bottom: 20px;">Trips</h1>
                 </a>
+                <c:if test="${param.error != null}">
+                    <div class="alert alert-danger alert-dismissible col-md-8 offset-md-2 fade show
+                text-center" role="alert">
+                        <span>${param.error} It has already been completed.</span>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true" onclick="">&times;</span>
+                        </button>
+                    </div>
+                </c:if>
             </div>
 
             <table id="myTable" class="table" style="text-align: center">
                 <thead>
                 <tr>
-                    <th scope="col">Train</th>
-                    <th scope="col">From</th>
-                    <th scope="col">To</th>
                     <th scope="col">
                         <a class="link-no-dec" href="${pageContext.request.contextPath}/admin/allTrips">
-                            Departure</a>
+                            Train</a>
+
                     </th>
+                    <th scope="col">From</th>
+                    <th scope="col">To</th>
+                    <th scope="col">Departure</th>
                     <th scope="col">Arrival</th>
                     <th scope="col">Trip Info</th>
                     <th scope="col">Passengers</th>
@@ -107,16 +117,11 @@
                 <c:forEach var="trip" items="${allTrips}" varStatus="vs">
 
                     <tr>
-                        <%--<td style="display: none">${trip.id}</td>--%>
                         <th scope="row">
                                 ${trip.trainDTO.trainName}
                             <c:if test="${trip.canceled}">
                                 <br>
                                 <span class="badge badge-danger">canceled</span>
-                            </c:if>
-                            <c:if test="${(!trip.canceled) && (trip.delay != 0)}">
-                                <br>
-                                <span class="badge badge-warning">delayed</span>
                             </c:if>
                         </th>
                         <td>${trip.departureStationDTO.title}</td>
@@ -134,12 +139,14 @@
                         </td>
                         <td>
                             <!-- Button trigger modal -->
-                            <button type="button" class="btn btn-info" data-toggle="modal" data-target="#exampleModal${vs.index}"
+                            <button type="button" class="btn btn-info" data-toggle="modal"
+                                    data-target="#exampleModal${vs.index}"
                                     id="viewDetailButton1${vs.index}">
                                 Show Info
                             </button>
                             <!-- Modal -->
-                            <div class="modal fade" id="exampleModal${vs.index}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal fade" id="exampleModal${vs.index}" tabindex="-1" role="dialog"
+                                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header" style="border-bottom: 0 none;">
@@ -159,39 +166,61 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <c1:forEach var="tripInfo" items="${trip.tripInfoList}">
+                                                <c1:forEach var="segment" items="${trip.scheduleList}">
                                                     <tr>
-                                                        <td>${tripInfo.stationFrom.title}</td>
-                                                        <td>${tripInfo.stationTo.title}</td>
-                                                        <td><fmt:formatDate value="${tripInfo.departureTime}" pattern="HH:mm dd.MM.yy"/></td>
-                                                        <td><fmt:formatDate value="${tripInfo.arrivalTime}" pattern="HH:mm dd.MM.yy"/></td>
+                                                        <td>${segment.stationFromDTO.title}</td>
+                                                        <td>${segment.stationToDTO.title}</td>
+
+                                                        <td>
+                                                            <fmt:formatDate value="${segment.departureTime}"
+                                                                            pattern="HH:mm dd.MM.yy"/>
+                                                            <c:if test="${segment.departureDelay != 0}">
+                                                                <span class="badge badge-warning">
+                                                                    Delayed ${segment.departureDelay}min
+                                                                </span>
+                                                            </c:if>
+                                                        </td>
+                                                        <td><fmt:formatDate value="${segment.arrivalTime}"
+                                                                            pattern="HH:mm dd.MM.yy"/>
+                                                            <c:if test="${segment.arrivalDelay != 0}">
+                                                                <span class="badge badge-warning">
+                                                                    Delayed ${segment.arrivalDelay}min
+                                                                </span>
+                                                            </c:if>
+                                                        </td>
+
+
                                                     </tr>
                                                 </c1:forEach>
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="modal-footer" style="border-top: 0 none;">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <div class="modal-footer" style="border-top: 0 none; display: flex;
+                                            justify-content: space-between">
+                                            <span style="font-size: 15px">*All times are indicated with delay</span>
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                                Close
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            <a class="btn btn-success" href="/admin/passengers/${trip.trainDTO.id}/${trip.id}/" role="button" target="_blank">Show Info</a>
+                            <a class="btn btn-success" href="/admin/passengers/${trip.trainDTO.id}/${trip.id}/"
+                               role="button" target="_blank">Show Info</a>
                         </td>
 
 
                         <c:choose>
                             <c:when test="${trip.canceled == false}">
                                 <td>
-                                    
-                                    <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#delayTrip${vs.index}"
-                                            id="viewDetailButton${vs.index}">
+                                    <button type="button" class="btn btn-outline-warning" data-toggle="modal"
+                                            data-target="#delayTrip${vs.index}" id="viewDetailButton${vs.index}">
                                         Delay
                                     </button>
 
-                                    <!-- Modal -->
+                                    <!-- Modal delay -->
                                     <div class="modal fade" id="delayTrip${vs.index}" tabindex="-1" role="dialog"
                                          aria-labelledby="exampleModalLabel" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
@@ -212,8 +241,9 @@
                                                             <div class="row">
                                                                 <div class="col-3"></div>
                                                                 <div class="col-7">
-                                                                    <input class="form-control" type="number" name="delay"
-                                                                           id="delay" min="1" max="180" required
+                                                                    <input class="form-control" type="number"
+                                                                           name="delay" id="delay" min="1" max="180"
+                                                                           required
                                                                            style="width: 200px; margin-left: 5px">
                                                                 </div>
                                                                 <div class="col-3"></div>
@@ -239,8 +269,9 @@
                                         Cancel
                                     </button>
 
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="cancelModal${vs.index}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel2" aria-hidden="true">
+                                    <!-- Modal cancel -->
+                                    <div class="modal fade" id="cancelModal${vs.index}" tabindex="-1" role="dialog"
+                                         aria-labelledby="exampleModalLabel2" aria-hidden="true">
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -255,7 +286,8 @@
                                                     Are you sure?
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <a class="btn btn-danger" href="/admin/cancelTrip/${trip.id}/" role="button">
+                                                    <a class="btn btn-danger" href="/admin/cancelTrip/${trip.id}/"
+                                                       role="button">
                                                         Cancel Trip
                                                     </a>
                                                 </div>
@@ -281,6 +313,7 @@
 <footer class="fixed-bottom page-footer" style="background-color: #F4F6F6">
     <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
 </footer>
+
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"

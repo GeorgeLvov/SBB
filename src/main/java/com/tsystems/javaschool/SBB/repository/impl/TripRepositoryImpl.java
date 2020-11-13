@@ -25,14 +25,18 @@ public class TripRepositoryImpl implements TripRepository {
     }
 
     @Override
-    public void updateDepartureAndArrivalTimes(int id, int delay, String delayStr){
+    public void updateDepartureAndArrivalTimes(int tripId, String delayStr){
         Query query = entityManager
-                .createNativeQuery("update trip set departure_time=(select ADDTIME(departure_time, ?)),\n" +
-                "arrival_time=(select ADDTIME(arrival_time, ?)),delay=delay+? where id = ?");
+                .createNativeQuery("update trip set \n" +
+                        "departure_time = case when departure_time > now() " +
+                        "then (select ADDTIME(departure_time, ?)) else departure_time end,\n" +
+                        "arrival_time = (select ADDTIME(arrival_time, ?))\n" +
+                        "where id = ?;");
+
         query.setParameter(1, delayStr);
         query.setParameter(2, delayStr);
-        query.setParameter(3, delay);
-        query.setParameter(4, id);
+        query.setParameter(3, tripId);
+
         query.executeUpdate();
 
     }

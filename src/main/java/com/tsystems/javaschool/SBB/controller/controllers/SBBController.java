@@ -2,7 +2,7 @@ package com.tsystems.javaschool.SBB.controller.controllers;
 
 import com.tsystems.javaschool.SBB.dto.*;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
-import com.tsystems.javaschool.SBB.utils.MessageSender;
+import com.tsystems.javaschool.SBB.service.impl.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,13 +34,6 @@ public class SBBController {
     }
 
 
- /*   @GetMapping(value = "/send")
-    public ModelAndView send() {
-        ModelAndView modelAndView = new ModelAndView();
-        messageSender.sendTextMessage("Message!");
-        modelAndView.setViewName("MainPage");
-        return modelAndView;
-    }*/
 
     @GetMapping(value = "/")
     public ModelAndView getMainPage() {
@@ -52,7 +45,7 @@ public class SBBController {
     @GetMapping("/login")
     public ModelAndView getLoginPage() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("login");
+        modelAndView.setViewName("Login");
         modelAndView.addObject("logoutmessage", "You have been logged out successfully.");
         return modelAndView;
     }
@@ -78,14 +71,10 @@ public class SBBController {
 
     @GetMapping(value = "/timetable")
     public ModelAndView getTimetable(@RequestParam(name = "stationId") Integer stationId) {
-
         ModelAndView modelAndView = new ModelAndView();
-
         StationDTO stationDTO = stationService.getStationDTOById(stationId);
-
         List<ScheduleDTO> scheduleDTOsFrom = scheduleService.getSchedulesByStationFrom(stationDTO);
         List<ScheduleDTO> scheduleDTOsTo = scheduleService.getSchedulesByStationTo(stationDTO);
-
         modelAndView.addObject("station", stationDTO);
         modelAndView.addObject("scheduleDTOListFrom", scheduleDTOsFrom);
         modelAndView.addObject("scheduleDTOListTo", scheduleDTOsTo);

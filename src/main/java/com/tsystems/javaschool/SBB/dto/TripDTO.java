@@ -26,10 +26,8 @@ public class TripDTO {
 
     private Timestamp arrivalTime;
 
-    private int delay;
-
     private boolean canceled;
 
-    private List<TripInfo> tripInfoList;
+    private List<ScheduleDTO> scheduleList;
 
 }

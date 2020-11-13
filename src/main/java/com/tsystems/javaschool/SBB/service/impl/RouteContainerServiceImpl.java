@@ -3,7 +3,7 @@ package com.tsystems.javaschool.SBB.service.impl;
 import com.tsystems.javaschool.SBB.dto.RouteContainer;
 import com.tsystems.javaschool.SBB.dto.RouteDTO;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
-import com.tsystems.javaschool.SBB.repository.interfaces.StationRepository;
+import com.tsystems.javaschool.SBB.service.interfaces.RouteContainerService;
 import com.tsystems.javaschool.SBB.service.interfaces.StationService;
 import com.tsystems.javaschool.SBB.utils.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,25 +12,25 @@ import org.springframework.stereotype.Service;
 import java.util.stream.Collectors;
 
 @Service
-public class RouteContainerService {
+public class RouteContainerServiceImpl implements RouteContainerService {
 
     @Autowired
     private RouteContainer routeContainer;
     @Autowired
     private StationService stationService;
 
-
+    @Override
     public void setInitialInfo(RouteDTO routeDTO) {
 
         StationDTO stationDTO = stationService
                 .getStationDTOById(Integer.parseInt(routeDTO.getDepartureStationName()));
-
         routeContainer.setDepartureStation(stationDTO);
         routeContainer.setTrainName(routeDTO.getTrainName());
         routeContainer.setDepartureDate(routeDTO.getDepartureDate());
         routeContainer.setDeclaredArrivalDate(routeDTO.getDeclaredArrivalDate());
     }
 
+    @Override
     public void setSegmentsInfo(RouteDTO routeDTO) {
 
         routeContainer.setSideArrivalTimes(routeDTO.getSideArrivalTimes());
@@ -44,6 +44,7 @@ public class RouteContainerService {
         routeContainer.setStops(routeDTO.getStops());
     }
 
+    @Override
     public void updateSegmentsInfo(RouteDTO routeDTO) {
 
         routeContainer.getSideStations().addAll(routeDTO.getSideStations()
@@ -56,13 +57,15 @@ public class RouteContainerService {
         routeContainer.getStops().addAll(routeDTO.getStops());
     }
 
+    @Override
     public void deleteLastChange() {
         CollectionUtils.removeLast(routeContainer.getSideStations());
         CollectionUtils.removeLast(routeContainer.getSideArrivalTimes());
         CollectionUtils.removeLast(routeContainer.getStops());
     }
 
-    public void truncate() {
+    @Override
+    public void truncateContainer() {
         routeContainer.setTrainName(null);
         routeContainer.setDepartureStation(null);
         routeContainer.setDepartureDate(null);

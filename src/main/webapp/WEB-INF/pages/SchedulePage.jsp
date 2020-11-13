@@ -82,7 +82,15 @@
             <div class="col-8" style="text-align:center;">
                 <c:if test="${param.err != null}">
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        <strong>Failed!</strong> Such passenger is already checked in for this trip.
+                        <strong>Failed!</strong>
+                        <c:choose>
+                            <c:when test="${errors.size() > 1}">
+                                Please enter correct personal data.
+                            </c:when>
+                            <c:otherwise>
+                                Such passenger is already checked in for this trip.
+                            </c:otherwise>
+                        </c:choose>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -154,58 +162,53 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoList}">
+                                                <c1:forEach var="segment" items="${scheduleDTO.scheduleDTOList}">
                                                     <c:choose>
-                                                        <c:when test="${(tripInfo.departureTime.equals
+                                                        <c:when test="${(segment.departureTime.equals
                                                         (scheduleDTO.departureTime))
-                                                        && (tripInfo.arrivalTime.equals(scheduleDTO.arrivalTime))}">
+                                                        && (segment.arrivalTime.equals(scheduleDTO.arrivalTime))}">
                                                             <tr>
-                                                                <td><strong>${tripInfo.stationFrom.title}</strong>
-                                                                </td>
-                                                                <td><strong>${tripInfo.stationTo.title}</strong></td>
+                                                                <td><strong>${segment.stationFromDTO.title}</strong></td>
+                                                                <td><strong>${segment.stationToDTO.title}</strong></td>
                                                                 <td><strong><fmt:formatDate
-                                                                        value="${tripInfo.departureTime}"
+                                                                        value="${segment.departureTime}"
                                                                         pattern="HH:mm dd.MM"/></strong></td>
                                                                 <td><strong><fmt:formatDate
-                                                                        value="${tripInfo.arrivalTime}"
+                                                                        value="${segment.arrivalTime}"
                                                                         pattern="HH:mm dd.MM"/></strong></td>
                                                             </tr>
 
                                                         </c:when>
-                                                        <c:when test="${tripInfo.departureTime
+                                                        <c:when test="${segment.departureTime
                                                         .equals(scheduleDTO.departureTime)}">
                                                             <tr>
-                                                                <td><strong>${tripInfo.stationFrom.title}</strong>
-                                                                </td>
-                                                                <td>${tripInfo.stationTo.title}</td>
+                                                                <td><strong>${segment.stationFromDTO.title}</strong></td>
+                                                                <td>${segment.stationToDTO.title}</td>
                                                                 <td><strong><fmt:formatDate
-                                                                        value="${tripInfo.departureTime}"
+                                                                        value="${segment.departureTime}"
                                                                         pattern="HH:mm dd.MM"/></strong></td>
-                                                                <td><fmt:formatDate value="${tripInfo.arrivalTime}"
+                                                                <td><fmt:formatDate value="${segment.arrivalTime}"
                                                                                     pattern="HH:mm dd.MM"/></td>
                                                             </tr>
                                                         </c:when>
-                                                        <c:when test="${tripInfo.arrivalTime
+                                                        <c:when test="${segment.arrivalTime
                                                         .equals(scheduleDTO.arrivalTime)}">
                                                             <tr>
-                                                                <td>${tripInfo.stationFrom.title}</td>
-                                                                <td><strong>${tripInfo.stationTo.title}</strong></td>
-                                                                <td><fmt:formatDate value="${tripInfo.departureTime}"
+                                                                <td>${segment.stationFromDTO.title}</td>
+                                                                <td><b>${segment.stationToDTO.title}</b></td>
+                                                                <td><fmt:formatDate value="${segment.departureTime}"
                                                                                     pattern="HH:mm dd.MM"/></td>
                                                                 <td><strong><fmt:formatDate
-                                                                        value="${tripInfo.arrivalTime}"
+                                                                        value="${segment.arrivalTime}"
                                                                         pattern="HH:mm dd.MM"/></strong></td>
                                                             </tr>
                                                         </c:when>
                                                         <c:otherwise>
                                                             <tr>
-                                                                <td>${tripInfo.stationFrom.title}</td>
-                                                                <td>${tripInfo.stationTo.title}</td>
-                                                                <td><fmt:formatDate
-                                                                        value="${tripInfo.departureTime}"
-                                                                        pattern="HH:mm dd.MM"/></td>
-                                                                <td><fmt:formatDate value="${tripInfo.arrivalTime}"
-                                                                                    pattern="HH:mm dd.MM"/></td>
+                                                                <td>${segment.stationFromDTO.title}</td>
+                                                                <td>${segment.stationToDTO.title}</td>
+                                                                <td><fmt:formatDate value="${segment.departureTime}" pattern="HH:mm dd.MM"/></td>
+                                                                <td><fmt:formatDate value="${segment.arrivalTime}" pattern="HH:mm dd.MM"/></td>
                                                             </tr>
                                                         </c:otherwise>
                                                     </c:choose>
@@ -241,15 +244,13 @@
                                 <c1:otherwise>
                                     <c:choose>
                                         <c:when test="${empty pageContext.request.userPrincipal}">
-                                            <a class="btn btn-danger" href="<c:url value="/login"/>" role="button">
-                                                Buy ticket</a>
+                                            <a class="btn btn-danger" href="<c:url value="/login"/>" role="button">Buy ticket</a>
                                         </c:when>
                                         <c:otherwise>
                                             <!-- Button for modal check in form -->
                                             <button type="button" class="btn btn-danger" data-toggle="modal"
-                                                    data-target="#m${vs.index}" onclick="setIndex(${vs.index})">
-                                                Buy ticket
-                                            </button>
+                                                    data-target="#m${vs.index}"
+                                            onclick="setIndex(${vs.index})">Buy ticket</button>
                                         </c:otherwise>
                                     </c:choose>
                                     <%-- Modal for check in form--%>
@@ -270,7 +271,8 @@
                                                     </button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <form:form name="checkInForm${vs.index}" method="POST" action="/checkin"
+                                                    <form:form name="checkInForm${vs.index}" method="POST"
+                                                               action="/checkin"
                                                                modelAttribute="ticket" class="form-signin"
                                                                onsubmit="return validationCheckInForm()">
                                                         <h2 class="form-signin-heading"
@@ -297,7 +299,7 @@
                                                                 <form:input type="text" path="passengerName"
                                                                             class="form-control"
                                                                             placeholder="Enter name" id="firstN${vs.index}"
-                                                                onchange="undoCheckInInputStyle('firstN')"></form:input>
+                                                                            onchange="undoCheckInInputStyle('firstN')"></form:input>
                                                             </div>
                                                         </spring:bind>
 
@@ -349,7 +351,6 @@
     <p class="text-center footer-text">&copy; Swiss Federal Railways, 2020 </p>
 </footer>
 
-
 <script src="<c:url value="/res/js/validation/commonFormValidation.js"/>"></script>
 <script src="<c:url value="/res/js/validation/checkInFormValidation.js"/>"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -361,7 +362,6 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
-
 </body>
 </html>
 

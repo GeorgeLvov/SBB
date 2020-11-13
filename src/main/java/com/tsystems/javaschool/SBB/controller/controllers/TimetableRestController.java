@@ -13,7 +13,7 @@ import java.util.List;
 
 @Log4j2
 @RestController
-public class TimetableController {
+public class TimetableRestController {
 
     @Autowired
     private StationService stationService;

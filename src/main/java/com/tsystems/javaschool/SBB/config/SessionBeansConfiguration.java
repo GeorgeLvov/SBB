@@ -9,6 +9,9 @@ import org.springframework.web.context.WebApplicationContext;
 @ComponentScan(basePackages = "com.tsystems.javaschool.SBB")
 public class SessionBeansConfiguration {
 
+    /**
+     * Session Bean for creating new route.
+     * */
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_SESSION,
             proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -16,6 +19,9 @@ public class SessionBeansConfiguration {
         return new RouteContainer();
     }
 
+    /**
+     * Session Bean for exporting ticket in PDF format.
+     * */
     @Bean
     @Scope(value = WebApplicationContext.SCOPE_SESSION,
             proxyMode = ScopedProxyMode.TARGET_CLASS)

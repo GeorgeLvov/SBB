@@ -50,18 +50,44 @@ function validationCheckInForm() {
         invalid(firstNameInp, firstNameLabel, "*Name can't be empty.");
         return false;
     }
+
+    if (firstNameVal.length < 2 || firstNameVal.length > 100) {
+        invalid(firstNameInp, firstNameLabel, "*Name must be between 1 and 100 characters.");
+        return false;
+    }
+
+    if(firstNameVal.match("^[a-zA-Z -]+$") === null){
+        invalid(firstNameInp, firstNameLabel, "*Invalid symbol (only spaces or hyphens are allowed).");
+        return false;
+    }
+
     if (lastNameVal === null || lastNameVal.match(/^ *$/) !== null) {
         invalid(lastNameInp, lastNameLabel, "*Surname can't be empty.");
         return false;
     }
+
+    if (lastNameVal.length < 2 || lastNameVal.length > 100) {
+        invalid(lastNameInp, lastNameLabel, "*Surname must be between 1 and 100 characters.");
+        return false;
+    }
+
+    if(lastNameVal.match("^[a-zA-Z -]+$") === null){
+        invalid(lastNameInp, lastNameLabel, "*Invalid symbol (only spaces or hyphens are allowed).");
+        return false;
+    }
+
     if (birthDateVal === null || birthDateVal.match(/^ *$/) !== null) {
         invalid(birthDateInp, birthDateLabel, "*Birthdate can't be empty.");
+        return false;
+    }
+
+    if (new Date(birthDateVal) > new Date()) {
+        invalid(birthDateInp, birthDateLabel, "*Birthdate can't be later then now.");
         return false;
     }
 }
 
 function undoCheckInInputStyle(param) {
-
     if (param === 'firstN' + index) {
         undoStyle(firstNameInp, firstNameLabel);
         firstNameLabel.textContent = firstNameLabelText;
@@ -80,4 +106,3 @@ function undoCheckInInputStyle(param) {
         birthDateLabel.textContent = birthDateLabelText;
     }
 }
-

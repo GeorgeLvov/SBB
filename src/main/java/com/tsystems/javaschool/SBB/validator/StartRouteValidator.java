@@ -1,7 +1,6 @@
 package com.tsystems.javaschool.SBB.validator;
 
 import com.tsystems.javaschool.SBB.dto.RouteDTO;
-import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.TripService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -53,7 +52,7 @@ public class StartRouteValidator implements Validator {
                     errors.rejectValue("declaredArrivalDate", "Invalid.route.duration");
                 }
 
-                if (!tripService.isTrainAvailableForNewTrip(routeDTO.getTrainName(), routeDTO.getDepartureDate(),
+                if (!tripService.isTrainAvailableForSuchTrip(routeDTO.getTrainName(), routeDTO.getDepartureDate(),
                         routeDTO.getDeclaredArrivalDate())) {
                     errors.rejectValue("trainName", "Train.is.unavailable");
                 }

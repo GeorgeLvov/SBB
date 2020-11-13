@@ -10,6 +10,7 @@ import com.tsystems.javaschool.SBB.mapper.TicketMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.*;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Log4j2
 @Service
 public class TicketServiceImpl implements TicketService {
 
@@ -58,7 +60,7 @@ public class TicketServiceImpl implements TicketService {
 
         String firstName = ticketDTO.getPassengerName();
         String lastName = ticketDTO.getPassengerSurName();
-        Date birthDate = ticketDTO.getBirthDate();
+        Date birthDate = Date.valueOf(ticketDTO.getBirthDate());
         Passenger existingPassenger = passengerRepository.getPassengerByPersonalData(firstName, lastName, birthDate);
         if (existingPassenger != null) {
             ticket.setPassenger(existingPassenger);
@@ -77,7 +79,9 @@ public class TicketServiceImpl implements TicketService {
         if(isTimeValid(ticket.getDepartureTime())
                 && !isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
                 ticket.getTrain().getId(), ticket.getTrip().getId())){
+
             ticketRepository.add(ticket);
+
         } else {
             throw new NoTicketsException();
         }
@@ -106,7 +110,6 @@ public class TicketServiceImpl implements TicketService {
     @Override
     @Transactional
     public List<TicketInfo> getAllUserTickets(String username) {
-
         User user = userRepository.findUserByName(username);
         setValidityOfTickets();
         List<Object[]> tickets = ticketRepository.getAllTicketsByUserId(user.getId());
@@ -142,7 +145,9 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void exportToPDF(int id) {
+
         Ticket ticket = ticketRepository.getTicketById(id);
+
         pdfExporter.setTicket(ticket);
     }
 

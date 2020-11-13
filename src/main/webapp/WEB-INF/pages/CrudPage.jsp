@@ -57,7 +57,9 @@
                     Show
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="<c:url value="/admin/trainsandstations"/>">Show all trains | stations</a>
+                    <a class="dropdown-item" href="<c:url value="/admin/trainsandstations"/>">
+                        Show all trains | stations
+                    </a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="<c:url value="/admin/allTrips"/>">Show all trips</a>
                 </div>

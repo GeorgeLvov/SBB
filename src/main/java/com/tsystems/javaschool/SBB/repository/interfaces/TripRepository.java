@@ -16,5 +16,5 @@ public interface TripRepository {
 
     void cancelTrip(int tripId);
 
-    void updateDepartureAndArrivalTimes(int id, int delay, String delayStr);
+    void updateDepartureAndArrivalTimes(int tripId, String delayStr);
 }

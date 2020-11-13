@@ -78,7 +78,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <div class="container mt-4 p-md-4 col-12 rounded-container">
+            <div class="container mt-4 p-md-4 mb-4 col-12 rounded-container">
                 <h2 style="margin-bottom: 30px; text-align: center; font-weight: normal">
                     Departure: <i>${station.title}</i>
                 </h2>
@@ -98,7 +98,9 @@
                         <tr>
                             <td>${scheduleDTO.tripDTO.trainDTO.trainName}</td>
                             <th scope="row">${scheduleDTO.stationFromDTO.title}</th>
-                            <td>${scheduleDTO.tripInfoList.get(scheduleDTO.tripInfoList.size()-1).stationTo.title}</td>
+                            <td>${scheduleDTO.scheduleDTOList.get(scheduleDTO.scheduleDTOList.size()-1)
+                            .stationToDTO.title}
+                            </td>
                             <fmt:setLocale value="en_US" scope="session"/>
                             <td>
                                 <strong><fmt:formatDate value="${scheduleDTO.departureTime}" pattern="HH:mm"/></strong>
@@ -107,11 +109,13 @@
                             </td>
                             <td>
                                 <fmt:formatDate
-                                        value="${scheduleDTO.tripInfoList.get(scheduleDTO.tripInfoList.size()-1).arrivalTime}"
+                                        value="${scheduleDTO.scheduleDTOList.get(scheduleDTO.scheduleDTOList.size()-1)
+                                        .arrivalTime}"
                                         pattern="HH:mm"/>
                                 <br>
                                 <fmt:formatDate
-                                        value="${scheduleDTO.tripInfoList.get(scheduleDTO.tripInfoList.size()-1).arrivalTime}"
+                                        value="${scheduleDTO.scheduleDTOList.get(scheduleDTO.scheduleDTOList.size()-1)
+                                        .arrivalTime}"
                                         pattern="E, dd.MM.yyyy"/>
                             </td>
 
@@ -147,30 +151,31 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <c1:forEach var="tripInfo" items="${scheduleDTO.tripInfoList}">
+                                                    <c1:forEach var="segment" items="${scheduleDTO.scheduleDTOList}">
 
                                                         <tr>
                                                             <c:choose>
-                                                                <c:when test="${(tripInfo.stationFrom.title
+                                                                <c:when test="${(segment.stationFromDTO.title
                                                                 .equals(scheduleDTO.stationFromDTO.title))
-                                                                && (tripInfo.departureTime.equals(scheduleDTO.departureTime))}">
-                                                                    <td><strong>${tripInfo.stationFrom.title}</strong>
+                                                                && (segment.departureTime
+                                                                .equals(scheduleDTO.departureTime))}">
+                                                                    <td><strong>${segment.stationFromDTO.title}</strong>
                                                                     </td>
-                                                                    <td>${tripInfo.stationTo.title}</td>
+                                                                    <td>${segment.stationToDTO.title}</td>
                                                                     <td><strong><fmt:formatDate
-                                                                            value="${tripInfo.departureTime}"
+                                                                            value="${segment.departureTime}"
                                                                             pattern="HH:mm dd.MM"/></strong></td>
                                                                 </c:when>
                                                                 <c:otherwise>
-                                                                    <td>${tripInfo.stationFrom.title}</td>
-                                                                    <td>${tripInfo.stationTo.title}</td>
+                                                                    <td>${segment.stationFromDTO.title}</td>
+                                                                    <td>${segment.stationToDTO.title}</td>
                                                                     <td><fmt:formatDate
-                                                                            value="${tripInfo.departureTime}"
+                                                                            value="${segment.departureTime}"
                                                                             pattern="HH:mm dd.MM"/></td>
                                                                 </c:otherwise>
                                                             </c:choose>
 
-                                                            <td><fmt:formatDate value="${tripInfo.arrivalTime}"
+                                                            <td><fmt:formatDate value="${segment.arrivalTime}"
                                                                                 pattern="HH:mm dd.MM"/></td>
                                                         </tr>
 
@@ -227,14 +232,14 @@
                     <c:forEach var="scheduleDTO2" items="${scheduleDTOListTo}" varStatus="vs2">
                         <tr>
                             <td>${scheduleDTO2.tripDTO.trainDTO.trainName}</td>
-                            <td>${scheduleDTO2.tripInfoList.get(0).stationFrom.title}</td>
+                            <td>${scheduleDTO2.scheduleDTOList.get(0).stationFromDTO.title}</td>
                             <th scope="row">${scheduleDTO2.stationToDTO.title}</th>
                             <fmt:setLocale value="en_US" scope="session"/>
                             <td>
-                                <fmt:formatDate value="${scheduleDTO2.tripInfoList.get(0).departureTime}"
+                                <fmt:formatDate value="${scheduleDTO2.scheduleDTOList.get(0).departureTime}"
                                                 pattern="HH:mm"/>
                                 <br>
-                                <fmt:formatDate value="${scheduleDTO2.tripInfoList.get(0).departureTime}"
+                                <fmt:formatDate value="${scheduleDTO2.scheduleDTOList.get(0).departureTime}"
                                                 pattern="E, dd.MM.yyyy"/>
                             </td>
                             <td>
@@ -278,32 +283,32 @@
                                                     </tr>
                                                     </thead>
                                                     <tbody>
-                                                    <c1:forEach var="tripInfo" items="${scheduleDTO2.tripInfoList}">
+                                                    <c1:forEach var="segment" items="${scheduleDTO2.scheduleDTOList}">
                                                         <tr>
                                                             <c:choose>
 
-                                                                <c:when test="${(tripInfo.stationTo.title
+                                                                <c:when test="${(segment.stationToDTO.title
                                                                 .equals(scheduleDTO2.stationToDTO.title))
-                                                                && (tripInfo.arrivalTime.equals(scheduleDTO2.arrivalTime))}">
+                                                                && (segment.arrivalTime.equals(scheduleDTO2.arrivalTime))}">
 
-                                                                    <td>${tripInfo.stationFrom.title}</td>
-                                                                    <td><strong>${tripInfo.stationTo.title}</strong>
+                                                                    <td>${segment.stationFromDTO.title}</td>
+                                                                    <td><strong>${segment.stationToDTO.title}</strong>
                                                                     </td>
                                                                     <td><fmt:formatDate
-                                                                            value="${tripInfo.departureTime}"
+                                                                            value="${segment.departureTime}"
                                                                             pattern="HH:mm dd.MM"/></td>
                                                                     <td><strong><fmt:formatDate
-                                                                            value="${tripInfo.arrivalTime}"
+                                                                            value="${segment.arrivalTime}"
                                                                             pattern="HH:mm dd.MM"/></strong></td>
                                                                 </c:when>
 
                                                                 <c:otherwise>
-                                                                    <td>${tripInfo.stationFrom.title}</td>
-                                                                    <td>${tripInfo.stationTo.title}</td>
+                                                                    <td>${segment.stationFromDTO.title}</td>
+                                                                    <td>${segment.stationToDTO.title}</td>
                                                                     <td><fmt:formatDate
-                                                                            value="${tripInfo.departureTime}"
+                                                                            value="${segment.departureTime}"
                                                                             pattern="HH:mm dd.MM"/></td>
-                                                                    <td><fmt:formatDate value="${tripInfo.arrivalTime}"
+                                                                    <td><fmt:formatDate value="${segment.arrivalTime}"
                                                                                         pattern="HH:mm dd.MM"/></td>
                                                                 </c:otherwise>
                                                             </c:choose>
