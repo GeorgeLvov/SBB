@@ -86,10 +86,10 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public boolean isTimeValid(Timestamp departureTimeIn) {
-        long departureTime = departureTimeIn.getTime();
-        long currentTime = Timestamp.valueOf(LocalDateTime.now()).getTime();
-        return (departureTime - currentTime) >= 600000;
+    public boolean isTimeValid(Timestamp departureTime) {
+        long departureTimeMillis = departureTime.getTime();
+        long currentTimeMillis = Timestamp.valueOf(LocalDateTime.now().withNano(0)).getTime();
+        return (departureTimeMillis - currentTimeMillis) >= 600000;
     }
 
     @Override

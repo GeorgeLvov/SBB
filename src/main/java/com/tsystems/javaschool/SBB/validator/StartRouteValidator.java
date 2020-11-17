@@ -27,17 +27,6 @@ public class StartRouteValidator implements Validator {
 
         RouteDTO routeDTO = (RouteDTO) o;
 
-        if (routeDTO.getDepartureDate().equals("")) {
-            errors.rejectValue("departureDate", "Blank.departureTime");
-        }
-
-        if (routeDTO.getDeclaredArrivalDate().equals("")) {
-            errors.rejectValue("declaredArrivalDate", "Blank.arrivalTime");
-        }
-
-        if (!routeDTO.getDepartureDate().equals("") && !routeDTO.getDeclaredArrivalDate().equals("")
-                && !routeDTO.getTrainName().equals("")) {
-
             try {
 
                 if (LocalDateTime.parse(routeDTO.getDepartureDate()).compareTo(LocalDateTime.now().plusMinutes(5)) <= 0) {
@@ -52,9 +41,9 @@ public class StartRouteValidator implements Validator {
                     errors.rejectValue("declaredArrivalDate", "Invalid.route.duration");
                 }
 
-                if (!tripService.isTrainAvailableForSuchTrip(routeDTO.getTrainName(), routeDTO.getDepartureDate(),
+                if (!tripService.isTrainAvailableForSuchTrip(routeDTO.getTrainId(), routeDTO.getDepartureDate(),
                         routeDTO.getDeclaredArrivalDate())) {
-                    errors.rejectValue("trainName", "Train.is.unavailable");
+                    errors.rejectValue("trainId", "Train.is.unavailable");
                 }
             }
 
@@ -64,7 +53,7 @@ public class StartRouteValidator implements Validator {
             }
 
         }
-    }
+
 
     private boolean isRouteDurationValid(String departureTime, String arrivalTime){
         return (Timestamp.valueOf(LocalDateTime.parse(arrivalTime)).getTime()

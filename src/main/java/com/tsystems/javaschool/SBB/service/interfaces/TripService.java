@@ -10,9 +10,12 @@ public interface TripService {
     /**
      * Checks if the train can travel within the specified time period.
      *
+     * @param trainId id of train
+     * @param departureTimeStr start time for a possible trip
+     * @param arrivalTimeStr end time for a possible trip
      * @return false if the train is already en route at this time.
      * */
-    boolean isTrainAvailableForSuchTrip(String trainName, String departureTimeStr, String arrivalTimeStr);
+    boolean isTrainAvailableForSuchTrip(Integer trainId, String departureTimeStr, String arrivalTimeStr);
 
 
     /**

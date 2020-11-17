@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class RouteContainer {
 
-    private String trainName;
+    private TrainDTO trainDTO;
 
     private StationDTO departureStation;
 

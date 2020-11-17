@@ -2,7 +2,6 @@ package com.tsystems.javaschool.SBB.controller.controllers;
 
 import com.tsystems.javaschool.SBB.dto.*;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
-import com.tsystems.javaschool.SBB.service.impl.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

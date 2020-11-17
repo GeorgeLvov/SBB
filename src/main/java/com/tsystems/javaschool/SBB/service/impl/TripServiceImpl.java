@@ -5,6 +5,7 @@ import com.tsystems.javaschool.SBB.entities.Trip;
 import com.tsystems.javaschool.SBB.exception.TripCompletedException;
 import com.tsystems.javaschool.SBB.mapper.interfaces.TripMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.ScheduleRepository;
+import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.TripRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
@@ -22,11 +23,11 @@ import java.util.List;
 public class TripServiceImpl implements TripService {
 
     @Autowired
+    private TrainRepository trainRepository;
+    @Autowired
     private TripRepository tripRepository;
     @Autowired
     private TripMapper tripMapper;
-    @Autowired
-    private TrainService trainService;
     @Autowired
     private ScheduleRepository scheduleRepository;
     @Autowired
@@ -60,7 +61,7 @@ public class TripServiceImpl implements TripService {
 
         Trip trip = tripRepository.getTripById(tripId);
 
-        if(trip.getArrivalTime().toLocalDateTime().compareTo(LocalDateTime.now()) < 0){
+        if(trip.getArrivalTime().toLocalDateTime().compareTo(LocalDateTime.now()) <= 0){
             throw new TripCompletedException("Failed to delay trip.");
         }
 
@@ -111,12 +112,10 @@ public class TripServiceImpl implements TripService {
 
     @Override
     @Transactional
-    public boolean isTrainAvailableForSuchTrip(String trainName, String departureTimeStr, String arrivalTimeStr) {
+    public boolean isTrainAvailableForSuchTrip(Integer trainId, String departureTimeStr, String arrivalTimeStr) {
 
-        int trainId = trainService.findTrainByName(trainName).getId();
         LocalDateTime departureTime = LocalDateTime.parse(departureTimeStr);
         LocalDateTime arrivalTime = LocalDateTime.parse(arrivalTimeStr);
-
         List<Trip> trips = tripRepository.getTripsByTrainId(trainId);
 
         if (trips.isEmpty()) {
@@ -124,7 +123,9 @@ public class TripServiceImpl implements TripService {
         }
 
         for (Trip trip : trips) {
+
             LocalDateTime tripDeparture = trip.getDepartureTime().toLocalDateTime();
+
             LocalDateTime tripArrival = trip.getArrivalTime().toLocalDateTime();
 
             if ((departureTime.isAfter(tripDeparture) && departureTime.isBefore(tripArrival))

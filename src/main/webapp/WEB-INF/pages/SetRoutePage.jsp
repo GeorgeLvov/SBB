@@ -17,12 +17,12 @@
 
     <script>
         function mainFunction() {
-            if (${resultRouteDTO.sideArrivalTimes == null || empty resultRouteDTO.sideArrivalTimes}) {
+            if (${routeContainer.sideArrivalTimes == null || empty routeContainer.sideArrivalTimes}) {
                 alert("You haven't added any arrival stations!");
             } else {
-                var x = Date.parse("${resultRouteDTO.declaredArrivalDate}");
-                var y = Date.parse("${(resultRouteDTO.sideArrivalTimes != null && !empty resultRouteDTO.sideArrivalTimes)
-                 ? resultRouteDTO.sideArrivalTimes.get(resultRouteDTO.sideArrivalTimes.size()-1) : "0"}");
+                var x = Date.parse("${routeContainer.declaredArrivalDate}");
+                var y = Date.parse("${(routeContainer.sideArrivalTimes != null && !empty routeContainer.sideArrivalTimes)
+                 ? routeContainer.sideArrivalTimes.get(routeContainer.sideArrivalTimes.size()-1) : "0"}");
                 if (x !== y) {
                     $('#WARN').modal({
                         show: true
@@ -99,31 +99,31 @@
                     <div class="row"></div>
                     <div class="row">
                         <div class="col-5">
-                            <spring:bind path="trainName">
+                            <spring:bind path="trainId">
                                 <div class="form-group ${status.error ? 'has-error' : ''}">
                                     <label for="trainselect">Select train:</label>
-                                    <form:select class="form-control" path="trainName" varStatus="tagStatus"
+                                    <form:select class="form-control" path="trainId" varStatus="tagStatus"
                                                  multiple="0"
                                                  id="trainselect">
                                         <form:option value="" label="Select"/>
-                                        <form:options items="${trainsList}" itemValue="trainName"
+                                        <form:options items="${trainsList}" itemValue="id"
                                                       itemLabel="trainName"/></form:select>
-                                    <form:errors path="trainName" cssStyle="color: red; font-size: 14px"></form:errors>
+                                    <form:errors path="trainId" cssStyle="color: red; font-size: 14px"></form:errors>
                                 </div>
                             </spring:bind>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-5">
-                            <spring:bind path="departureStationName">
+                            <spring:bind path="departureStationId">
                                 <div class="form-group ${status.error ? 'has-error' : ''}">
                                     <label for="depStation">Departure station:</label>
-                                    <form:select class="form-control" path="departureStationName" varStatus="tagStatus"
+                                    <form:select class="form-control" path="departureStationId" varStatus="tagStatus"
                                                  multiple="0" id="depStation">
                                         <form:option value="" label="From"/>
                                         <form:options items="${stationsList}" itemValue="id"
                                                       itemLabel="title"/></form:select>
-                                    <form:errors path="departureStationName"
+                                    <form:errors path="departureStationId"
                                                  cssStyle="color: red; font-size: 14px"></form:errors>
                                 </div>
                             </spring:bind>
@@ -175,17 +175,17 @@
         </thead>
         <tbody>
             <tr>
-                <td>${resultRouteDTO.trainName}</td>
-                <td>${resultRouteDTO.departureStation.title}</td>
+                <td>${routeContainer.trainDTO.trainName}</td>
+                <td>${routeContainer.departureStation.title}</td>
 
-                <javatime:parseLocalDateTime value="${resultRouteDTO.departureDate}"
+                <javatime:parseLocalDateTime value="${routeContainer.departureDate}"
                                              pattern="yyyy-MM-dd'T'HH:mm" var="depDate"/>
                 <td>
                     <strong><javatime:format pattern="HH:mm" value="${depDate}" style="MS" /></strong>
                     <javatime:format pattern="dd.MM.yy" value="${depDate}" style="MS" />
                 </td>
 
-                <javatime:parseLocalDateTime value="${resultRouteDTO.declaredArrivalDate}"
+                <javatime:parseLocalDateTime value="${routeContainer.declaredArrivalDate}"
                                              pattern="yyyy-MM-dd'T'HH:mm" var="arrDate"/>
                 <td>
                     <strong><javatime:format pattern="HH:mm" value="${arrDate}" style="MS" /></strong>
@@ -197,7 +197,7 @@
 </div>
 
 <%-- Table for segments --%>
-<c:if test="${!empty resultRouteDTO.sideStations}">
+<c:if test="${!empty routeContainer.sideStations}">
     <h3 style="text-align: center; padding: 20px">Segments</h3>
     <div class="container bg-light">
         <table class="table table-sm" style="text-align: center">
@@ -209,18 +209,18 @@
             </tr>
             </thead>
             <tbody>
-            <c:forEach items="${resultRouteDTO.sideStations}" varStatus="vs">
+            <c:forEach items="${routeContainer.sideStations}" varStatus="vs">
                 <tr>
-                    <td>${resultRouteDTO.sideStations[vs.index].title}</td>
+                    <td>${routeContainer.sideStations[vs.index].title}</td>
 
-                    <javatime:parseLocalDateTime value="${resultRouteDTO.sideArrivalTimes[vs.index]}"
+                    <javatime:parseLocalDateTime value="${routeContainer.sideArrivalTimes[vs.index]}"
                                                  pattern="yyyy-MM-dd'T'HH:mm" var="arrDaterime"/>
                     <td>
                         <strong><javatime:format pattern="HH:mm" value="${arrDaterime}" style="MS" /></strong>
                         <javatime:format pattern="dd.MM.yy" value="${arrDaterime}" style="MS" />
                     </td>
 
-                    <td>${resultRouteDTO.stops[vs.index]}</td>
+                    <td>${routeContainer.stops[vs.index]}</td>
                 </tr>
             </c:forEach>
             </tbody>
@@ -323,7 +323,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <javatime:parseLocalDateTime value="${resultRouteDTO.declaredArrivalDate}" pattern="yyyy-MM-dd'T'HH:mm"
+                <javatime:parseLocalDateTime value="${routeContainer.declaredArrivalDate}" pattern="yyyy-MM-dd'T'HH:mm"
                                              var="decArDate"/>
                 <p>Declared arrival datetime of the trip:
                    <strong> <javatime:format pattern="HH:mm dd.MM.yyyy" value="${decArDate}" style="MS" /></strong>

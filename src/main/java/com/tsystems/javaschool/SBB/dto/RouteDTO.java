@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
@@ -12,14 +13,16 @@ import java.util.List;
 @NoArgsConstructor
 public class RouteDTO {
 
-    @NotBlank(message = "Train is not selected!")
-    private String trainName;
+    @NotNull(message = "Train is not selected!")
+    private Integer trainId;
 
-    @NotBlank(message = "Station is not selected!")
-    private String departureStationName;
+    @NotNull(message = "Station is not selected!")
+    private Integer departureStationId;
 
+    @NotBlank(message = "*Departure time is not selected.")
     private String departureDate;
 
+    @NotBlank(message = "*Arrival time is not selected.")
     private String declaredArrivalDate;
 
     private List<String> sideStations;
@@ -28,3 +31,5 @@ public class RouteDTO {
 
     private List<String> stops;
 }
+
+

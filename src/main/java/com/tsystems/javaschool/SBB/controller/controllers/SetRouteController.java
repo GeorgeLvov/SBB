@@ -63,7 +63,7 @@ public class SetRouteController{
             containerService.truncateContainer();
         }
         modelAndView.addObject("routeDTO", new RouteDTO());
-        modelAndView.addObject("resultRouteDTO", routeContainer);
+        modelAndView.addObject("routeContainer", routeContainer);
         modelAndView.setViewName("SetRoutePage");
         return modelAndView;
     }
@@ -87,10 +87,11 @@ public class SetRouteController{
     public ModelAndView setRoute(@ModelAttribute("routeDTO") RouteDTO routeDTO, BindingResult bindingResult) {
 
         ModelAndView modelAndView = new ModelAndView();
+        System.out.println(routeDTO);
         routeValidator.validate(routeDTO, bindingResult);
 
         if (bindingResult.hasErrors()) {
-            modelAndView.addObject("resultRouteDTO", routeContainer);
+            modelAndView.addObject("routeContainer", routeContainer);
             modelAndView.setViewName("SetRoutePage");
             return modelAndView;
         }

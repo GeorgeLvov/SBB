@@ -1,21 +1,16 @@
+
 package com.tsystems.javaschool.SBB.service.impl;
 
-import com.tsystems.javaschool.SBB.dto.PassengerDTO;
-import com.tsystems.javaschool.SBB.dto.TicketDTO;
-import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.entities.*;
-import com.tsystems.javaschool.SBB.mapper.impl.TicketMapperImpl;
-import com.tsystems.javaschool.SBB.repository.interfaces.PassengerRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.TicketRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
-import com.tsystems.javaschool.SBB.repository.interfaces.UserRepository;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
@@ -23,7 +18,7 @@ import java.time.LocalDateTime;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class TicketServiceImplTest {
 
     @InjectMocks
@@ -35,22 +30,13 @@ public class TicketServiceImplTest {
     @Mock
     private TicketRepository ticketRepository;
 
-
-    private static Train train;
-
-    @Before
-    public void init() {
-        MockitoAnnotations.initMocks(this);
-        train = Train.builder()
+    @Test
+    public void trainIsFull() {
+        Train train = Train.builder()
                 .id(1)
                 .trainName("e200")
                 .capacity(1)
                 .build();
-    }
-
-
-    @Test
-    public void trainIsFull() {
         Timestamp departure = new Timestamp(System.currentTimeMillis());
         Timestamp arrival = new Timestamp(System.currentTimeMillis());
         BigInteger bigInteger = BigInteger.valueOf(1);
@@ -64,6 +50,11 @@ public class TicketServiceImplTest {
 
     @Test
     public void trainIsNotFull() {
+        Train train = Train.builder()
+                .id(1)
+                .trainName("e200")
+                .capacity(1)
+                .build();
         Timestamp departure = new Timestamp(System.currentTimeMillis());
         Timestamp arrival = new Timestamp(System.currentTimeMillis());
         BigInteger bigInteger = BigInteger.valueOf(0);
@@ -88,7 +79,5 @@ public class TicketServiceImplTest {
         Timestamp timestamp = Timestamp.valueOf(LocalDateTime.now().plusMinutes(9));
         Assert.assertFalse(ticketServiceImpl.isTimeValid(timestamp));
     }
-
-
 
 }

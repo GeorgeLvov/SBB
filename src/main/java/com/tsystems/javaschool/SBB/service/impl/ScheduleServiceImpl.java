@@ -7,6 +7,7 @@ import com.tsystems.javaschool.SBB.entities.Train;
 import com.tsystems.javaschool.SBB.entities.Trip;
 import com.tsystems.javaschool.SBB.mapper.interfaces.ScheduleMapper;
 import com.tsystems.javaschool.SBB.mapper.interfaces.StationMapper;
+import com.tsystems.javaschool.SBB.mapper.interfaces.TrainMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.*;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;
 import com.tsystems.javaschool.SBB.service.interfaces.TicketService;
@@ -38,6 +39,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private TrainRepository trainRepository;
     @Autowired
+    private TrainMapper trainMapper;
+    @Autowired
     private TicketRepository ticketRepository;
     @Autowired
     private TicketService ticketService;
@@ -52,7 +55,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Transactional
     public void createSchedulesAndTrip() {
         
-        Train train = trainRepository.findTrainByName(routeContainer.getTrainName());
+        Train train = trainMapper.toEntity(routeContainer.getTrainDTO());
 
         Station departureStation = stationMapper.toEntity(routeContainer.getDepartureStation());
 
