@@ -292,22 +292,22 @@
                                                         <form:hidden path="stationFromId" value="${param.stationFrom}"/>
                                                         <form:hidden path="stationToId" value="${param.stationTo}"/>
 
-                                                        <spring:bind path="passengerName">
+                                                        <spring:bind path="passengerDTO.firstName">
                                                             <div class="form-group ${status.error ? 'has-error' : ''}">
                                                                 <label id="fNLbl${vs.index}" for="firstN${vs.index}">
                                                                     Passenger name:</label>
-                                                                <form:input type="text" path="passengerName"
+                                                                <form:input type="text" path="passengerDTO.firstName"
                                                                             class="form-control"
                                                                             placeholder="Enter name" id="firstN${vs.index}"
                                                                             onchange="undoCheckInInputStyle('firstN')"></form:input>
                                                             </div>
                                                         </spring:bind>
 
-                                                        <spring:bind path="passengerSurName">
+                                                        <spring:bind path="passengerDTO.lastName">
                                                             <div class="form-group ${status.error ? 'has-error' : ''}">
                                                                 <label id="lNLbl${vs.index}" for="lastN${vs.index}">
                                                                     Passenger surname:</label>
-                                                                <form:input type="text" path="passengerSurName"
+                                                                <form:input type="text" path="passengerDTO.lastName"
                                                                             class="form-control"
                                                                             placeholder="Enter surname"
                                                                             id="lastN${vs.index}"
@@ -315,12 +315,12 @@
                                                             </div>
                                                         </spring:bind>
 
-                                                        <spring:bind path="birthDate">
+                                                        <spring:bind path="passengerDTO.birthDate">
                                                             <div class="form-group ${status.error ? 'has-error' : ''}">
                                                                 <label id="bDLbl${vs.index}" for="BD${vs.index}">
                                                                     Date of birth:
                                                                 </label>
-                                                                <form:input type="date" path="birthDate"
+                                                                <form:input type="date" path="passengerDTO.birthDate"
                                                                             class="form-control"
                                                                             placeholder="Birthdate"
                                                                             id="BD${vs.index}"

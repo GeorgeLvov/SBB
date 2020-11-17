@@ -1,6 +1,6 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
-import com.tsystems.javaschool.SBB.mapper.StationMapper;
+import com.tsystems.javaschool.SBB.mapper.interfaces.StationMapper;
 import com.tsystems.javaschool.SBB.dto.StationDTO;
 import com.tsystems.javaschool.SBB.entities.Station;
 import com.tsystems.javaschool.SBB.repository.interfaces.StationRepository;

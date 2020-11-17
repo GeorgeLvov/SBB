@@ -1,6 +1,6 @@
 package com.tsystems.javaschool.SBB.service.impl;
 
-import com.tsystems.javaschool.SBB.mapper.UserMapper;
+import com.tsystems.javaschool.SBB.mapper.interfaces.UserMapper;
 import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.entities.User;
 import com.tsystems.javaschool.SBB.repository.interfaces.UserRepository;
@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * Implementation of {@link UserService} interface.

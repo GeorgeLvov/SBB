@@ -4,7 +4,7 @@ import com.tsystems.javaschool.SBB.dto.PassengerDTO;
 import com.tsystems.javaschool.SBB.dto.PassengerInfo;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.entities.Passenger;
-import com.tsystems.javaschool.SBB.mapper.PassengerMapper;
+import com.tsystems.javaschool.SBB.mapper.interfaces.PassengerMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.PassengerRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +28,12 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTO ticketDTO) {
+    public boolean isPassengerAlreadyCheckedIn(TicketDTO ticketDTO) {
 
-        List<Object[]> list = passengerRepository.getPassengerWithTicketsByPersonalData(firstName, lastName, birthDate);
+        List<Object[]> list = passengerRepository
+                .getPassengerWithTicketsByPersonalData(ticketDTO.getPassengerDTO().getFirstName(),
+                        ticketDTO.getPassengerDTO().getLastName(),
+                        ticketDTO.getPassengerDTO().getBirthDate());
 
         for (Object[] objects : list) {
             int tripId = (int) objects[1];
@@ -61,7 +65,7 @@ public class PassengerServiceImpl implements PassengerService {
 
     @Override
     @Transactional
-    public PassengerDTO findPassengerByPersonalData(String firstName, String lastName, Date birthDate){
+    public PassengerDTO findPassengerByPersonalData(String firstName, String lastName, LocalDate birthDate){
         Passenger passenger = passengerRepository.getPassengerByPersonalData(firstName, lastName, birthDate);
         return passenger != null ? passengerMapper.toDTO(passenger) : null;
     }

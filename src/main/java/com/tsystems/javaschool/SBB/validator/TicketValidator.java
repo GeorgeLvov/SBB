@@ -25,15 +25,15 @@ public class TicketValidator implements Validator {
 
         TicketDTO ticketDTO = (TicketDTO) o;
 
-        if(ticketDTO.getBirthDate() == null){
+        if(ticketDTO.getPassengerDTO().getBirthDate() == null){
             errors.rejectValue("birthDate", "Invalid.birthdate", "*Birthdate cannot be empty.");
             return;
         }
 
-        if (passengerService.isPassengerAlreadyCheckedIn(ticketDTO.getPassengerName(), ticketDTO.getPassengerSurName(),
-                Date.valueOf(ticketDTO.getBirthDate()), ticketDTO)) {
-            errors.rejectValue("passengerName", "Duplicate.passenger");
+        if (passengerService.isPassengerAlreadyCheckedIn(ticketDTO)) {
+            errors.rejectValue("passengerDTO.firstName", "Duplicate.passenger");
         }
+
 
     }
 }

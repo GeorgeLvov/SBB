@@ -3,7 +3,7 @@ package com.tsystems.javaschool.SBB.service.impl;
 import com.tsystems.javaschool.SBB.dto.TripDTO;
 import com.tsystems.javaschool.SBB.entities.Trip;
 import com.tsystems.javaschool.SBB.exception.TripCompletedException;
-import com.tsystems.javaschool.SBB.mapper.TripMapper;
+import com.tsystems.javaschool.SBB.mapper.interfaces.TripMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.ScheduleRepository;
 import com.tsystems.javaschool.SBB.repository.interfaces.TripRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.ScheduleService;

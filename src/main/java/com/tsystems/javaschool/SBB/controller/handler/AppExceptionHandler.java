@@ -34,11 +34,11 @@ public class AppExceptionHandler {
     }
 
 
-    @ExceptionHandler(Exception.class)
+/*    @ExceptionHandler(Exception.class)
     public ModelAndView exception(Exception exception) {
         log.error(exception.getMessage());
         return new ModelAndView("500");
-    }
+    }*/
 
 
 }

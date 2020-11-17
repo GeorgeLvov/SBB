@@ -11,6 +11,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -26,7 +27,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     }
 
     @Override
-    public List<Object[]> getPassengerWithTicketsByPersonalData(String firstName, String lastName, Date birthDate) {
+    public List<Object[]> getPassengerWithTicketsByPersonalData(String firstName, String lastName, LocalDate birthDate) {
 
         Query query = entityManager.createNativeQuery("select train_id, trip_id, departure_time, arrival_time from " +
                 "passenger inner join ticket on passenger.id = passenger_id " +
@@ -38,9 +39,10 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     }
 
     @Override
-    public Passenger getPassengerByPersonalData(String firstName, String lastName, Date birthDate) {
-        Query query = entityManager.createQuery("select p from Passenger p where p.firstName = :firstName and p.lastName = :lastName" +
-                " and p.birthDate = :birthDate")
+    public Passenger getPassengerByPersonalData(String firstName, String lastName, LocalDate birthDate) {
+        Query query = entityManager.createQuery("select p from Passenger p where p.firstName = :firstName " +
+                "and p.lastName = :lastName " +
+                "and p.birthDate = :birthDate")
                 .setParameter("firstName", firstName)
                 .setParameter("lastName", lastName)
                 .setParameter("birthDate", birthDate);

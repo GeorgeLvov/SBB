@@ -2,7 +2,7 @@ package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.dto.TrainDTO;
 import com.tsystems.javaschool.SBB.entities.Train;
-import com.tsystems.javaschool.SBB.mapper.TrainMapper;
+import com.tsystems.javaschool.SBB.mapper.interfaces.TrainMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.TrainRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.TrainService;
 import org.springframework.beans.factory.annotation.Autowired;

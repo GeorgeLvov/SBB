@@ -43,7 +43,9 @@ public class TicketController {
                                 RedirectAttributes redirectAttributes) {
 
         ModelAndView modelAndView = new ModelAndView();
+
         ticketValidator.validate(ticketDTO,bindingResult);
+
         if (bindingResult.hasErrors()) {
 
             List<String> errors = bindingResult.getAllErrors().stream()
@@ -62,7 +64,9 @@ public class TicketController {
         }
 
         ticketService.createTicket(ticketDTO);
+
         modelAndView.setViewName("redirect:/alltickets?success");
+
         return modelAndView;
 
     }

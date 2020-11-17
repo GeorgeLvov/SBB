@@ -75,7 +75,7 @@
                     <i class="fas fa-long-arrow-alt-right"></i>
                 </span>
                 </a>
-                <a href="${pageContext.request.contextPath}/admin/trainselect"
+                <a href="${pageContext.request.contextPath}/admin/setroute?start"
                    class="list-group-item list-group-item-action list-group-item">
                     <i class="far fa-calendar-alt"></i>
                     Assign new trip

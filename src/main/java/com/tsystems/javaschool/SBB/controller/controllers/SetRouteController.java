@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -40,10 +41,9 @@ public class SetRouteController{
     @Autowired
     private ScheduleService scheduleService;
     @Autowired
-    private RouteContainerService containerService;
-
-    @Autowired
     private RouteContainer routeContainer;
+    @Autowired
+    private RouteContainerService containerService;
 
 
     @ModelAttribute("stationsList")
@@ -56,12 +56,15 @@ public class SetRouteController{
         return trainService.getAllTrainsDTO();
     }
 
-
-    @GetMapping("/trainselect")
-    public ModelAndView selectTrain() {
+    @GetMapping("/setroute")
+    public ModelAndView setRoute(HttpServletRequest request) {
         ModelAndView modelAndView = new ModelAndView();
-        containerService.truncateContainer();
-        modelAndView.setViewName("redirect:/admin/setroute?start");
+        if(request.getParameter("start") != null){
+            containerService.truncateContainer();
+        }
+        modelAndView.addObject("routeDTO", new RouteDTO());
+        modelAndView.addObject("resultRouteDTO", routeContainer);
+        modelAndView.setViewName("SetRoutePage");
         return modelAndView;
     }
 
@@ -77,15 +80,6 @@ public class SetRouteController{
         }
         containerService.setInitialInfo(routeDTO);
         modelAndView.setViewName("redirect:/admin/setroute");
-        return modelAndView;
-    }
-
-    @GetMapping("/setroute")
-    public ModelAndView setRoute() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.addObject("routeDTO", new RouteDTO());
-        modelAndView.addObject("resultRouteDTO", routeContainer);
-        modelAndView.setViewName("SetRoutePage");
         return modelAndView;
     }
 
@@ -118,9 +112,7 @@ public class SetRouteController{
             containerService.deleteLastChange();
             return "redirect:/admin/setroute";
         }
-
-        containerService.truncateContainer();
-        return "redirect:/admin/trainselect";
+        return "redirect:/admin/setroute?start";
     }
 
     @GetMapping("/createtrip")

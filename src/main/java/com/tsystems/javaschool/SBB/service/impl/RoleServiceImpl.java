@@ -2,7 +2,7 @@ package com.tsystems.javaschool.SBB.service.impl;
 
 import com.tsystems.javaschool.SBB.dto.RoleDTO;
 import com.tsystems.javaschool.SBB.entities.Role;
-import com.tsystems.javaschool.SBB.mapper.RoleMapper;
+import com.tsystems.javaschool.SBB.mapper.interfaces.RoleMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.RoleRepository;
 import com.tsystems.javaschool.SBB.service.interfaces.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -19,8 +19,6 @@ public class SBBController {
     private StationService stationService;
     @Autowired
     private ScheduleService scheduleService;
-    @Autowired
-    private MessageSender messageSender;
 
 
     @ModelAttribute("stations")

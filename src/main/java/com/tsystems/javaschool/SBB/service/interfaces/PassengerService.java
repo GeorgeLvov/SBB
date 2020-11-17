@@ -6,6 +6,7 @@ import com.tsystems.javaschool.SBB.dto.PassengerInfo;
 import com.tsystems.javaschool.SBB.dto.TicketDTO;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -14,12 +15,10 @@ public interface PassengerService {
     /**
      * Checks if a passenger with the specified personal data has checked in for a specific trip
      *
-     * @param firstName passenger firstname
-     * @param lastName passenger lastname
-     * @param ticketDTO contains info about trip
+     * @param ticketDTO contains info about trip and passenger
      * @return false if such passenger already checked in for the trip
      */
-    boolean isPassengerAlreadyCheckedIn(String firstName, String lastName, Date birthDate, TicketDTO ticketDTO);
+    boolean isPassengerAlreadyCheckedIn(TicketDTO ticketDTO);
 
 
     /**
@@ -31,7 +30,7 @@ public interface PassengerService {
      * */
     List<PassengerInfo> getAllPassengersByTrainIdAndTripId(int trainId, int tripId);
 
-    PassengerDTO findPassengerByPersonalData(String firstName, String lastName, Date birthDate);
+    PassengerDTO findPassengerByPersonalData(String firstName, String lastName, LocalDate birthDate);
 
     void addPassenger(PassengerDTO passengerDTO);
 

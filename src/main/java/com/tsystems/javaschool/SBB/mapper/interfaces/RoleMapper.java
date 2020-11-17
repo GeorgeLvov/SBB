@@ -1,4 +1,4 @@
-package com.tsystems.javaschool.SBB.mapper;
+package com.tsystems.javaschool.SBB.mapper.interfaces;
 
 import com.tsystems.javaschool.SBB.dto.RoleDTO;
 import com.tsystems.javaschool.SBB.entities.Role;

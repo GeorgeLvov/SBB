@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.time.LocalDate;
 
 
 /**
@@ -35,9 +37,10 @@ public class Passenger {
     private String lastName;
 
     @Column(name = "birthdate")
-    private Date birthDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate birthDate;
 
-    public Passenger(String firstName, String lastName, Date birthDate) {
+    public Passenger(String firstName, String lastName, LocalDate birthDate) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthDate = birthDate;

@@ -1,7 +1,8 @@
-package com.tsystems.javaschool.SBB.mapper;
+package com.tsystems.javaschool.SBB.mapper.interfaces;
 
 import com.tsystems.javaschool.SBB.dto.UserDTO;
 import com.tsystems.javaschool.SBB.entities.User;
+import com.tsystems.javaschool.SBB.mapper.interfaces.RoleMapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

@@ -6,7 +6,8 @@ import com.tsystems.javaschool.SBB.entities.Passenger;
 import com.tsystems.javaschool.SBB.entities.Ticket;
 import com.tsystems.javaschool.SBB.entities.User;
 import com.tsystems.javaschool.SBB.exception.NoTicketsException;
-import com.tsystems.javaschool.SBB.mapper.TicketMapper;
+import com.tsystems.javaschool.SBB.mapper.interfaces.PassengerMapper;
+import com.tsystems.javaschool.SBB.mapper.interfaces.TicketMapper;
 import com.tsystems.javaschool.SBB.repository.interfaces.*;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
@@ -29,9 +30,9 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
 
     @Autowired
-    private TrainRepository trainRepository;
+    private PassengerMapper passengerMapper;
     @Autowired
-    private TripRepository tripRepository;
+    private TrainRepository trainRepository;
     @Autowired
     private TicketRepository ticketRepository;
     @Autowired
@@ -40,8 +41,6 @@ public class TicketServiceImpl implements TicketService {
     private UserRepository userRepository;
     @Autowired
     private PassengerRepository passengerRepository;
-    @Autowired
-    private StationRepository stationRepository;
     @Autowired
     private TicketPDFExporter pdfExporter;
 
@@ -52,20 +51,16 @@ public class TicketServiceImpl implements TicketService {
 
         Ticket ticket = ticketMapper.toEntity(ticketDTO);
 
-        ticket.setTrain(trainRepository.getTrainById(ticketDTO.getTrainId()));
-        ticket.setTrip(tripRepository.getTripById(ticketDTO.getTripId()));
-        ticket.setStationFrom(stationRepository.getStationById(ticketDTO.getStationFromId()));
-        ticket.setStationTo(stationRepository.getStationById(ticketDTO.getStationToId()));
         ticket.setValid(true);
 
-        String firstName = ticketDTO.getPassengerName();
-        String lastName = ticketDTO.getPassengerSurName();
-        Date birthDate = Date.valueOf(ticketDTO.getBirthDate());
-        Passenger existingPassenger = passengerRepository.getPassengerByPersonalData(firstName, lastName, birthDate);
+        Passenger existingPassenger =
+                passengerRepository.getPassengerByPersonalData(ticketDTO.getPassengerDTO().getFirstName(),
+                        ticketDTO.getPassengerDTO().getLastName(), ticketDTO.getPassengerDTO().getBirthDate());
+
         if (existingPassenger != null) {
             ticket.setPassenger(existingPassenger);
         } else {
-            Passenger passenger = new Passenger(firstName,lastName,birthDate);
+            Passenger passenger = passengerMapper.toEntity(ticketDTO.getPassengerDTO());
             passengerRepository.add(passenger);
             ticket.setPassenger(passenger);
         }
@@ -76,12 +71,9 @@ public class TicketServiceImpl implements TicketService {
             ticket.setUser(userRepository.findUserByName(auth.getName()));
         }
 
-        if(isTimeValid(ticket.getDepartureTime())
-                && !isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
+        if(isTimeValid(ticket.getDepartureTime()) && !isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
                 ticket.getTrain().getId(), ticket.getTrip().getId())){
-
             ticketRepository.add(ticket);
-
         } else {
             throw new NoTicketsException();
         }
@@ -145,9 +137,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public void exportToPDF(int id) {
-
         Ticket ticket = ticketRepository.getTicketById(id);
-
         pdfExporter.setTicket(ticket);
     }
 
