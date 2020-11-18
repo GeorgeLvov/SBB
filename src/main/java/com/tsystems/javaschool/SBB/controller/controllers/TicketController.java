@@ -4,7 +4,7 @@ import com.tsystems.javaschool.SBB.dto.TicketDTO;
 import com.tsystems.javaschool.SBB.dto.TicketInfo;
 import com.tsystems.javaschool.SBB.service.interfaces.*;
 import com.tsystems.javaschool.SBB.utils.TicketPDFExporter;
-import com.tsystems.javaschool.SBB.validator.TicketValidator;
+import com.tsystems.javaschool.SBB.validator.PassengerValidator;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -28,7 +28,7 @@ public class TicketController {
     @Autowired
     private TicketService ticketService;
     @Autowired
-    private TicketValidator ticketValidator;
+    private PassengerValidator passengerValidator;
     @Autowired
     private TicketPDFExporter pdfExporter;
 
@@ -41,7 +41,7 @@ public class TicketController {
 
         ModelAndView modelAndView = new ModelAndView();
 
-        ticketValidator.validate(ticketDTO,bindingResult);
+        passengerValidator.validate(ticketDTO,bindingResult);
 
         if (bindingResult.hasErrors()) {
 

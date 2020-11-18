@@ -27,35 +27,33 @@ public class StartRouteValidator implements Validator {
 
         RouteDTO routeDTO = (RouteDTO) o;
 
-            try {
+        try {
 
-                if (LocalDateTime.parse(routeDTO.getDepartureDate()).compareTo(LocalDateTime.now().plusMinutes(5)) <= 0) {
-                    errors.rejectValue("departureDate", "Invalid.time.current");
-                }
-
-                if (LocalDateTime.parse(routeDTO.getDepartureDate())
-                        .compareTo(LocalDateTime.parse(routeDTO.getDeclaredArrivalDate())) >= 0) {
-                    errors.rejectValue("declaredArrivalDate", "Invalid.arrivalTime");
-
-                } else if (!isRouteDurationValid(routeDTO.getDepartureDate(),routeDTO.getDeclaredArrivalDate())) {
-                    errors.rejectValue("declaredArrivalDate", "Invalid.route.duration");
-                }
-
-                if (!tripService.isTrainAvailableForSuchTrip(routeDTO.getTrainId(), routeDTO.getDepartureDate(),
-                        routeDTO.getDeclaredArrivalDate())) {
-                    errors.rejectValue("trainId", "Train.is.unavailable");
-                }
+            if (LocalDateTime.parse(routeDTO.getDepartureDate()).compareTo(LocalDateTime.now().plusMinutes(5)) <= 0) {
+                errors.rejectValue("departureDate", "Invalid.time.current");
             }
 
-            catch (DateTimeParseException dpe) {
-                errors.rejectValue("departureDate", "Invalid.dateTime");
-                errors.rejectValue("declaredArrivalDate", "Invalid.dateTime");
+            if (LocalDateTime.parse(routeDTO.getDepartureDate())
+                    .compareTo(LocalDateTime.parse(routeDTO.getDeclaredArrivalDate())) >= 0) {
+                errors.rejectValue("declaredArrivalDate", "Invalid.arrivalTime");
+
+            } else if (!isRouteDurationValid(routeDTO.getDepartureDate(), routeDTO.getDeclaredArrivalDate())) {
+                errors.rejectValue("declaredArrivalDate", "Invalid.route.duration");
             }
 
+            if (!tripService.isTrainAvailableForSuchTrip(routeDTO.getTrainId(), routeDTO.getDepartureDate(),
+                    routeDTO.getDeclaredArrivalDate())) {
+                errors.rejectValue("trainId", "Train.is.unavailable");
+            }
+        } catch (DateTimeParseException dpe) {
+            errors.rejectValue("departureDate", "Invalid.dateTime");
+            errors.rejectValue("declaredArrivalDate", "Invalid.dateTime");
         }
 
+    }
 
-    private boolean isRouteDurationValid(String departureTime, String arrivalTime){
+
+    private boolean isRouteDurationValid(String departureTime, String arrivalTime) {
         return (Timestamp.valueOf(LocalDateTime.parse(arrivalTime)).getTime()
                 - Timestamp.valueOf(LocalDateTime.parse(departureTime)).getTime()) >= 900_000;
     }

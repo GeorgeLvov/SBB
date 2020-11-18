@@ -67,16 +67,16 @@ public class TicketServiceImpl implements TicketService {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
+
         if (!username.equals("anonymousUser")) {
             ticket.setUser(userRepository.findUserByName(auth.getName()));
         }
 
-        if(isTimeValid(ticket.getDepartureTime()) && !isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
-                ticket.getTrain().getId(), ticket.getTrip().getId())){
-            ticketRepository.add(ticket);
-        } else {
+        if (!isTimeValid(ticket.getDepartureTime()) && isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
+                ticket.getTrain().getId(), ticket.getTrip().getId())) {
             throw new NoTicketsException();
-        }
+
+        } ticketRepository.add(ticket);
     }
 
 

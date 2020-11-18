@@ -7,11 +7,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
-import java.sql.Date;
-
 
 @Component
-public class TicketValidator implements Validator {
+public class PassengerValidator implements Validator {
 
     @Autowired
     private PassengerService passengerService;
@@ -26,7 +24,8 @@ public class TicketValidator implements Validator {
         TicketDTO ticketDTO = (TicketDTO) o;
 
         if(ticketDTO.getPassengerDTO().getBirthDate() == null){
-            errors.rejectValue("birthDate", "Invalid.birthdate", "*Birthdate cannot be empty.");
+            errors.rejectValue("passengerDTO.birthDate", "Invalid.birthdate",
+                    "*Birthdate cannot be empty.");
             return;
         }
 
