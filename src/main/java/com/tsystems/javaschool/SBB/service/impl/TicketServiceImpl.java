@@ -72,11 +72,13 @@ public class TicketServiceImpl implements TicketService {
             ticket.setUser(userRepository.findUserByName(auth.getName()));
         }
 
-        if (!isTimeValid(ticket.getDepartureTime()) && isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
+        if (isTimeValid(ticket.getDepartureTime()) && !isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
                 ticket.getTrain().getId(), ticket.getTrip().getId())) {
-            throw new NoTicketsException();
+            ticketRepository.add(ticket);
 
-        } ticketRepository.add(ticket);
+        } else {
+            throw new NoTicketsException();
+        }
     }
 
 
