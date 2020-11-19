@@ -30,8 +30,6 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
 
     @Autowired
-    private PassengerMapper passengerMapper;
-    @Autowired
     private TrainRepository trainRepository;
     @Autowired
     private TicketRepository ticketRepository;
@@ -54,13 +52,13 @@ public class TicketServiceImpl implements TicketService {
         ticket.setValid(true);
 
         Passenger existingPassenger =
-                passengerRepository.getPassengerByPersonalData(ticketDTO.getPassengerDTO().getFirstName(),
-                        ticketDTO.getPassengerDTO().getLastName(), ticketDTO.getPassengerDTO().getBirthDate());
+                passengerRepository.getPassengerByPersonalData(ticket.getPassenger().getFirstName(),
+                        ticket.getPassenger().getLastName(), ticket.getPassenger().getBirthDate());
 
         if (existingPassenger != null) {
             ticket.setPassenger(existingPassenger);
         } else {
-            Passenger passenger = passengerMapper.toEntity(ticketDTO.getPassengerDTO());
+            Passenger passenger = ticket.getPassenger();
             passengerRepository.add(passenger);
             ticket.setPassenger(passenger);
         }
@@ -72,10 +70,9 @@ public class TicketServiceImpl implements TicketService {
             ticket.setUser(userRepository.findUserByName(auth.getName()));
         }
 
-        if (isTimeValid(ticket.getDepartureTime()) && !isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
+         if (isTimeValid(ticket.getDepartureTime()) && !isTrainFull(ticket.getDepartureTime(), ticket.getArrivalTime(),
                 ticket.getTrain().getId(), ticket.getTrip().getId())) {
             ticketRepository.add(ticket);
-
         } else {
             throw new NoTicketsException();
         }

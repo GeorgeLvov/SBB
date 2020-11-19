@@ -13,9 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    RoleRepository roleRepository;
+    private RoleRepository roleRepository;
     @Autowired
-    RoleMapper roleMapper;
+    private RoleMapper roleMapper;
 
     @Override
     @Transactional

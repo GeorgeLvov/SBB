@@ -29,7 +29,7 @@ public class PassengerRepositoryImpl implements PassengerRepository {
     @Override
     public List<Object[]> getPassengerWithTicketsByPersonalData(String firstName, String lastName, LocalDate birthDate) {
 
-        Query query = entityManager.createNativeQuery("select train_id, trip_id, departure_time, arrival_time from " +
+        Query query = entityManager.createNativeQuery("select trip_id, departure_time, arrival_time from " +
                 "passenger inner join ticket on passenger.id = passenger_id " +
                 "where firstname=? and lastname=? and birthdate=? and valid = 1")
                 .setParameter(1, firstName)

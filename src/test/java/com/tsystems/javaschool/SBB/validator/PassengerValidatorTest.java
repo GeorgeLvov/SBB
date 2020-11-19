@@ -41,7 +41,7 @@ public class PassengerValidatorTest {
 
 
     @Before
-    public void init() {
+    public void setUp() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
         passengerDTO = PassengerDTO.builder()

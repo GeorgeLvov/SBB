@@ -36,9 +36,9 @@ public class PassengerServiceImpl implements PassengerService {
                         ticketDTO.getPassengerDTO().getBirthDate());
 
         for (Object[] objects : list) {
-            int tripId = (int) objects[1];
-            Timestamp departureTime = (Timestamp) objects[2];
-            Timestamp arrivalTime = (Timestamp) objects[3];
+            int tripId = (int) objects[0];
+            Timestamp departureTime = (Timestamp) objects[1];
+            Timestamp arrivalTime = (Timestamp) objects[2];
             if (tripId == ticketDTO.getTripId() && departureTime.equals(ticketDTO.getDepartureTime())
                     && arrivalTime.equals(ticketDTO.getArrivalTime())) {
                 return true;
@@ -61,7 +61,6 @@ public class PassengerServiceImpl implements PassengerService {
 
         return passengers;
     }
-
 
     @Override
     @Transactional
