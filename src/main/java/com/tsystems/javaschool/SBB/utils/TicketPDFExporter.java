@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,7 +22,7 @@ import java.util.List;
 public class TicketPDFExporter {
 
     static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm\n dd.MM.yyyy");
-    static SimpleDateFormat sdf1 = new SimpleDateFormat("dd.MM.yyyy");
+    static DateTimeFormatter df = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
     private Ticket ticket;
 
@@ -46,7 +47,7 @@ public class TicketPDFExporter {
 
         String firstName = ticket.getPassenger().getFirstName();
         String lastName = ticket.getPassenger().getLastName();
-        String birthdate = sdf1.format(ticket.getPassenger().getBirthDate());
+        String birthdate = df.format(ticket.getPassenger().getBirthDate());
 
         Document document = new Document(PageSize.A4);
         PdfWriter writer = null;
@@ -63,11 +64,13 @@ public class TicketPDFExporter {
         java.util.List<PdfPCell> cells = new ArrayList<>();
         PdfPCell cellFirst = new PdfPCell();
         Image jpg = null;
+
         try {
-            jpg = Image.getInstance("C:\\Users\\User\\IdeaProjects\\SBB\\src\\main\\webapp\\res\\img\\sbbBadge.png");
+           jpg = Image.getInstance("C:\\Users\\User\\IdeaProjects\\SBB\\src\\main\\webapp\\res\\img\\sbbBadge.png");
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         jpg.scalePercent(25f);
         cellFirst.addElement(jpg);
         cells.add(cellFirst);
